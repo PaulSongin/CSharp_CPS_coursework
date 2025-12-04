@@ -1,0 +1,20 @@
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.csproj.AssemblyReference.cache
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\obj\Debug\DrugCatalog_ver2.Properties.Resources.resources
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.csproj.GenerateResource.cache
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.csproj.CoreCompileInputs.cache
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.exe.config
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.exe
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.pdb
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.exe
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.pdb
+D:\Уник\КУРСАЧ С#\DrugCatalog ver2\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.exe.config
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.exe.config
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.exe
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.pdb
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.csproj.AssemblyReference.cache
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.exe.config
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\obj\Debug\DrugCatalog_ver2.Properties.Resources.resources
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.csproj.GenerateResource.cache
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.csproj.CoreCompileInputs.cache
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.exe
+D:\Уник\КУРСАЧ С#\DrugCatalog ver\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.pdb
