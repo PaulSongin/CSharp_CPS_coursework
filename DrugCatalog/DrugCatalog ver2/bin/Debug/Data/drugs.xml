@@ -66,7 +66,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>5</Id>
+    <Id>4</Id>
     <Name>Лоратадин</Name>
     <ActiveSubstance>Лоратадин</ActiveSubstance>
     <Manufacturer>Тева</Manufacturer>
@@ -87,7 +87,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>6</Id>
+    <Id>5</Id>
     <Name>Ибупрофен</Name>
     <ActiveSubstance>Ибупрофен</ActiveSubstance>
     <Manufacturer>Синтез</Manufacturer>
@@ -96,7 +96,7 @@
     <DosageUnit>мг</DosageUnit>
     <PrescriptionType>Безрецептурный</PrescriptionType>
     <Quantity>24</Quantity>
-    <ExpiryDate>2026-05-15T00:00:00</ExpiryDate>
+    <ExpiryDate>2025-12-11T00:00:00</ExpiryDate>
     <CategoryId>2</CategoryId>
     <Indications>
       <Indication>Боль в суставах</Indication>
@@ -109,7 +109,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>7</Id>
+    <Id>6</Id>
     <Name>Аскорбиновая кислота</Name>
     <ActiveSubstance>Аскорбиновая кислота</ActiveSubstance>
     <Manufacturer>Красная звезда</Manufacturer>
@@ -130,7 +130,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>8</Id>
+    <Id>7</Id>
     <Name>Глицин</Name>
     <ActiveSubstance>Глицин</ActiveSubstance>
     <Manufacturer>Озон</Manufacturer>
@@ -151,7 +151,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>9</Id>
+    <Id>8</Id>
     <Name>Азитромицин</Name>
     <ActiveSubstance>Азитромицин</ActiveSubstance>
     <Manufacturer>Верофарм</Manufacturer>
@@ -172,7 +172,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>10</Id>
+    <Id>9</Id>
     <Name>Амлодипин</Name>
     <ActiveSubstance>Амлодипин</ActiveSubstance>
     <Manufacturer>Berlin-Chemie</Manufacturer>

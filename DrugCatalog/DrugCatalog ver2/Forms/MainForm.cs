@@ -14,6 +14,9 @@ namespace DrugCatalog_ver2.Forms
         private List<Drug> _drugs;
         private readonly IXmlDataService _dataService;
         private readonly ICategoryService _categoryService;
+        private readonly IUserService _userService;
+        private readonly IReminderService _reminderService;
+        private User _currentUser;
         private string _currentFilePath;
         private bool _autoDeleteEnabled = true;
 
@@ -33,17 +36,27 @@ namespace DrugCatalog_ver2.Forms
 
         private ContextMenuStrip contextMenuGrid;
         private MenuStrip mainMenuStrip;
+        private StatusStrip statusStrip;
+        private ToolStripStatusLabel statusLabelUser;
+        private ToolStripStatusLabel statusLabelTime;
+        private ToolStripStatusLabel statusLabelReminders;
 
-        public MainForm()
+        public MainForm(IXmlDataService dataService, IUserService userService, User currentUser)
         {
-            InitializeComponent();
-            _dataService = new XmlDataService();
+            _dataService = dataService;
+            _userService = userService;
+            _currentUser = currentUser;
             _categoryService = new CategoryService();
+            _reminderService = new ReminderService(_dataService);
             _currentFilePath = null;
 
+            InitializeComponent();
+            CreateStatusBar();
             LoadDrugs();
             UpdateWindowTitle();
             CheckExpiredDrugsOnStartup();
+            UpdateUserInterface();
+            StartReminderService();
         }
 
         private void InitializeComponent()
@@ -51,7 +64,7 @@ namespace DrugCatalog_ver2.Forms
             this.SuspendLayout();
 
             this.Text = "Каталог лекарственных препаратов";
-            this.Size = new Size(1300, 700);
+            this.Size = new Size(1300, 750);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Font = new Font("Microsoft Sans Serif", 9f);
 
@@ -79,8 +92,6 @@ namespace DrugCatalog_ver2.Forms
             saveMenuItem.ShortcutKeys = Keys.Control | Keys.S;
 
             var saveAsMenuItem = new ToolStripMenuItem("Сохранить как...", null, (s, e) => SaveAsToXmlFile());
-
-            var separator = new ToolStripSeparator();
 
             var exitMenuItem = new ToolStripMenuItem("Выход", null, (s, e) => this.Close());
             exitMenuItem.ShortcutKeys = Keys.Alt | Keys.F4;
@@ -126,8 +137,6 @@ namespace DrugCatalog_ver2.Forms
             var searchMenuItem = new ToolStripMenuItem("Поиск", null, (s, e) => textBoxSearch.Focus());
             searchMenuItem.ShortcutKeys = Keys.Control | Keys.F;
 
-            var viewSeparator = new ToolStripSeparator();
-
             var viewAllMenuItem = new ToolStripMenuItem("Все препараты", null, (s, e) => tabControl.SelectedIndex = 0);
             var viewExpiringMenuItem = new ToolStripMenuItem("С истекающим сроком", null, (s, e) => tabControl.SelectedIndex = 1);
             var viewByManufacturerMenuItem = new ToolStripMenuItem("По производителям", null, (s, e) => tabControl.SelectedIndex = 2);
@@ -136,21 +145,105 @@ namespace DrugCatalog_ver2.Forms
             viewMenu.DropDownItems.AddRange(new ToolStripItem[] {
                 refreshMenuItem,
                 searchMenuItem,
-                viewSeparator,
+                new ToolStripSeparator(),
                 viewAllMenuItem,
                 viewExpiringMenuItem,
                 viewByManufacturerMenuItem,
                 viewByCategoryMenuItem
             });
 
+            var remindersMenu = new ToolStripMenuItem("Напоминания");
+
+            var manageRemindersMenuItem = new ToolStripMenuItem("Управление напоминаниями", null, (s, e) => ShowRemindersManagement());
+            manageRemindersMenuItem.ShortcutKeys = Keys.Control | Keys.R;
+
+            var testNotificationMenuItem = new ToolStripMenuItem("Тест уведомления", null, (s, e) => TestNotification());
+            var showActiveRemindersMenuItem = new ToolStripMenuItem("Активные напоминания", null, (s, e) => ShowActiveReminders());
+
+            remindersMenu.DropDownItems.AddRange(new ToolStripItem[] {
+                manageRemindersMenuItem,
+                new ToolStripSeparator(),
+                testNotificationMenuItem,
+                showActiveRemindersMenuItem
+            });
+
+            var userMenu = new ToolStripMenuItem("Пользователь");
+
+            var profileMenuItem = new ToolStripMenuItem("Мой профиль", null, (s, e) => ShowUserProfile());
+            var changePasswordMenuItem = new ToolStripMenuItem("Сменить пароль", null, (s, e) => ChangePassword());
+
+            var switchUserMenuItem = new ToolStripMenuItem("Сменить пользователя", null, (s, e) => SwitchUser());
+            switchUserMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.L;
+
+            var usersMenuItem = new ToolStripMenuItem("Управление пользователями", null, (s, e) => ShowUserManagement());
+            usersMenuItem.Visible = _currentUser.Role == UserRole.Admin;
+
+            var logoutMenuItem = new ToolStripMenuItem("Выход", null, (s, e) => Logout());
+            logoutMenuItem.ShortcutKeys = Keys.Control | Keys.Q;
+
+            userMenu.DropDownItems.AddRange(new ToolStripItem[] {
+                profileMenuItem,
+                changePasswordMenuItem,
+                new ToolStripSeparator(),
+                switchUserMenuItem,
+                new ToolStripSeparator(),
+                usersMenuItem,
+                new ToolStripSeparator(),
+                logoutMenuItem
+            });
+
             mainMenuStrip.Items.AddRange(new ToolStripItem[] {
                 fileMenu,
                 editMenu,
-                viewMenu
+                viewMenu,
+                remindersMenu,
+                userMenu
             });
 
             this.MainMenuStrip = mainMenuStrip;
             this.Controls.Add(mainMenuStrip);
+        }
+
+        private void CreateStatusBar()
+        {
+            statusStrip = new StatusStrip();
+            statusStrip.Dock = DockStyle.Bottom;
+
+            statusLabelUser = new ToolStripStatusLabel
+            {
+                Text = $"Пользователь: {_currentUser.FullName} ({_currentUser.Role})",
+                Spring = true,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            statusLabelTime = new ToolStripStatusLabel
+            {
+                Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm"),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            statusLabelReminders = new ToolStripStatusLabel
+            {
+                Text = "💊 Напоминания активны",
+                ForeColor = Color.Green,
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            statusStrip.Items.AddRange(new ToolStripItem[] {
+                statusLabelUser,
+                statusLabelReminders,
+                statusLabelTime
+            });
+
+            this.Controls.Add(statusStrip);
+
+            var timer = new Timer();
+            timer.Interval = 60000;
+            timer.Tick += (s, e) => {
+                statusLabelTime.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+                UpdateRemindersStatus();
+            };
+            timer.Start();
         }
 
         private void CreateContextMenus()
@@ -169,6 +262,10 @@ namespace DrugCatalog_ver2.Forms
             deleteToolStripMenuItem.Click += (s, e) => DeleteSelectedDrug();
             deleteToolStripMenuItem.ShortcutKeys = Keys.Delete;
 
+            var addReminderToolStripMenuItem = new ToolStripMenuItem("⏰ Добавить напоминание");
+            addReminderToolStripMenuItem.Click += (s, e) => AddReminderForSelectedDrug();
+            addReminderToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.R;
+
             var cleanupToolStripMenuItem = new ToolStripMenuItem("🧹 Очистить просроченные");
             cleanupToolStripMenuItem.Click += (s, e) => CleanupExpiredDrugs();
             cleanupToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.Delete;
@@ -183,6 +280,8 @@ namespace DrugCatalog_ver2.Forms
                 editToolStripMenuItem,
                 deleteToolStripMenuItem,
                 new ToolStripSeparator(),
+                addReminderToolStripMenuItem,
+                new ToolStripSeparator(),
                 cleanupToolStripMenuItem,
                 new ToolStripSeparator(),
                 refreshToolStripMenuItem
@@ -195,6 +294,7 @@ namespace DrugCatalog_ver2.Forms
 
                 editToolStripMenuItem.Enabled = hasSelection;
                 deleteToolStripMenuItem.Enabled = hasSelection;
+                addReminderToolStripMenuItem.Enabled = hasSelection;
             };
         }
 
@@ -313,7 +413,6 @@ namespace DrugCatalog_ver2.Forms
 
             tabControl.ItemSize = new Size(180, 25);
 
-            // Вкладка 1: Все препараты
             var tabAllDrugs = new TabPage("Все препараты");
             var allDrugsPanel = new Panel { Dock = DockStyle.Fill };
 
@@ -359,7 +458,6 @@ namespace DrugCatalog_ver2.Forms
             allDrugsPanel.Controls.Add(panelAllDrugsControls);
             tabAllDrugs.Controls.Add(allDrugsPanel);
 
-            // Вкладка 2: С истекающим сроком
             var tabExpiring = new TabPage("С истекающим сроком");
             var expiringPanel = new Panel { Dock = DockStyle.Fill };
 
@@ -405,7 +503,6 @@ namespace DrugCatalog_ver2.Forms
             expiringPanel.Controls.Add(panelExpiringControls);
             tabExpiring.Controls.Add(expiringPanel);
 
-            // Вкладка 3: По производителям
             var tabByManufacturer = new TabPage("По производителям");
             var manufacturerPanel = new Panel { Dock = DockStyle.Fill };
 
@@ -481,7 +578,6 @@ namespace DrugCatalog_ver2.Forms
             manufacturerPanel.Controls.Add(panelManufacturerFilter);
             tabByManufacturer.Controls.Add(manufacturerPanel);
 
-            // Вкладка 4: По категориям (НОВАЯ ВКЛАДКА)
             var tabByCategory = new TabPage("По категориям");
             var categoryPanel = new Panel { Dock = DockStyle.Fill };
 
@@ -601,6 +697,129 @@ namespace DrugCatalog_ver2.Forms
                 }
             };
         }
+
+
+        private void StartReminderService()
+        {
+            UpdateRemindersStatus();
+        }
+
+        private void UpdateRemindersStatus()
+        {
+            var activeReminders = _reminderService.GetReminders();
+            int activeCount = activeReminders.Count;
+
+            if (activeCount > 0)
+            {
+                statusLabelReminders.Text = $"💊 Активных напоминаний: {activeCount}";
+                statusLabelReminders.ForeColor = Color.Green;
+            }
+            else
+            {
+                statusLabelReminders.Text = "💊 Нет активных напоминаний";
+                statusLabelReminders.ForeColor = Color.Gray;
+            }
+        }
+
+        private void ShowRemindersManagement()
+        {
+            var form = new RemindersManagementForm(_reminderService, _drugs);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                UpdateRemindersStatus();
+            }
+        }
+
+        private void TestNotification()
+        {
+            var testReminder = new MedicationReminder
+            {
+                DrugName = "Тестовое лекарство",
+                Dosage = "1 таблетка",
+                Notes = "Тестовое уведомление от системы"
+            };
+
+            _reminderService.ShowReminderNotification(testReminder);
+
+            MessageBox.Show("Тестовое уведомление отправлено!\n\nПроверьте системный трей (область уведомлений Windows).",
+                "Тест уведомления",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void ShowActiveReminders()
+        {
+            var activeReminders = _reminderService.GetReminders();
+
+            if (activeReminders.Count == 0)
+            {
+                MessageBox.Show("Нет активных напоминаний.", "Активные напоминания",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string reminderList = "Активные напоминания:\n\n";
+            foreach (var reminder in activeReminders)
+            {
+                string days = GetDaysString(reminder.DaysOfWeek);
+                reminderList += $"💊 {reminder.DrugName} - {reminder.Dosage}\n";
+                reminderList += $"   ⏰ {reminder.ReminderTime:HH:mm} ({days})\n";
+                if (!string.IsNullOrEmpty(reminder.Notes))
+                    reminderList += $"   📝 {reminder.Notes}\n";
+                reminderList += "\n";
+            }
+
+            MessageBox.Show(reminderList, "Активные напоминания",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private string GetDaysString(bool[] days)
+        {
+            string[] dayNames = { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" };
+            var activeDays = days.Select((d, i) => new { Day = d, Name = dayNames[i] })
+                                .Where(x => x.Day)
+                                .Select(x => x.Name);
+            return string.Join(", ", activeDays);
+        }
+
+        private void AddReminderForSelectedDrug()
+        {
+            var dataGridView = GetCurrentDataGridView();
+            if (dataGridView == null || dataGridView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите препарат для добавления напоминания", "Информация",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var selectedId = (int)dataGridView.SelectedRows[0].Cells["Id"].Value;
+            var drug = _drugs.FirstOrDefault(d => d.Id == selectedId);
+
+            if (drug != null)
+            {
+                var reminder = new MedicationReminder
+                {
+                    DrugName = drug.Name,
+                    Dosage = $"{drug.Dosage} {drug.DosageUnit}",
+                    ReminderTime = DateTime.Now.Date.AddHours(9), // По умолчанию 9:00
+                    Notes = $"Принимать согласно инструкции: {string.Join(", ", drug.Indications.Take(3))}"
+                };
+
+                // Устанавливаем все дни как активные по умолчанию
+                for (int i = 0; i < 7; i++)
+                    reminder.DaysOfWeek[i] = true;
+
+                var form = new AddEditReminderForm(_reminderService, _drugs, reminder);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    UpdateRemindersStatus();
+                    MessageBox.Show("Напоминание добавлено!", "Успех",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        // СУЩЕСТВУЮЩИЕ МЕТОДЫ (остаются без изменений)
 
         private void LoadDrugs()
         {
@@ -773,7 +992,96 @@ namespace DrugCatalog_ver2.Forms
         {
             string fileName = _currentFilePath != null ? Path.GetFileName(_currentFilePath) : "Новый файл";
             string autoDeleteStatus = _autoDeleteEnabled ? " [АВТОУДАЛЕНИЕ ВКЛ]" : " [АВТОУДАЛЕНИЕ ВЫКЛ]";
-            this.Text = $"Каталог лекарственных препаратов - {fileName} ({_drugs?.Count ?? 0} препаратов){autoDeleteStatus}";
+            this.Text = $"Каталог лекарственных препаратов - {_currentUser.FullName} ({_currentUser.Role}) - {fileName} ({_drugs?.Count ?? 0} препаратов){autoDeleteStatus}";
+        }
+
+        private void UpdateUserInterface()
+        {
+            if (_currentUser.Role == UserRole.User)
+            {
+                // Ограничения для обычных пользователей можно добавить здесь
+            }
+
+            UpdateWindowTitle();
+            UpdateStatusBar();
+        }
+
+        private void UpdateStatusBar()
+        {
+            if (statusLabelUser != null)
+            {
+                statusLabelUser.Text = $"Пользователь: {_currentUser.FullName} ({_currentUser.Role})";
+            }
+        }
+
+        private void ShowUserProfile()
+        {
+            MessageBox.Show($"Пользователь: {_currentUser.FullName}\n" +
+                           $"Логин: {_currentUser.Username}\n" +
+                           $"Email: {_currentUser.Email}\n" +
+                           $"Роль: {_currentUser.Role}\n" +
+                           $"Дата регистрации: {_currentUser.CreatedAt:dd.MM.yyyy}",
+                           "Мой профиль");
+        }
+
+        private void ChangePassword()
+        {
+            var form = new ChangePasswordForm(_userService, _currentUser.Id);
+            form.ShowDialog();
+        }
+
+        private void SwitchUser()
+        {
+            var result = MessageBox.Show("Вы уверены, что хотите сменить пользователя?", "Смена пользователя",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                if (_drugs != null && _drugs.Count > 0)
+                {
+                    _dataService.SaveDrugs(_drugs);
+                }
+
+                using (var loginForm = new LoginForm(_userService))
+                {
+                    if (loginForm.ShowDialog() == DialogResult.OK && loginForm.LoggedInUser != null)
+                    {
+                        _currentUser = loginForm.LoggedInUser;
+                        UpdateUserInterface();
+                        LoadDrugs();
+
+                        MessageBox.Show($"Добро пожаловать, {_currentUser.FullName}!", "Смена пользователя",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        var exitResult = MessageBox.Show("Не удалось сменить пользователя. Закрыть приложение?",
+                            "Смена пользователя", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (exitResult == DialogResult.Yes)
+                        {
+                            this.Close();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ShowUserManagement()
+        {
+            var form = new UserManagementForm(_userService);
+            form.ShowDialog();
+        }
+
+        private void Logout()
+        {
+            var result = MessageBox.Show("Вы уверены, что хотите выйти из приложения?", "Выход",
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
         }
 
         private void UpdateSearchAutoComplete()
@@ -1270,9 +1578,28 @@ namespace DrugCatalog_ver2.Forms
                 case Keys.Control | Keys.Shift | Keys.Delete:
                     CleanupExpiredDrugs();
                     return true;
+                case Keys.Control | Keys.Q:
+                    Logout();
+                    return true;
+                case Keys.Control | Keys.Shift | Keys.L:
+                    SwitchUser();
+                    return true;
+                case Keys.Control | Keys.R: // НОВОЕ: Управление напоминаниями
+                    ShowRemindersManagement();
+                    return true;
+                case Keys.Control | Keys.Shift | Keys.R: // НОВОЕ: Добавить напоминание для выбранного препарата
+                    AddReminderForSelectedDrug();
+                    return true;
                 default:
                     return base.ProcessCmdKey(ref msg, keyData);
             }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            // Освобождаем ресурсы сервиса напоминаний
+            _reminderService?.Dispose();
+            base.OnFormClosing(e);
         }
     }
 }

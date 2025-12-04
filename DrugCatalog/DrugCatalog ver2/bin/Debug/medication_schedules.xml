@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<MedicationSchedules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MedicationSchedule>
+    <Id>1</Id>
+    <UserId>1</UserId>
+    <DrugId>6</DrugId>
+    <DrugName>Ибупрофен</DrugName>
+    <StartDate>2025-11-20T00:00:00+03:00</StartDate>
+    <EndDate>2025-12-02T00:00:00</EndDate>
+    <Time />
+    <Dosage>2</Dosage>
+    <DosageUnit>таб</DosageUnit>
+    <Frequency>Daily</Frequency>
+    <DaysOfWeek>1,2,3,4,5,6,7</DaysOfWeek>
+    <IsActive>true</IsActive>
+    <Notes />
+    <CreatedAt>2025-11-20T11:35:24.6507288+03:00</CreatedAt>
+    <LastTaken>2025-11-20T11:38:04.4358227+03:00</LastTaken>
+  </MedicationSchedule>
+</MedicationSchedules>

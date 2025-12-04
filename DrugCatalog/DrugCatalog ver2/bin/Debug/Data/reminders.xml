@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ArrayOfMedicationReminder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MedicationReminder>
+    <Id>1</Id>
+    <DrugId>0</DrugId>
+    <DrugName>Парацетамол</DrugName>
+    <Dosage>1 таблетка</Dosage>
+    <ReminderTime>2025-12-03T21:56:00</ReminderTime>
+    <DaysOfWeek>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+    </DaysOfWeek>
+    <IsActive>true</IsActive>
+    <Notes />
+  </MedicationReminder>
+</ArrayOfMedicationReminder>

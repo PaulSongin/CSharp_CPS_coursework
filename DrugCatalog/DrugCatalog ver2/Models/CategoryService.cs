@@ -44,15 +44,15 @@ namespace DrugCatalog_ver2.Models
         {
             var colorMap = new Dictionary<int, Color>
             {
-                {1, Color.LightGray},   // Другое
-                {2, Color.LightBlue},   // Анальгетики
-                {3, Color.LightCoral},  // Антибиотики
-                {4, Color.LightGreen},  // Сердечно-сосудистые
-                {5, Color.LightYellow}, // Желудочно-кишечные
-                {6, Color.LightPink},   // Противовирусные
-                {7, Color.LightCyan},   // Антигистаминные
-                {8, Color.PaleGoldenrod}, // Неврологические
-                {9, Color.PaleTurquoise} // Витамины
+                {1, Color.LightGray},   
+                {2, Color.LightBlue},   
+                {3, Color.LightCoral}, 
+                {4, Color.LightGreen}, 
+                {5, Color.LightYellow}, 
+                {6, Color.LightPink},  
+                {7, Color.LightCyan},  
+                {8, Color.PaleGoldenrod}, 
+                {9, Color.PaleTurquoise} 
             };
 
             return colorMap.ContainsKey(categoryId) ? colorMap[categoryId] : Color.White;

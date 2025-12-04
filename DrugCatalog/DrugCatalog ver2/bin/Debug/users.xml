@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <User>
+    <Id>1</Id>
+    <Username>admin</Username>
+    <PasswordHash>JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=</PasswordHash>
+    <FullName>Администратор системы</FullName>
+    <Email>admin@drugcatalog.com</Email>
+    <CreatedAt>2025-11-15T19:50:27.3547439+03:00</CreatedAt>
+    <LastLogin>2025-12-04T15:21:38.9107514+03:00</LastLogin>
+    <Role>Admin</Role>
+    <IsActive>true</IsActive>
+  </User>
+  <User>
+    <Id>2</Id>
+    <Username>Pavel</Username>
+    <PasswordHash>73l8gRjwLftklgfdXT+MdiMEjJwGPVMsyVxe16iYpk8=</PasswordHash>
+    <FullName>Павел</FullName>
+    <Email>songinpavel2006@gmail.com</Email>
+    <CreatedAt>2025-11-15T19:58:06.9296337+03:00</CreatedAt>
+    <LastLogin>2025-11-15T20:09:39.2535449+03:00</LastLogin>
+    <Role>User</Role>
+    <IsActive>true</IsActive>
+  </User>
+</Users>
