@@ -1,33 +1,33 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\",
+  "WorkspaceRootPath": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\drugcatalog ver2\\models\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|d:\\\u0443\u043D\u0438\u043A\\c#coursework\\drugcatalog\\drugcatalog ver2\\models\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|solutionrelative:drugcatalog ver2\\models\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|d:\\\u0443\u043D\u0438\u043A\\\u043A\u0443\u0440\u0441\u0430\u0447 \u0441#\\drugcatalog ver3\\drugcatalog ver2\\forms\\addeditdrugform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\forms\\addeditdrugform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|solutionrelative:drugcatalog ver2\\forms\\addeditdrugform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\drugcatalog ver2\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|solutionrelative:drugcatalog ver2\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\drugcatalog ver2\\models\\drugdictionary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\models\\drugdictionary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|solutionrelative:drugcatalog ver2\\models\\drugdictionary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\drugcatalog ver2\\models\\drug.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\models\\drug.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|solutionrelative:drugcatalog ver2\\models\\drug.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\drugcatalog ver2\\services\\xmldataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\services\\xmldataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|solutionrelative:drugcatalog ver2\\services\\xmldataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\drugcatalog ver2\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver2.csproj|solutionrelative:drugcatalog ver2\\models\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -52,9 +52,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "CategoryService.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Models\\CategoryService.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\CategoryService.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\CategoryService.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Models\\CategoryService.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\CategoryService.cs",
               "RelativeToolTip": "DrugCatalog ver2\\Models\\CategoryService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -65,9 +65,9 @@
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Drug.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Models\\Drug.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\Drug.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\Drug.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Models\\Drug.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\Drug.cs",
               "RelativeToolTip": "DrugCatalog ver2\\Models\\Drug.cs",
               "ViewState": "AgIAABQAAAAAAAAAAAAkwCUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -77,9 +77,9 @@
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "Category.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Models\\Category.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\Category.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\Category.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Models\\Category.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\Category.cs",
               "RelativeToolTip": "DrugCatalog ver2\\Models\\Category.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -89,9 +89,9 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "XmlDataService.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Services\\XmlDataService.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\XmlDataService.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Services\\XmlDataService.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Services\\XmlDataService.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\XmlDataService.cs",
               "RelativeToolTip": "DrugCatalog ver2\\Services\\XmlDataService.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAQwDcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -101,9 +101,9 @@
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "DrugDictionary.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Models\\DrugDictionary.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\DrugDictionary.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\DrugDictionary.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Models\\DrugDictionary.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\DrugDictionary.cs",
               "RelativeToolTip": "DrugCatalog ver2\\Models\\DrugDictionary.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -113,9 +113,9 @@
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "MainForm.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Forms\\MainForm.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Forms\\MainForm.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Forms\\MainForm.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Forms\\MainForm.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Forms\\MainForm.cs",
               "RelativeToolTip": "DrugCatalog ver2\\Forms\\MainForm.cs",
               "ViewState": "AgIAAOMEAAAAAAAAAAAqwP0EAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -125,14 +125,13 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "AddEditDrugForm.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Forms\\AddEditDrugForm.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Forms\\AddEditDrugForm.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Forms\\AddEditDrugForm.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\\u041A\u0423\u0420\u0421\u0410\u0427 \u0421#\\DrugCatalog ver3\\DrugCatalog ver2\\Forms\\AddEditDrugForm.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Forms\\AddEditDrugForm.cs",
               "RelativeToolTip": "DrugCatalog ver2\\Forms\\AddEditDrugForm.cs",
               "ViewState": "AgIAAN0BAAAAAAAAAAArwGUBAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T15:24:38.236Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-30T15:24:38.236Z"
             }
           ]
         }
