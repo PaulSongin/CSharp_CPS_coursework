@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace DrugCatalog_ver
+namespace DrugCatalog_ver2
 {
     internal static class Program
     {

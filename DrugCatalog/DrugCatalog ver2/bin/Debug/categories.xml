@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<Categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Category>
+    <Id>1</Id>
+    <Name>Другое</Name>
+    <Description>Прочие препараты</Description>
+  </Category>
+  <Category>
+    <Id>2</Id>
+    <Name>Анальгетики</Name>
+    <Description>Обезболивающие препараты</Description>
+  </Category>
+  <Category>
+    <Id>3</Id>
+    <Name>Антибиотики</Name>
+    <Description>Антибактериальные препараты</Description>
+  </Category>
+  <Category>
+    <Id>4</Id>
+    <Name>Сердечно-сосудистые</Name>
+    <Description>Препараты для сердца и сосудов</Description>
+  </Category>
+  <Category>
+    <Id>5</Id>
+    <Name>Желудочно-кишечные</Name>
+    <Description>Препараты для ЖКТ</Description>
+  </Category>
+  <Category>
+    <Id>6</Id>
+    <Name>Противовирусные</Name>
+    <Description>Противовирусные препараты</Description>
+  </Category>
+  <Category>
+    <Id>7</Id>
+    <Name>Антигистаминные</Name>
+    <Description>Противоаллергические препараты</Description>
+  </Category>
+  <Category>
+    <Id>8</Id>
+    <Name>Неврологические</Name>
+    <Description>Препараты для нервной системы</Description>
+  </Category>
+  <Category>
+    <Id>9</Id>
+    <Name>Витамины</Name>
+    <Description>Витамины и БАДы</Description>
+  </Category>
+</Categories>
