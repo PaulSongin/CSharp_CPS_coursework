@@ -20,6 +20,7 @@ namespace DrugCatalog_ver2.Forms
         private string _currentFilePath;
         private bool _autoDeleteEnabled = true;
 
+        // Элементы интерфейса
         private TabControl tabControl;
         private DataGridView dataGridViewAllDrugs;
         private DataGridView dataGridViewExpiring;
@@ -47,8 +48,10 @@ namespace DrugCatalog_ver2.Forms
             _userService = userService;
             _currentUser = currentUser;
             _categoryService = new CategoryService();
-            // ВАЖНО: Передаем сервис данных для списания остатков
+
+            // Инициализируем сервис напоминаний с доступом к данным (для списания)
             _reminderService = new ReminderService(_dataService);
+
             _currentFilePath = null;
 
             InitializeComponent();
@@ -60,17 +63,18 @@ namespace DrugCatalog_ver2.Forms
             StartReminderService();
         }
 
-        // Метод для смены языка
+        // --- Логика смены языка ---
         private void ChangeLanguage(string lang)
         {
             Locale.SetLanguage(lang);
             this.Controls.Clear();
             this.MainMenuStrip = null;
             InitializeComponent();
-            CreateStatusBar();
-            RefreshAllTabs();
+            CreateStatusBar(); // Пересоздаем статус бар
+            RefreshAllTabs();  // Обновляем таблицы (заголовки)
             UpdateWindowTitle();
             UpdateUserInterface();
+            UpdateRemindersStatus(); // Обновляем текст статуса напоминаний
         }
 
         private void InitializeComponent()
@@ -94,23 +98,24 @@ namespace DrugCatalog_ver2.Forms
             mainMenuStrip = new MenuStrip();
             mainMenuStrip.Dock = DockStyle.Top;
 
+            // Файл
             var fileMenu = new ToolStripMenuItem(Locale.Get("MenuFile"));
             var newFileMenuItem = new ToolStripMenuItem(Locale.Get("MenuNew"), null, (s, e) => CreateNewFile()) { ShortcutKeys = Keys.Control | Keys.N };
             var openMenuItem = new ToolStripMenuItem(Locale.Get("MenuOpen"), null, (s, e) => LoadFromXmlFile()) { ShortcutKeys = Keys.Control | Keys.O };
             var saveMenuItem = new ToolStripMenuItem(Locale.Get("MenuSave"), null, (s, e) => SaveToXmlFile()) { ShortcutKeys = Keys.Control | Keys.S };
             var saveAsMenuItem = new ToolStripMenuItem(Locale.Get("MenuSaveAs"), null, (s, e) => SaveAsToXmlFile());
             var exitMenuItem = new ToolStripMenuItem(Locale.Get("MenuExit"), null, (s, e) => this.Close()) { ShortcutKeys = Keys.Alt | Keys.F4 };
-
             fileMenu.DropDownItems.AddRange(new ToolStripItem[] { newFileMenuItem, openMenuItem, new ToolStripSeparator(), saveMenuItem, saveAsMenuItem, new ToolStripSeparator(), exitMenuItem });
 
+            // Правка
             var editMenu = new ToolStripMenuItem(Locale.Get("MenuEdit"));
             var newDrugMenuItem = new ToolStripMenuItem(Locale.Get("MenuNewDrug"), null, (s, e) => AddDrug()) { ShortcutKeys = Keys.Control | Keys.Shift | Keys.N };
             var editDrugMenuItem = new ToolStripMenuItem(Locale.Get("MenuEditDrug"), null, (s, e) => EditSelectedDrug()) { ShortcutKeys = Keys.Control | Keys.E };
             var deleteDrugMenuItem = new ToolStripMenuItem(Locale.Get("MenuDelDrug"), null, (s, e) => DeleteSelectedDrug()) { ShortcutKeys = Keys.Delete };
             var cleanupMenuItem = new ToolStripMenuItem(Locale.Get("MenuCleanup"), null, (s, e) => CleanupExpiredDrugs()) { ShortcutKeys = Keys.Control | Keys.Shift | Keys.Delete };
-
             editMenu.DropDownItems.AddRange(new ToolStripItem[] { newDrugMenuItem, new ToolStripSeparator(), editDrugMenuItem, deleteDrugMenuItem, new ToolStripSeparator(), cleanupMenuItem });
 
+            // Вид
             var viewMenu = new ToolStripMenuItem(Locale.Get("MenuView"));
             var refreshMenuItem = new ToolStripMenuItem(Locale.Get("MenuRefresh"), null, (s, e) => LoadDrugs()) { ShortcutKeys = Keys.F5 };
             var searchMenuItem = new ToolStripMenuItem(Locale.Get("MenuSearch"), null, (s, e) => textBoxSearch.Focus()) { ShortcutKeys = Keys.Control | Keys.F };
@@ -118,22 +123,31 @@ namespace DrugCatalog_ver2.Forms
             var viewExpiringMenuItem = new ToolStripMenuItem(Locale.Get("MenuViewExp"), null, (s, e) => tabControl.SelectedIndex = 1);
             var viewByManufacturerMenuItem = new ToolStripMenuItem(Locale.Get("MenuViewMan"), null, (s, e) => tabControl.SelectedIndex = 2);
             var viewByCategoryMenuItem = new ToolStripMenuItem(Locale.Get("MenuViewCat"), null, (s, e) => tabControl.SelectedIndex = 3);
-
             viewMenu.DropDownItems.AddRange(new ToolStripItem[] { refreshMenuItem, searchMenuItem, new ToolStripSeparator(), viewAllMenuItem, viewExpiringMenuItem, viewByManufacturerMenuItem, viewByCategoryMenuItem });
 
+            // Напоминания (+ Калькулятор)
             var remindersMenu = new ToolStripMenuItem(Locale.Get("MenuReminders"));
             var manageRemindersMenuItem = new ToolStripMenuItem(Locale.Get("MenuManageRem"), null, (s, e) => ShowRemindersManagement()) { ShortcutKeys = Keys.Control | Keys.R };
+            var calculatorMenuItem = new ToolStripMenuItem(Locale.Get("MenuCalc"), null, (s, e) => ShowCalculator()); // <-- НОВОЕ
             var testNotificationMenuItem = new ToolStripMenuItem(Locale.Get("MenuTestNotif"), null, (s, e) => TestNotification());
             var showActiveRemindersMenuItem = new ToolStripMenuItem(Locale.Get("MenuActiveRem"), null, (s, e) => ShowActiveReminders());
 
-            remindersMenu.DropDownItems.AddRange(new ToolStripItem[] { manageRemindersMenuItem, new ToolStripSeparator(), testNotificationMenuItem, showActiveRemindersMenuItem });
+            remindersMenu.DropDownItems.AddRange(new ToolStripItem[] {
+                manageRemindersMenuItem,
+                new ToolStripSeparator(),
+                calculatorMenuItem, // <-- Добавили калькулятор
+                new ToolStripSeparator(),
+                testNotificationMenuItem,
+                showActiveRemindersMenuItem
+            });
 
-            // НОВОЕ: Меню выбора языка
+            // Язык
             var langMenu = new ToolStripMenuItem(Locale.Get("MenuLanguage"));
             var ruItem = new ToolStripMenuItem("Русский", null, (s, e) => ChangeLanguage("Ru"));
             var enItem = new ToolStripMenuItem("English", null, (s, e) => ChangeLanguage("En"));
             langMenu.DropDownItems.AddRange(new ToolStripItem[] { ruItem, enItem });
 
+            // Пользователь
             var userMenu = new ToolStripMenuItem(Locale.Get("MenuUser"));
             var profileMenuItem = new ToolStripMenuItem(Locale.Get("MenuProfile"), null, (s, e) => ShowUserProfile());
             var changePasswordMenuItem = new ToolStripMenuItem(Locale.Get("MenuPass"), null, (s, e) => ChangePassword());
@@ -141,11 +155,9 @@ namespace DrugCatalog_ver2.Forms
             var usersMenuItem = new ToolStripMenuItem(Locale.Get("MenuUserMan"), null, (s, e) => ShowUserManagement());
             usersMenuItem.Visible = _currentUser.Role == UserRole.Admin;
             var logoutMenuItem = new ToolStripMenuItem(Locale.Get("MenuLogout"), null, (s, e) => Logout()) { ShortcutKeys = Keys.Control | Keys.Q };
-
             userMenu.DropDownItems.AddRange(new ToolStripItem[] { profileMenuItem, changePasswordMenuItem, new ToolStripSeparator(), switchUserMenuItem, new ToolStripSeparator(), usersMenuItem, new ToolStripSeparator(), logoutMenuItem });
 
             mainMenuStrip.Items.AddRange(new ToolStripItem[] { fileMenu, editMenu, viewMenu, remindersMenu, langMenu, userMenu });
-
             this.MainMenuStrip = mainMenuStrip;
             this.Controls.Add(mainMenuStrip);
         }
@@ -219,6 +231,7 @@ namespace DrugCatalog_ver2.Forms
                 Location = new Point(0, mainMenuStrip.Height + 5)
             };
 
+            // Панель поиска
             var panelSearch = new Panel
             {
                 Dock = DockStyle.Top,
@@ -302,8 +315,8 @@ namespace DrugCatalog_ver2.Forms
 
             panelSearch.Controls.AddRange(new Control[] { labelSearch, textBoxSearch, buttonSearch, buttonClearSearch });
 
+            // Таблицы и вкладки
             var contentPanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.White };
-
             tabControl = new TabControl { Dock = DockStyle.Fill, Appearance = TabAppearance.Normal, SizeMode = TabSizeMode.Fixed, Font = new Font("Microsoft Sans Serif", 9f, FontStyle.Regular) };
             tabControl.ItemSize = new Size(180, 25);
 
@@ -311,11 +324,9 @@ namespace DrugCatalog_ver2.Forms
             var tabAllDrugs = new TabPage(Locale.Get("TabAll"));
             var allDrugsPanel = new Panel { Dock = DockStyle.Fill };
             var panelAllDrugsControls = new Panel { Dock = DockStyle.Top, Height = 40, BackColor = Color.LightSteelBlue, Padding = new Padding(10, 5, 10, 5) };
-
             buttonAutoDeleteAll = CreateAutoDeleteButton();
             buttonCleanupAll = CreateCleanupButton();
             panelAllDrugsControls.Controls.AddRange(new Control[] { buttonAutoDeleteAll, buttonCleanupAll });
-
             dataGridViewAllDrugs = CreateDataGridView();
             allDrugsPanel.Controls.Add(dataGridViewAllDrugs);
             allDrugsPanel.Controls.Add(panelAllDrugsControls);
@@ -325,11 +336,9 @@ namespace DrugCatalog_ver2.Forms
             var tabExpiring = new TabPage(Locale.Get("TabExp"));
             var expiringPanel = new Panel { Dock = DockStyle.Fill };
             var panelExpiringControls = new Panel { Dock = DockStyle.Top, Height = 40, BackColor = Color.LightSteelBlue, Padding = new Padding(10, 5, 10, 5) };
-
             buttonAutoDeleteExpiring = CreateAutoDeleteButton();
             buttonCleanupExpiring = CreateCleanupButton();
             panelExpiringControls.Controls.AddRange(new Control[] { buttonAutoDeleteExpiring, buttonCleanupExpiring });
-
             dataGridViewExpiring = CreateDataGridView();
             expiringPanel.Controls.Add(dataGridViewExpiring);
             expiringPanel.Controls.Add(panelExpiringControls);
@@ -343,12 +352,10 @@ namespace DrugCatalog_ver2.Forms
             comboBoxManufacturers = new ComboBox { Location = new Point(170, 12), Width = 250, DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Microsoft Sans Serif", 9f, FontStyle.Regular) };
             comboBoxManufacturers.SelectedIndexChanged += (s, e) => FilterByManufacturer();
             var panelManufacturerControls = new Panel { Dock = DockStyle.Top, Height = 40, BackColor = Color.LightSteelBlue, Padding = new Padding(10, 5, 10, 5) };
-
             buttonAutoDeleteManufacturer = CreateAutoDeleteButton();
             buttonCleanupManufacturer = CreateCleanupButton();
             panelManufacturerControls.Controls.AddRange(new Control[] { buttonAutoDeleteManufacturer, buttonCleanupManufacturer });
             panelManufacturerFilter.Controls.AddRange(new Control[] { labelManufacturer, comboBoxManufacturers });
-
             dataGridViewByManufacturer = CreateDataGridView();
             manufacturerPanel.Controls.Add(dataGridViewByManufacturer);
             manufacturerPanel.Controls.Add(panelManufacturerControls);
@@ -363,12 +370,10 @@ namespace DrugCatalog_ver2.Forms
             comboBoxCategories = new ComboBox { Location = new Point(140, 12), Width = 250, DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Microsoft Sans Serif", 9f, FontStyle.Regular) };
             comboBoxCategories.SelectedIndexChanged += (s, e) => FilterByCategory();
             var panelCategoryControls = new Panel { Dock = DockStyle.Top, Height = 40, BackColor = Color.LightSteelBlue, Padding = new Padding(10, 5, 10, 5) };
-
             buttonAutoDeleteCategory = CreateAutoDeleteButton();
             buttonCleanupCategory = CreateCleanupButton();
             panelCategoryControls.Controls.AddRange(new Control[] { buttonAutoDeleteCategory, buttonCleanupCategory });
             panelCategoryFilter.Controls.AddRange(new Control[] { labelCategory, comboBoxCategories });
-
             dataGridViewByCategory = CreateDataGridView();
             categoryPanel.Controls.Add(dataGridViewByCategory);
             categoryPanel.Controls.Add(panelCategoryControls);
@@ -475,6 +480,17 @@ namespace DrugCatalog_ver2.Forms
         {
             var form = new RemindersManagementForm(_reminderService, _drugs);
             if (form.ShowDialog() == DialogResult.OK) UpdateRemindersStatus();
+        }
+
+        private void ShowCalculator()
+        {
+            if (_drugs == null || _drugs.Count == 0)
+            {
+                MessageBox.Show(Locale.Get("MsgNoDataClean"), Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            var calcForm = new DosageCalculatorForm(_drugs);
+            calcForm.ShowDialog();
         }
 
         private void TestNotification()
@@ -772,26 +788,114 @@ namespace DrugCatalog_ver2.Forms
 
                 if (drug != null)
                 {
+                    // 1. Устанавливаем цвет категории (Синий, Розовый и т.д.)
                     var categoryColor = _categoryService.GetCategoryColor(drug.CategoryId);
                     row.DefaultCellStyle.BackColor = categoryColor;
                     row.DefaultCellStyle.ForeColor = Color.Black;
 
                     var expiryDate = drug.ExpiryDate;
+
+                    // 2. Логика подсветки срока годности
                     if (expiryDate < DateTime.Now)
                     {
+                        // Если просрочено - красим фон в красный (критично)
                         row.DefaultCellStyle.BackColor = Color.LightCoral;
                         row.DefaultCellStyle.SelectionBackColor = Color.Red;
                     }
                     else if (expiryDate <= DateTime.Now.AddDays(30))
                     {
+                        // Если скоро истекает - меняем только ТЕКСТ и шрифт, фон остается цветом категории
                         row.DefaultCellStyle.ForeColor = Color.DarkRed;
                         row.DefaultCellStyle.Font = new Font(dataGridView.Font, FontStyle.Bold);
-                        row.Cells["ExpiryDate"].Style.BackColor = Color.LightYellow;
+                        row.Cells["ExpiryDate"].Style.BackColor = Color.LightYellow; // Подсветка ячейки с датой
                     }
                     else
                     {
+                        // Обычное состояние
                         row.DefaultCellStyle.Font = new Font(dataGridView.Font, FontStyle.Regular);
                         row.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+                    }
+                }
+            }
+        }
+
+        private void LoadFromXmlFile()
+        {
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+                openFileDialog.Title = Locale.Get("MenuOpen");
+                openFileDialog.Multiselect = false;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var filePath = openFileDialog.FileName;
+                        var loadedDrugs = LoadDrugsFromFile(filePath);
+
+                        if (loadedDrugs.Count > 0)
+                        {
+                            int maxId = _drugs.Count > 0 ? _drugs.Max(d => d.Id) : 0;
+                            foreach (var drug in loadedDrugs) drug.Id = ++maxId;
+
+                            _drugs.AddRange(loadedDrugs);
+                            _dataService.SaveDrugs(_drugs);
+                            LoadDrugs();
+                            MessageBox.Show($"{Locale.Get("MsgSaved")} {loadedDrugs.Count} drugs", Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void SaveToXmlFile()
+        {
+            if (_currentFilePath != null)
+            {
+                try
+                {
+                    SaveDrugsToFile(_drugs, _currentFilePath);
+                    MessageBox.Show(Locale.Get("MsgSaveSuccess"), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                SaveAsToXmlFile();
+            }
+        }
+
+        private void SaveAsToXmlFile()
+        {
+            if (_drugs == null || _drugs.Count == 0) return;
+
+            using (var saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+                saveFileDialog.Title = Locale.Get("MenuSaveAs");
+                saveFileDialog.FileName = $"drugs_export_{DateTime.Now:yyyyMMdd_HHmmss}.xml";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var filePath = saveFileDialog.FileName;
+                        SaveDrugsToFile(_drugs, filePath);
+                        _currentFilePath = filePath;
+                        UpdateWindowTitle();
+                        MessageBox.Show(Locale.Get("MsgSaveSuccess"), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -918,88 +1022,6 @@ namespace DrugCatalog_ver2.Forms
                 case 2: return dataGridViewByManufacturer;
                 case 3: return dataGridViewByCategory;
                 default: return null;
-            }
-        }
-
-        private void LoadFromXmlFile()
-        {
-            using (var openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
-                openFileDialog.Title = Locale.Get("MenuOpen");
-                openFileDialog.Multiselect = false;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        var filePath = openFileDialog.FileName;
-                        var loadedDrugs = LoadDrugsFromFile(filePath);
-
-                        if (loadedDrugs.Count > 0)
-                        {
-                            int maxId = _drugs.Count > 0 ? _drugs.Max(d => d.Id) : 0;
-                            foreach (var drug in loadedDrugs) drug.Id = ++maxId;
-
-                            _drugs.AddRange(loadedDrugs);
-                            _dataService.SaveDrugs(_drugs);
-                            LoadDrugs();
-                            MessageBox.Show($"{Locale.Get("MsgSaved")} {loadedDrugs.Count} drugs", Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-        }
-
-        private void SaveToXmlFile()
-        {
-            if (_currentFilePath != null)
-            {
-                try
-                {
-                    SaveDrugsToFile(_drugs, _currentFilePath);
-                    MessageBox.Show(Locale.Get("MsgSaveSuccess"), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                SaveAsToXmlFile();
-            }
-        }
-
-        private void SaveAsToXmlFile()
-        {
-            if (_drugs == null || _drugs.Count == 0) return;
-
-            using (var saveFileDialog = new SaveFileDialog())
-            {
-                saveFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
-                saveFileDialog.Title = Locale.Get("MenuSaveAs");
-                saveFileDialog.FileName = $"drugs_export_{DateTime.Now:yyyyMMdd_HHmmss}.xml";
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        var filePath = saveFileDialog.FileName;
-                        SaveDrugsToFile(_drugs, filePath);
-                        _currentFilePath = filePath;
-                        UpdateWindowTitle();
-                        MessageBox.Show(Locale.Get("MsgSaveSuccess"), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
             }
         }
 

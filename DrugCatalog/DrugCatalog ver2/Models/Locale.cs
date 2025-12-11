@@ -209,7 +209,21 @@ namespace DrugCatalog_ver2.Models
             {"MsgNewFile", "Создать новый файл? Несохраненные данные будут утеряны."},
             {"StUser", "Пользователь"},
             {"StRemActive", "💊 Активных напоминаний"},
-            {"StRemNone", "💊 Нет активных напоминаний"}
+            {"StRemNone", "💊 Нет активных напоминаний"},
+
+                        // Калькулятор
+            {"TitleCalc", "Калькулятор запасов"},
+            {"LblCurrentStock", "Текущий остаток:"},
+            {"LblSingleDose", "Разовая доза:"},
+            {"LblDailyFreq", "Сколько раз в день:"},
+            {"LblCalcResult", "Результат расчета:"},
+            {"MsgEnoughFor", "Хватит на {0} дн."},
+            {"MsgEndDate", "Закончится: {0}"},
+            {"MsgForever", "Хватит навсегда (доза 0)"},
+            {"MsgEmptyStock", "Нет в наличии"},
+            {"GrpParams", "Параметры приема"},
+            {"GrpResult", "Прогноз"},
+            {"MenuCalc", "Калькулятор запасов"},
         };
 
         // ==========================================
@@ -402,7 +416,21 @@ namespace DrugCatalog_ver2.Models
             {"MsgNewFile", "Create new file? Unsaved data will be lost."},
             {"StUser", "User"},
             {"StRemActive", "💊 Active reminders"},
-            {"StRemNone", "💊 No active reminders"}
+            {"StRemNone", "💊 No active reminders"},
+
+            // Calculator
+            {"TitleCalc", "Stock Calculator"},
+            {"LblCurrentStock", "Current Stock:"},
+            {"LblSingleDose", "Single Dose:"},
+            {"LblDailyFreq", "Times per day:"},
+            {"LblCalcResult", "Calculation Result:"},
+            {"MsgEnoughFor", "Enough for {0} days"},
+            {"MsgEndDate", "Will end on: {0}"},
+            {"MsgForever", "Lasts forever (dose 0)"},
+            {"MsgEmptyStock", "Out of stock"},
+            {"GrpParams", "Intake Parameters"},
+            {"GrpResult", "Forecast"},
+            {"MenuCalc", "Stock Calculator"},
         };
     }
 }
