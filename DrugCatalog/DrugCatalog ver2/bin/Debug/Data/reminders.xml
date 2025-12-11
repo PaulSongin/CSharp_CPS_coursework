@@ -5,7 +5,7 @@
     <DrugId>0</DrugId>
     <DrugName>Парацетамол</DrugName>
     <Dosage>1 таблетка</Dosage>
-    <ReminderTime>2025-12-03T21:56:00</ReminderTime>
+    <ReminderTime>2025-12-03T15:15:00</ReminderTime>
     <DaysOfWeek>
       <boolean>true</boolean>
       <boolean>true</boolean>

@@ -1,0 +1,10 @@
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.exe.config
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.exe
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\bin\Debug\DrugCatalog ver2.pdb
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\DrugCatalog ver.csproj.AssemblyReference.cache
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.exe.config
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\DrugCatalog_ver2.Properties.Resources.resources
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\DrugCatalog ver.csproj.GenerateResource.cache
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\DrugCatalog ver.csproj.CoreCompileInputs.cache
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.exe
+D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\DrugCatalog ver2.pdb

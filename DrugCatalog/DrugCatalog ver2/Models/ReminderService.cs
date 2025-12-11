@@ -22,40 +22,55 @@ namespace DrugCatalog_ver2.Models
 
     public class ReminderService : IReminderService
     {
+        // Путь к файлу теперь в папке Data
         private readonly string _remindersFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "reminders.xml");
+
         private List<MedicationReminder> _reminders;
         private readonly Timer _reminderTimer;
         private readonly NotifyIcon _notifyIcon;
         private readonly IXmlDataService _dataService;
+
+        // Храним последнее показанное напоминание для обработки клика
         private MedicationReminder _lastShownReminder;
         private bool _disposed = false;
 
         public ReminderService(IXmlDataService dataService)
         {
             _dataService = dataService;
+
+            // Создаем папку Data, если её нет (на всякий случай, хотя XmlDataService это тоже делает)
+            var directory = Path.GetDirectoryName(_remindersFilePath);
+            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
             _reminders = LoadReminders();
 
             _notifyIcon = new NotifyIcon
             {
                 Icon = SystemIcons.Information,
                 Visible = true,
-                Text = "Напоминания о приеме лекарств"
+                Text = "Drug Catalog Reminders"
             };
 
+            // Подписка на клик по уведомлению
             _notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
 
+            // Таймер проверяет напоминания каждую минуту
             _reminderTimer = new Timer { Interval = 60000 };
             _reminderTimer.Tick += (s, e) => CheckAndShowReminders();
             _reminderTimer.Start();
         }
 
+        // --- Обработка клика по уведомлению ---
         private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
             if (_lastShownReminder == null || _dataService == null) return;
 
+            // Локализованный вопрос: "Вы приняли Парацетамол (1 таб)?"
+            string message = string.Format(Locale.Get("MsgConfirmTake"), _lastShownReminder.DrugName, _lastShownReminder.Dosage);
+
             var result = MessageBox.Show(
-                $"Вы приняли {_lastShownReminder.DrugName} ({_lastShownReminder.Dosage})?\n\nНажмите 'Да', чтобы списать лекарство со склада.",
-                "Подтверждение приема",
+                message,
+                Locale.Get("TitleConfirmTake"),
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
@@ -65,13 +80,14 @@ namespace DrugCatalog_ver2.Models
             }
         }
 
+        // --- Логика списания со склада ---
         private void DeductDrugStock(MedicationReminder reminder)
         {
             try
             {
                 var allDrugs = _dataService.LoadDrugs();
+                // Ищем препарат по ID, если не нашли - по имени
                 var drug = allDrugs.FirstOrDefault(d => d.Id == reminder.DrugId);
-
                 if (drug == null)
                 {
                     drug = allDrugs.FirstOrDefault(d => d.Name.Equals(reminder.DrugName, StringComparison.OrdinalIgnoreCase));
@@ -88,23 +104,26 @@ namespace DrugCatalog_ver2.Models
                             drug.Quantity -= amountToDeduct;
                             _dataService.SaveDrugs(allDrugs);
 
-                            _notifyIcon.ShowBalloonTip(3000, "Успешно",
-                                $"Списано {amountToDeduct} ед. Остаток: {drug.Quantity}", ToolTipIcon.Info);
+                            // Локализованное сообщение об успехе
+                            string msg = string.Format(Locale.Get("MsgDeducted"), amountToDeduct, drug.Quantity);
+                            _notifyIcon.ShowBalloonTip(3000, Locale.Get("TitleSuccess"), msg, ToolTipIcon.Info);
                         }
                         else
                         {
-                            MessageBox.Show($"Внимание! Лекарство '{drug.Name}' заканчивается.\nОстаток: {drug.Quantity}, а нужно принять: {amountToDeduct}.",
-                                "Недостаточно на складе", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            // Локализованное предупреждение
+                            string msg = string.Format(Locale.Get("MsgLowStock"), drug.Name, drug.Quantity, amountToDeduct);
+                            MessageBox.Show(msg, Locale.Get("TitleWarning"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при списании лекарства: {ex.Message}");
+                MessageBox.Show($"{Locale.Get("MsgError")}: {ex.Message}");
             }
         }
 
+        // Парсинг числа из строки дозировки (например "2 таблетки" -> 2)
         private int ParseDosageAmount(string dosageString)
         {
             if (string.IsNullOrWhiteSpace(dosageString)) return 0;
@@ -124,6 +143,8 @@ namespace DrugCatalog_ver2.Models
             catch { }
             return 0;
         }
+
+        // --- CRUD операции ---
 
         public void AddReminder(MedicationReminder reminder)
         {
@@ -178,25 +199,27 @@ namespace DrugCatalog_ver2.Models
         {
             _lastShownReminder = reminder;
 
-            _notifyIcon.BalloonTipTitle = "💊 Пора принять лекарство";
-            _notifyIcon.BalloonTipText = $"{reminder.DrugName}\nДозировка: {reminder.Dosage}\n\nНажмите сюда, чтобы подтвердить прием.";
+            // Локализация заголовка и текста
+            _notifyIcon.BalloonTipTitle = Locale.Get("NotifTitle");
+
+            // Текст: Название \n Дозировка: ... \n Нажмите...
+            _notifyIcon.BalloonTipText = $"{reminder.DrugName}\n{Locale.Get("NotifDosage")}: {reminder.Dosage}\n\n{Locale.Get("NotifClick")}";
 
             if (!string.IsNullOrEmpty(reminder.Notes))
             {
-                _notifyIcon.BalloonTipText += $"\nПримечание: {reminder.Notes}";
+                _notifyIcon.BalloonTipText += $"\n{Locale.Get("ColNotes")}: {reminder.Notes}";
             }
 
             _notifyIcon.ShowBalloonTip(10000);
             System.Media.SystemSounds.Exclamation.Play();
         }
 
+        // --- Загрузка и сохранение ---
+
         private List<MedicationReminder> LoadReminders()
         {
             try
             {
-                var directory = Path.GetDirectoryName(_remindersFilePath);
-                if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-
                 if (!File.Exists(_remindersFilePath))
                     return new List<MedicationReminder>();
 
@@ -216,9 +239,6 @@ namespace DrugCatalog_ver2.Models
         {
             try
             {
-                var directory = Path.GetDirectoryName(_remindersFilePath);
-                if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-
                 var serializer = new XmlSerializer(typeof(List<MedicationReminder>));
                 using (var stream = new FileStream(_remindersFilePath, FileMode.Create))
                 {
@@ -227,7 +247,7 @@ namespace DrugCatalog_ver2.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка сохранения напоминаний: {ex.Message}");
+                MessageBox.Show($"{Locale.Get("MsgError")}: {ex.Message}");
             }
         }
 

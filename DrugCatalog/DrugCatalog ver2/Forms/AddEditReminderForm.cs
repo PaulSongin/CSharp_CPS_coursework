@@ -37,7 +37,7 @@ namespace DrugCatalog_ver2.Forms
         {
             this.SuspendLayout();
 
-            this.Text = _isEditMode ? "Редактирование напоминания" : "Новое напоминание";
+            this.Text = _isEditMode ? Locale.Get("TitleEditReminder") : Locale.Get("TitleNewReminder");
             this.Size = new Size(400, 400);
             this.StartPosition = FormStartPosition.CenterParent;
             this.MaximizeBox = false;
@@ -54,7 +54,7 @@ namespace DrugCatalog_ver2.Forms
             int controlWidth = 200;
 
             // Выбор лекарства
-            AddLabel("Лекарство:", 10, y, labelWidth);
+            AddLabel(Locale.Get("LblDrug"), 10, y, labelWidth);
             comboBoxDrug = new ComboBox
             {
                 Location = new Point(130, y),
@@ -66,20 +66,20 @@ namespace DrugCatalog_ver2.Forms
             y += 35;
 
             // Время приема
-            AddLabel("Время приема:", 10, y, labelWidth);
+            AddLabel(Locale.Get("LblTime"), 10, y, labelWidth);
             timePicker = new DateTimePicker
             {
                 Location = new Point(130, y),
                 Width = controlWidth,
                 Format = DateTimePickerFormat.Time,
                 ShowUpDown = true,
-                Value = DateTime.Now.Date.AddHours(9) // По умолчанию 9:00
+                Value = DateTime.Now.Date.AddHours(9)
             };
             this.Controls.Add(timePicker);
             y += 35;
 
             // Дозировка
-            AddLabel("Дозировка:", 10, y, labelWidth);
+            AddLabel(Locale.Get("LblDosage"), 10, y, labelWidth);
             var dosagePanel = new Panel { Location = new Point(130, y), Size = new Size(200, 25) };
 
             numericDosage = new NumericUpDown
@@ -98,8 +98,13 @@ namespace DrugCatalog_ver2.Forms
                 Width = 115,
                 DropDownStyle = ComboBoxStyle.DropDown
             };
-            comboBoxUnit.Items.AddRange(new[] { "мг", "г", "мл", "таблетка", "капсула", "капли" });
-            comboBoxUnit.Text = "таблетка";
+
+            // Локализованные единицы измерения
+            comboBoxUnit.Items.AddRange(new[] {
+                Locale.Get("UnitMg"), Locale.Get("UnitG"), Locale.Get("UnitMl"),
+                Locale.Get("UnitTab"), Locale.Get("UnitCaps"), Locale.Get("UnitDrops")
+            });
+            comboBoxUnit.Text = Locale.Get("UnitTab");
 
             dosagePanel.Controls.Add(numericDosage);
             dosagePanel.Controls.Add(comboBoxUnit);
@@ -107,17 +112,17 @@ namespace DrugCatalog_ver2.Forms
             y += 35;
 
             // Дни недели
-            AddLabel("Дни приема:", 10, y, labelWidth);
+            AddLabel(Locale.Get("LblDays"), 10, y, labelWidth);
             y += 20;
 
-            string[] days = { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" };
+            string[] dayKeys = { "DayMon", "DayTue", "DayWed", "DayThu", "DayFri", "DaySat", "DaySun" };
             dayCheckboxes = new CheckBox[7];
 
             for (int i = 0; i < 7; i++)
             {
                 dayCheckboxes[i] = new CheckBox
                 {
-                    Text = days[i],
+                    Text = Locale.Get(dayKeys[i]),
                     Location = new Point(130 + (i * 45), y),
                     Width = 40,
                     Checked = true
@@ -127,7 +132,7 @@ namespace DrugCatalog_ver2.Forms
             y += 35;
 
             // Примечания
-            AddLabel("Примечания:", 10, y, labelWidth);
+            AddLabel(Locale.Get("LblNotes"), 10, y, labelWidth);
             textBoxNotes = new TextBox
             {
                 Location = new Point(130, y),
@@ -143,18 +148,18 @@ namespace DrugCatalog_ver2.Forms
 
             buttonSave = new Button
             {
-                Text = "Сохранить",
+                Text = Locale.Get("Save"),
                 Location = new Point(100, 5),
-                Size = new Size(80, 30),
+                Size = new Size(100, 30),
                 BackColor = Color.LightGreen
             };
             buttonSave.Click += ButtonSave_Click;
 
             buttonCancel = new Button
             {
-                Text = "Отмена",
-                Location = new Point(190, 5),
-                Size = new Size(80, 30),
+                Text = Locale.Get("Cancel"),
+                Location = new Point(210, 5),
+                Size = new Size(100, 30),
                 BackColor = Color.LightCoral
             };
             buttonCancel.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
@@ -182,7 +187,6 @@ namespace DrugCatalog_ver2.Forms
                 comboBoxDrug.Text = _reminder.DrugName;
                 timePicker.Value = _reminder.ReminderTime;
 
-                // Парсим дозировку "1 таблетка" -> numeric=1, unit="таблетка"
                 if (!string.IsNullOrEmpty(_reminder.Dosage))
                 {
                     var parts = _reminder.Dosage.Split(' ');
@@ -206,7 +210,7 @@ namespace DrugCatalog_ver2.Forms
         {
             if (string.IsNullOrEmpty(comboBoxDrug.Text))
             {
-                MessageBox.Show("Выберите лекарство");
+                MessageBox.Show(Locale.Get("MsgSelectDrug"));
                 return;
             }
 

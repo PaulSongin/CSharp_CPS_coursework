@@ -25,7 +25,7 @@ namespace DrugCatalog_ver2.Forms
         {
             this.SuspendLayout();
 
-            this.Text = "Регистрация нового пользователя";
+            this.Text = Locale.Get("TitleReg");
             this.Size = new Size(450, 400);
             this.StartPosition = FormStartPosition.CenterParent;
             this.MaximizeBox = false;
@@ -42,10 +42,9 @@ namespace DrugCatalog_ver2.Forms
         {
             int y = 20;
 
-            // Заголовок
             var labelTitle = new Label
             {
-                Text = "Регистрация",
+                Text = Locale.Get("HeaderReg"),
                 Font = new Font("Microsoft Sans Serif", 14f, FontStyle.Bold),
                 ForeColor = Color.SteelBlue,
                 Size = new Size(400, 30),
@@ -54,22 +53,12 @@ namespace DrugCatalog_ver2.Forms
             };
             y += 40;
 
-            // Полное имя
-            AddTextField("Полное имя:", ref y, out textBoxFullName);
+            AddTextField(Locale.Get("LblFullName"), ref y, out textBoxFullName);
+            AddTextField(Locale.Get("LblEmail"), ref y, out textBoxEmail);
+            AddTextField(Locale.Get("LblLoginReq"), ref y, out textBoxUsername);
+            AddPasswordField(Locale.Get("LblPassReq"), ref y, out textBoxPassword);
+            AddPasswordField(Locale.Get("LblConfPassReq"), ref y, out textBoxConfirmPassword);
 
-            // Email
-            AddTextField("Email:", ref y, out textBoxEmail);
-
-            // Логин
-            AddTextField("Логин*:", ref y, out textBoxUsername);
-
-            // Пароль
-            AddPasswordField("Пароль*:", ref y, out textBoxPassword);
-
-            // Подтверждение пароля
-            AddPasswordField("Подтверждение пароля*:", ref y, out textBoxConfirmPassword);
-
-            // Статус
             labelStatus = new Label
             {
                 Location = new Point(25, y),
@@ -79,18 +68,13 @@ namespace DrugCatalog_ver2.Forms
             };
             y += 30;
 
-            // Кнопки
-            var buttonPanel = new Panel
-            {
-                Location = new Point(25, y),
-                Size = new Size(400, 40)
-            };
+            var buttonPanel = new Panel { Location = new Point(25, y), Size = new Size(400, 40) };
 
             buttonRegister = new Button
             {
-                Text = "Зарегистрироваться",
+                Text = Locale.Get("BtnRegister"),
                 Location = new Point(80, 5),
-                Size = new Size(150, 30),
+                Size = new Size(160, 30),
                 BackColor = Color.LightGreen,
                 Font = new Font("Microsoft Sans Serif", 10f, FontStyle.Bold)
             };
@@ -98,8 +82,8 @@ namespace DrugCatalog_ver2.Forms
 
             buttonCancel = new Button
             {
-                Text = "Отмена",
-                Location = new Point(250, 5),
+                Text = Locale.Get("Cancel"),
+                Location = new Point(260, 5),
                 Size = new Size(100, 30),
                 BackColor = Color.LightCoral
             };
@@ -108,138 +92,58 @@ namespace DrugCatalog_ver2.Forms
             buttonPanel.Controls.Add(buttonRegister);
             buttonPanel.Controls.Add(buttonCancel);
 
-            // Подсказка
             var tipLabel = new Label
             {
-                Text = "* - обязательные поля. Пароль должен содержать минимум 6 символов.",
+                Text = Locale.Get("LblRegTip"),
                 Location = new Point(25, y + 45),
                 Size = new Size(400, 20),
                 Font = new Font("Microsoft Sans Serif", 8f, FontStyle.Italic),
                 ForeColor = Color.Gray
             };
 
-            this.Controls.AddRange(new Control[] {
-                labelTitle, textBoxFullName, textBoxEmail, textBoxUsername,
-                textBoxPassword, textBoxConfirmPassword, labelStatus,
-                buttonPanel, tipLabel
-            });
+            this.Controls.AddRange(new Control[] { labelTitle, textBoxFullName, textBoxEmail, textBoxUsername, textBoxPassword, textBoxConfirmPassword, labelStatus, buttonPanel, tipLabel });
         }
 
         private void AddTextField(string labelText, ref int y, out TextBox textBox)
         {
-            var label = new Label
-            {
-                Text = labelText,
-                Location = new Point(25, y),
-                Size = new Size(150, 20)
-            };
-
-            textBox = new TextBox
-            {
-                Location = new Point(180, y),
-                Size = new Size(240, 25)
-            };
+            var label = new Label { Text = labelText, Location = new Point(25, y), Size = new Size(150, 20) };
+            textBox = new TextBox { Location = new Point(180, y), Size = new Size(240, 25) };
             y += 35;
-
             this.Controls.Add(label);
+            this.Controls.Add(textBox);
         }
 
         private void AddPasswordField(string labelText, ref int y, out TextBox textBox)
         {
-            var label = new Label
-            {
-                Text = labelText,
-                Location = new Point(25, y),
-                Size = new Size(150, 20)
-            };
-
-            textBox = new TextBox
-            {
-                Location = new Point(180, y),
-                Size = new Size(240, 25),
-                UseSystemPasswordChar = true
-            };
+            var label = new Label { Text = labelText, Location = new Point(25, y), Size = new Size(150, 20) };
+            textBox = new TextBox { Location = new Point(180, y), Size = new Size(240, 25), UseSystemPasswordChar = true };
             y += 35;
-
             this.Controls.Add(label);
+            this.Controls.Add(textBox);
         }
 
         private void AttemptRegistration()
         {
             try
             {
-                if (!ValidateForm())
-                    return;
-
-                var user = _userService.Register(
-                    textBoxUsername.Text.Trim(),
-                    textBoxPassword.Text,
-                    textBoxFullName.Text.Trim(),
-                    textBoxEmail.Text.Trim()
-                );
-
+                if (!ValidateForm()) return;
+                var user = _userService.Register(textBoxUsername.Text.Trim(), textBoxPassword.Text, textBoxFullName.Text.Trim(), textBoxEmail.Text.Trim());
                 RegisteredUsername = user.Username;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-            catch (Exception ex)
-            {
-                ShowError(ex.Message);
-            }
+            catch (Exception ex) { ShowError(ex.Message); }
         }
 
         private bool ValidateForm()
         {
-            if (string.IsNullOrWhiteSpace(textBoxUsername.Text))
-            {
-                ShowError("Введите логин");
-                textBoxUsername.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(textBoxPassword.Text))
-            {
-                ShowError("Введите пароль");
-                textBoxPassword.Focus();
-                return false;
-            }
-
-            if (textBoxPassword.Text != textBoxConfirmPassword.Text)
-            {
-                ShowError("Пароли не совпадают");
-                textBoxConfirmPassword.Focus();
-                return false;
-            }
-
-            if (!_userService.ValidatePassword(textBoxPassword.Text))
-            {
-                ShowError("Пароль должен содержать минимум 6 символов");
-                textBoxPassword.Focus();
-                return false;
-            }
-
+            if (string.IsNullOrWhiteSpace(textBoxUsername.Text)) { ShowError(Locale.Get("MsgFillAll")); return false; }
+            if (string.IsNullOrWhiteSpace(textBoxPassword.Text)) { ShowError(Locale.Get("MsgFillAll")); return false; }
+            if (textBoxPassword.Text != textBoxConfirmPassword.Text) { ShowError(Locale.Get("MsgPassMismatch")); return false; }
+            if (!_userService.ValidatePassword(textBoxPassword.Text)) { ShowError(Locale.Get("MsgPassLen")); return false; }
             return true;
         }
 
-        private void ShowError(string message)
-        {
-            labelStatus.Text = message;
-            labelStatus.ForeColor = Color.Red;
-        }
-
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            switch (keyData)
-            {
-                case Keys.Enter:
-                    AttemptRegistration();
-                    return true;
-                case Keys.Escape:
-                    this.DialogResult = DialogResult.Cancel;
-                    this.Close();
-                    return true;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
+        private void ShowError(string message) { labelStatus.Text = message; labelStatus.ForeColor = Color.Red; }
     }
 }

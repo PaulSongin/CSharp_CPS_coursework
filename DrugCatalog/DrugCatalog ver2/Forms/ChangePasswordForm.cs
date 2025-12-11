@@ -22,42 +22,31 @@ namespace DrugCatalog_ver2.Forms
         private void InitializeComponent()
         {
             this.SuspendLayout();
-
-            this.Text = "Смена пароля";
+            this.Text = Locale.Get("TitleChangePass");
             this.Size = new Size(400, 250);
             this.StartPosition = FormStartPosition.CenterParent;
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-
             CreateControls();
-
             this.ResumeLayout(false);
         }
 
         private void CreateControls()
         {
             int y = 20;
+            AddPasswordField(Locale.Get("LblCurrPass"), ref y, out textBoxCurrentPassword);
+            AddPasswordField(Locale.Get("LblNewPass"), ref y, out textBoxNewPassword);
+            AddPasswordField(Locale.Get("LblConfPass"), ref y, out textBoxConfirmPassword);
 
-            AddPasswordField("Текущий пароль:", ref y, out textBoxCurrentPassword);
-            AddPasswordField("Новый пароль:", ref y, out textBoxNewPassword);
-            AddPasswordField("Подтвердите пароль:", ref y, out textBoxConfirmPassword);
-
-            var buttonPanel = new Panel
-            {
-                Location = new Point(20, y + 20),
-                Size = new Size(350, 40)
-            };
-
-            buttonSave = new Button { Text = "Сохранить", Location = new Point(80, 5), Size = new Size(100, 30) };
-            buttonCancel = new Button { Text = "Отмена", Location = new Point(200, 5), Size = new Size(100, 30) };
+            var buttonPanel = new Panel { Location = new Point(20, y + 20), Size = new Size(350, 40) };
+            buttonSave = new Button { Text = Locale.Get("Save"), Location = new Point(80, 5), Size = new Size(100, 30) };
+            buttonCancel = new Button { Text = Locale.Get("Cancel"), Location = new Point(200, 5), Size = new Size(100, 30) };
 
             buttonSave.Click += (s, e) => ChangePassword();
             buttonCancel.Click += (s, e) => this.Close();
 
             buttonPanel.Controls.Add(buttonSave);
             buttonPanel.Controls.Add(buttonCancel);
-
             this.Controls.Add(buttonPanel);
         }
 
@@ -66,7 +55,6 @@ namespace DrugCatalog_ver2.Forms
             var label = new Label { Text = labelText, Location = new Point(20, y), Size = new Size(150, 20) };
             textBox = new TextBox { Location = new Point(180, y), Size = new Size(180, 20), UseSystemPasswordChar = true };
             y += 30;
-
             this.Controls.Add(label);
             this.Controls.Add(textBox);
         }
@@ -75,28 +63,21 @@ namespace DrugCatalog_ver2.Forms
         {
             try
             {
-                if (string.IsNullOrEmpty(textBoxCurrentPassword.Text) ||
-                    string.IsNullOrEmpty(textBoxNewPassword.Text) ||
-                    string.IsNullOrEmpty(textBoxConfirmPassword.Text))
+                if (string.IsNullOrEmpty(textBoxCurrentPassword.Text) || string.IsNullOrEmpty(textBoxNewPassword.Text))
                 {
-                    MessageBox.Show("Заполните все поля");
+                    MessageBox.Show(Locale.Get("MsgFillAll"));
                     return;
                 }
-
                 if (textBoxNewPassword.Text != textBoxConfirmPassword.Text)
                 {
-                    MessageBox.Show("Пароли не совпадают");
+                    MessageBox.Show(Locale.Get("MsgPassMismatch"));
                     return;
                 }
-
                 _userService.ChangePassword(_userId, textBoxNewPassword.Text);
-                MessageBox.Show("Пароль успешно изменен");
+                MessageBox.Show(Locale.Get("MsgPassChanged"));
                 this.Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка: {ex.Message}");
-            }
+            catch (Exception ex) { MessageBox.Show($"{Locale.Get("MsgError")}: {ex.Message}"); }
         }
     }
 }

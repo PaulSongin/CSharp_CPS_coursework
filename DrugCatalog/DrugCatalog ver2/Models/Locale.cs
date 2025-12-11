@@ -1,0 +1,408 @@
+﻿using System.Collections.Generic;
+
+namespace DrugCatalog_ver2.Models
+{
+    public static class Locale
+    {
+        public static string CurrentLanguage { get; private set; } = "En"; // По умолчанию английский
+
+        public static string Get(string key)
+        {
+            if (CurrentLanguage == "Ru")
+                return _ru.ContainsKey(key) ? _ru[key] : key;
+            else
+                return _en.ContainsKey(key) ? _en[key] : key;
+        }
+
+        public static void SetLanguage(string lang)
+        {
+            CurrentLanguage = lang;
+        }
+
+        // ==========================================
+        // РУССКИЙ СЛОВАРЬ (_ru)
+        // ==========================================
+        private static readonly Dictionary<string, string> _ru = new Dictionary<string, string>
+        {
+            // --- Заголовки и общее ---
+            {"AppTitle", "Каталог лекарственных препаратов"},
+            {"NewFile", "Новый файл"},
+            {"Save", "Сохранить"},
+            {"Cancel", "Отмена"},
+            {"Close", "Закрыть"},
+            {"Add", "Добавить"},
+            {"Edit", "Редактировать"},
+            {"Delete", "Удалить"},
+            {"AutoDelOn", " [АВТОУДАЛЕНИЕ ВКЛ]"},
+            {"AutoDelOff", " [АВТОУДАЛЕНИЕ ВЫКЛ]"},
+            {"DrugsCount", "препаратов"},
+            
+            // --- Меню (были дубликаты, исправлено) ---
+            {"MenuFile", "Файл"},
+            {"MenuNew", "Новый"},
+            {"MenuOpen", "Открыть..."},
+            {"MenuSave", "Сохранить"},
+            {"MenuSaveAs", "Сохранить как..."},
+            {"MenuExit", "Выход"},
+            {"MenuEdit", "Правка"},
+            {"MenuNewDrug", "Новый препарат"},
+            {"MenuEditDrug", "Редактировать препарат"},
+            {"MenuDelDrug", "Удалить препарат"},
+            {"MenuCleanup", "Очистить просроченные"},
+            {"MenuView", "Вид"},
+            {"MenuRefresh", "Обновить"},
+            {"MenuSearch", "Поиск"},
+            {"MenuViewAll", "Все препараты"},
+            {"MenuViewExp", "С истекающим сроком"},
+            {"MenuViewMan", "По производителям"},
+            {"MenuViewCat", "По категориям"},
+            {"MenuReminders", "Напоминания"},
+            {"MenuManageRem", "Управление напоминаниями"},
+            {"MenuTestNotif", "Тест уведомления"},
+            {"MenuActiveRem", "Активные напоминания"},
+            {"MenuLanguage", "Язык (Language)"},
+            {"MenuUser", "Пользователь"},
+            {"MenuProfile", "Мой профиль"},
+            {"MenuPass", "Сменить пароль"},
+            {"MenuSwitch", "Сменить пользователя"},
+            {"MenuUserMan", "Управление пользователями"},
+            {"MenuLogout", "Выход"},
+
+            // --- Форма Напоминания ---
+            {"TitleNewReminder", "Новое напоминание"},
+            {"TitleEditReminder", "Редактирование напоминания"},
+            {"LblDrug", "Лекарство:"},
+            {"LblTime", "Время приема:"},
+            {"LblDosage", "Дозировка:"},
+            {"LblDays", "Дни приема:"},
+            {"LblNotes", "Примечания:"},
+            {"MsgSelectDrug", "Выберите лекарство"},
+            {"UnitMg", "мг"}, {"UnitG", "г"}, {"UnitMl", "мл"},
+            {"UnitTab", "таблетка"}, {"UnitCaps", "капсула"}, {"UnitDrops", "капли"},
+
+            // --- Форма Лекарства ---
+            {"TitleNewDrug", "Добавление препарата"},
+            {"TitleEditDrug", "Редактирование препарата"},
+            {"LblCategoryReq", "Категория*:"},
+            {"LblNameReq", "Название*:"},
+            {"LblSubstReq", "Действующее вещество*:"},
+            {"LblManufReq", "Производитель*:"},
+            {"LblForm", "Форма выпуска:"},
+            {"LblDosageReq", "Дозировка*:"},
+            {"LblUnit", "Ед. изм.:"},
+            {"LblPresc", "Тип отпуска:"},
+            {"LblQtyReq", "Количество*:"},
+            {"LblExpReq", "Срок годности*:"},
+            {"LblIndic", "Показания:"},
+            {"LblContra", "Противопоказания:"},
+            {"LblReqFields", "* - обязательные поля"},
+            {"MsgEnterName", "Введите название препарата"},
+            {"MsgEnterSubst", "Введите действующее вещество"},
+            {"MsgEnterManuf", "Введите производителя"},
+            {"MsgErrDosage", "Введите корректную дозировку"},
+            {"MsgErrQty", "Введите корректное количество"},
+            {"MsgErrExp", "Срок годности должен быть в будущем"},
+            {"MsgErrCat", "Выберите категорию"},
+
+            // --- Форма Регистрации ---
+            {"TitleReg", "Регистрация нового пользователя"},
+            {"HeaderReg", "Регистрация"},
+            {"LblFullName", "Полное имя:"},
+            {"LblEmail", "Email:"},
+            {"LblLoginReq", "Логин*:"},
+            {"LblPassReq", "Пароль*:"},
+            {"LblConfPassReq", "Подтверждение пароля*:"},
+            {"BtnRegister", "Зарегистрироваться"},
+            {"MsgRegSuccess", "Регистрация успешна! Теперь вы можете войти."},
+            {"MsgPassLen", "Пароль должен содержать минимум 6 символов"},
+            {"MsgPassMismatch", "Пароли не совпадают"},
+            {"MsgFillAll", "Заполните все поля"},
+            {"LblRegTip", "* - обязательные поля. Пароль минимум 6 символов."},
+
+            // --- Форма Входа ---
+            {"TitleLogin", "Вход в систему - Каталог препаратов"},
+            {"HeaderLogin", "Вход в систему"},
+            {"LblLogin", "Логин:"},
+            {"LblPass", "Пароль:"},
+            {"ChkRemember", "Запомнить меня"},
+            {"BtnLogin", "Войти"},
+            {"BtnToReg", "Регистрация"},
+
+            // --- Форма Смены Пароля ---
+            {"TitleChangePass", "Смена пароля"},
+            {"LblCurrPass", "Текущий пароль:"},
+            {"LblNewPass", "Новый пароль:"},
+            {"LblConfPass", "Подтвердите пароль:"},
+            {"MsgPassChanged", "Пароль успешно изменен"},
+
+            // --- Управление напоминаниями ---
+            {"TitleRemindersMgmt", "Управление напоминаниями"},
+            {"ColDrug", "Лекарство"},
+            {"ColTime", "Время"},
+            {"ColDays", "Дни недели"},
+            {"ColNotes", "Примечания"},
+            {"ColDosageFull", "Дозировка"},
+
+            // --- Уведомления ---
+            {"NotifTitle", "Пора принять лекарство"},
+            {"NotifDosage", "Дозировка"},
+            {"NotifClick", "Нажмите сюда, чтобы подтвердить прием."},
+            {"MsgConfirmTake", "Вы приняли {0} ({1})?\n\nНажмите 'Да', чтобы списать лекарство со склада."},
+            {"TitleConfirmTake", "Подтверждение приема"},
+            {"MsgDeducted", "Списано {0} ед. Остаток: {1}"},
+            {"TitleSuccess", "Успешно"},
+            {"MsgLowStock", "Внимание! Лекарство '{0}' заканчивается.\nОстаток: {1}, а нужно принять: {2}."},
+            {"TitleWarning", "Недостаточно на складе"},
+
+            // --- Контекст, Поиск, Вкладки, Таблица ---
+            {"CtxAdd", "➕ Добавить препарат"},
+            {"CtxEdit", "✏️ Редактировать препарат"},
+            {"CtxDel", "❌ Удалить препарат"},
+            {"CtxRemind", "⏰ Добавить напоминание"},
+            {"CtxClean", "🧹 Очистить просроченные"},
+            {"CtxRefresh", "🔄 Обновить"},
+            {"LblSearch", "Поиск препаратов:"},
+            {"PhSearch", "Введите название..."},
+            {"BtnFind", "Найти"},
+            {"BtnReset", "Сброс"},
+            {"BtnAutoOn", "✅ Автоудаление ВКЛ"},
+            {"BtnAutoOff", "❌ Автоудаление ВЫКЛ"},
+            {"BtnCleanExp", "🧹 Очистить просроченные"},
+            {"LblManFilter", "Производитель:"},
+            {"LblCatFilter", "Категория:"},
+            {"TabAll", "Все препараты"},
+            {"TabExp", "С истекающим сроком"},
+            {"TabMan", "По производителям"},
+            {"TabCat", "По категориям"},
+            {"ColCat", "Категория"},
+            {"ColName", "Название"},
+            {"ColSubst", "Действ. вещество"},
+            {"ColManuf", "Производитель"},
+            {"ColForm", "Форма"},
+            {"ColDosage", "Доза"},
+            {"ColQty", "Кол-во"},
+            {"ColExp", "Срок годности"},
+
+            // --- Дни недели ---
+            {"DayMon", "Пн"}, {"DayTue", "Вт"}, {"DayWed", "Ср"}, {"DayThu", "Чт"},
+            {"DayFri", "Пт"}, {"DaySat", "Сб"}, {"DaySun", "Вс"},
+
+            // --- Сообщения ---
+            {"MsgWelcome", "Добро пожаловать"},
+            {"MsgConfirmSwitch", "Сменить пользователя?"},
+            {"MsgConfirmExit", "Выйти из приложения?"},
+            {"MsgConfirmDelDrug", "Удалить препарат"},
+            {"MsgDeleted", "Препарат удален"},
+            {"MsgSelEdit", "Выберите препарат для редактирования"},
+            {"MsgSelDel", "Выберите препарат для удаления"},
+            {"MsgSelRem", "Выберите препарат для добавления напоминания"},
+            {"MsgAutoDelInfo", "Автоудаление включено."},
+            {"MsgAutoDelOffInfo", "Автоудаление отключено."},
+            {"MsgNoDataClean", "Нет данных для очистки"},
+            {"MsgNoExpFound", "Просроченных не найдено"},
+            {"MsgCleanConfirm", "Удалить все просроченные?"},
+            {"MsgCleanDone", "Удалено"},
+            {"MsgSaveSuccess", "Успешно сохранено"},
+            {"MsgSaved", "Сохранено"},
+            {"MsgLoadError", "Ошибка загрузки"},
+            {"MsgError", "Ошибка"},
+            {"MsgNewFile", "Создать новый файл? Несохраненные данные будут утеряны."},
+            {"StUser", "Пользователь"},
+            {"StRemActive", "💊 Активных напоминаний"},
+            {"StRemNone", "💊 Нет активных напоминаний"}
+        };
+
+        // ==========================================
+        // АНГЛИЙСКИЙ СЛОВАРЬ (_en)
+        // ==========================================
+        private static readonly Dictionary<string, string> _en = new Dictionary<string, string>
+        {
+            // --- Titles & General ---
+            {"AppTitle", "Drug Catalog System"},
+            {"NewFile", "New File"},
+            {"Save", "Save"},
+            {"Cancel", "Cancel"},
+            {"Close", "Close"},
+            {"Add", "Add"},
+            {"Edit", "Edit"},
+            {"Delete", "Delete"},
+            {"AutoDelOn", " [AUTO-DELETE ON]"},
+            {"AutoDelOff", " [AUTO-DELETE OFF]"},
+            {"DrugsCount", "drugs"},
+
+            // --- Menu ---
+            {"MenuFile", "File"},
+            {"MenuNew", "New"},
+            {"MenuOpen", "Open..."},
+            {"MenuSave", "Save"},
+            {"MenuSaveAs", "Save As..."},
+            {"MenuExit", "Exit"},
+            {"MenuEdit", "Edit"},
+            {"MenuNewDrug", "New Drug"},
+            {"MenuEditDrug", "Edit Drug"},
+            {"MenuDelDrug", "Delete Drug"},
+            {"MenuCleanup", "Cleanup Expired"},
+            {"MenuView", "View"},
+            {"MenuRefresh", "Refresh"},
+            {"MenuSearch", "Search"},
+            {"MenuViewAll", "All Drugs"},
+            {"MenuViewExp", "Expiring Soon"},
+            {"MenuViewMan", "By Manufacturer"},
+            {"MenuViewCat", "By Category"},
+            {"MenuReminders", "Reminders"},
+            {"MenuManageRem", "Manage Reminders"},
+            {"MenuTestNotif", "Test Notification"},
+            {"MenuActiveRem", "Active Reminders"},
+            {"MenuLanguage", "Language"},
+            {"MenuUser", "User"},
+            {"MenuProfile", "My Profile"},
+            {"MenuPass", "Change Password"},
+            {"MenuSwitch", "Switch User"},
+            {"MenuUserMan", "User Management"},
+            {"MenuLogout", "Logout"},
+
+            // --- Reminder Form ---
+            {"TitleNewReminder", "New Reminder"},
+            {"TitleEditReminder", "Edit Reminder"},
+            {"LblDrug", "Drug:"},
+            {"LblTime", "Time:"},
+            {"LblDosage", "Dosage:"},
+            {"LblDays", "Days:"},
+            {"LblNotes", "Notes:"},
+            {"MsgSelectDrug", "Select a drug"},
+            {"UnitMg", "mg"}, {"UnitG", "g"}, {"UnitMl", "ml"},
+            {"UnitTab", "tablet"}, {"UnitCaps", "capsule"}, {"UnitDrops", "drops"},
+
+            // --- Drug Form ---
+            {"TitleNewDrug", "New Drug"},
+            {"TitleEditDrug", "Edit Drug"},
+            {"LblCategoryReq", "Category*:"},
+            {"LblNameReq", "Name*:"},
+            {"LblSubstReq", "Active Substance*:"},
+            {"LblManufReq", "Manufacturer*:"},
+            {"LblForm", "Form:"},
+            {"LblDosageReq", "Dosage*:"},
+            {"LblUnit", "Unit:"},
+            {"LblPresc", "Prescription:"},
+            {"LblQtyReq", "Quantity*:"},
+            {"LblExpReq", "Expiry Date*:"},
+            {"LblIndic", "Indications:"},
+            {"LblContra", "Contraindications:"},
+            {"LblReqFields", "* - required fields"},
+            {"MsgEnterName", "Enter drug name"},
+            {"MsgEnterSubst", "Enter active substance"},
+            {"MsgEnterManuf", "Enter manufacturer"},
+            {"MsgErrDosage", "Enter valid dosage"},
+            {"MsgErrQty", "Enter valid quantity"},
+            {"MsgErrExp", "Expiry date must be in future"},
+            {"MsgErrCat", "Select category"},
+
+            // --- Register Form ---
+            {"TitleReg", "Register New User"},
+            {"HeaderReg", "Register"},
+            {"LblFullName", "Full Name:"},
+            {"LblEmail", "Email:"},
+            {"LblLoginReq", "Username*:"},
+            {"LblPassReq", "Password*:"},
+            {"LblConfPassReq", "Confirm Password*:"},
+            {"BtnRegister", "Register"},
+            {"MsgRegSuccess", "Registration successful! You can now login."},
+            {"MsgPassLen", "Password must be at least 6 chars"},
+            {"MsgPassMismatch", "Passwords do not match"},
+            {"MsgFillAll", "Fill all fields"},
+            {"LblRegTip", "* - required. Password min 6 chars."},
+
+            // --- Login Form ---
+            {"TitleLogin", "Login - Drug Catalog"},
+            {"HeaderLogin", "System Login"},
+            {"LblLogin", "Username:"},
+            {"LblPass", "Password:"},
+            {"ChkRemember", "Remember me"},
+            {"BtnLogin", "Login"},
+            {"BtnToReg", "Register"},
+
+            // --- Change Password Form ---
+            {"TitleChangePass", "Change Password"},
+            {"LblCurrPass", "Current Password:"},
+            {"LblNewPass", "New Password:"},
+            {"LblConfPass", "Confirm Password:"},
+            {"MsgPassChanged", "Password changed successfully"},
+
+            // --- Reminders Mgmt ---
+            {"TitleRemindersMgmt", "Reminders Management"},
+            {"ColDrug", "Drug"},
+            {"ColTime", "Time"},
+            {"ColDays", "Days of week"},
+            {"ColNotes", "Notes"},
+            {"ColDosageFull", "Dosage"},
+
+            // --- Notifications ---
+            {"NotifTitle", "Time to take medicine"},
+            {"NotifDosage", "Dosage"},
+            {"NotifClick", "Click here to confirm intake."},
+            {"MsgConfirmTake", "Did you take {0} ({1})?\n\nClick 'Yes' to deduct from stock."},
+            {"TitleConfirmTake", "Confirm Intake"},
+            {"MsgDeducted", "Deducted {0} units. Remaining: {1}"},
+            {"TitleSuccess", "Success"},
+            {"MsgLowStock", "Warning! Drug '{0}' is running low.\nRemaining: {1}, required: {2}."},
+            {"TitleWarning", "Low Stock"},
+
+            // --- Context, Search, Tabs, Grid ---
+            {"CtxAdd", "➕ Add Drug"},
+            {"CtxEdit", "✏️ Edit Drug"},
+            {"CtxDel", "❌ Delete Drug"},
+            {"CtxRemind", "⏰ Add Reminder"},
+            {"CtxClean", "🧹 Cleanup Expired"},
+            {"CtxRefresh", "🔄 Refresh"},
+            {"LblSearch", "Search Drugs:"},
+            {"PhSearch", "Enter name..."},
+            {"BtnFind", "Find"},
+            {"BtnReset", "Reset"},
+            {"BtnAutoOn", "✅ Auto-Delete ON"},
+            {"BtnAutoOff", "❌ Auto-Delete OFF"},
+            {"BtnCleanExp", "🧹 Cleanup Expired"},
+            {"LblManFilter", "Manufacturer:"},
+            {"LblCatFilter", "Category:"},
+            {"TabAll", "All Drugs"},
+            {"TabExp", "Expiring Soon"},
+            {"TabMan", "By Manufacturer"},
+            {"TabCat", "By Category"},
+            {"ColCat", "Category"},
+            {"ColName", "Name"},
+            {"ColSubst", "Substance"},
+            {"ColManuf", "Manufacturer"},
+            {"ColForm", "Form"},
+            {"ColDosage", "Dosage"},
+            {"ColQty", "Qty"},
+            {"ColExp", "Expiry Date"},
+
+            // --- Days ---
+            {"DayMon", "Mon"}, {"DayTue", "Tue"}, {"DayWed", "Wed"}, {"DayThu", "Thu"},
+            {"DayFri", "Fri"}, {"DaySat", "Sat"}, {"DaySun", "Sun"},
+
+            // --- Messages ---
+            {"MsgWelcome", "Welcome"},
+            {"MsgConfirmSwitch", "Switch user?"},
+            {"MsgConfirmExit", "Exit application?"},
+            {"MsgConfirmDelDrug", "Delete drug"},
+            {"MsgDeleted", "Drug deleted"},
+            {"MsgSelEdit", "Select a drug to edit"},
+            {"MsgSelDel", "Select a drug to delete"},
+            {"MsgSelRem", "Select drug for reminder"},
+            {"MsgAutoDelInfo", "Auto-delete enabled."},
+            {"MsgAutoDelOffInfo", "Auto-delete disabled."},
+            {"MsgNoDataClean", "No data to cleanup"},
+            {"MsgNoExpFound", "No expired drugs found"},
+            {"MsgCleanConfirm", "Delete all expired?"},
+            {"MsgCleanDone", "Deleted"},
+            {"MsgSaveSuccess", "Saved successfully"},
+            {"MsgSaved", "Saved"},
+            {"MsgLoadError", "Load Error"},
+            {"MsgError", "Error"},
+            {"MsgNewFile", "Create new file? Unsaved data will be lost."},
+            {"StUser", "User"},
+            {"StRemActive", "💊 Active reminders"},
+            {"StRemNone", "💊 No active reminders"}
+        };
+    }
+}

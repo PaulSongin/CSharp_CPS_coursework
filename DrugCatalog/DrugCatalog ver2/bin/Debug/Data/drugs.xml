@@ -9,7 +9,7 @@
     <Dosage>500</Dosage>
     <DosageUnit>мг</DosageUnit>
     <PrescriptionType>Безрецептурный</PrescriptionType>
-    <Quantity>20</Quantity>
+    <Quantity>19</Quantity>
     <ExpiryDate>2025-12-31T00:00:00</ExpiryDate>
     <CategoryId>2</CategoryId>
     <Indications>
@@ -84,28 +84,6 @@
     <Contraindications>
       <Contraindication>Дети до 2 лет</Contraindication>
       <Contraindication>Непереносимость лоратадина</Contraindication>
-    </Contraindications>
-  </Drug>
-  <Drug>
-    <Id>5</Id>
-    <Name>Ибупрофен</Name>
-    <ActiveSubstance>Ибупрофен</ActiveSubstance>
-    <Manufacturer>Синтез</Manufacturer>
-    <Form>Таблетки</Form>
-    <Dosage>200</Dosage>
-    <DosageUnit>мг</DosageUnit>
-    <PrescriptionType>Безрецептурный</PrescriptionType>
-    <Quantity>24</Quantity>
-    <ExpiryDate>2025-12-11T00:00:00</ExpiryDate>
-    <CategoryId>2</CategoryId>
-    <Indications>
-      <Indication>Боль в суставах</Indication>
-      <Indication>Головная боль</Indication>
-      <Indication>Воспаление</Indication>
-    </Indications>
-    <Contraindications>
-      <Contraindication>Язва желудка</Contraindication>
-      <Contraindication>Почечная недостаточность</Contraindication>
     </Contraindications>
   </Drug>
   <Drug>

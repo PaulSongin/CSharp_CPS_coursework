@@ -26,8 +26,8 @@ namespace DrugCatalog_ver2.Forms
         {
             this.SuspendLayout();
 
-            this.Text = "Управление напоминаниями";
-            this.Size = new Size(600, 400);
+            this.Text = Locale.Get("TitleRemindersMgmt"); // Локализация
+            this.Size = new Size(700, 400);
             this.StartPosition = FormStartPosition.CenterParent;
 
             CreateControls();
@@ -44,19 +44,23 @@ namespace DrugCatalog_ver2.Forms
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 Location = new Point(10, 10),
-                Size = new Size(560, 300)
+                Size = new Size(560, 300),
+                BackgroundColor = Color.White, // Добавил белый фон для красоты
+                RowHeadersVisible = false
             };
 
             var buttonPanel = new Panel
             {
                 Dock = DockStyle.Bottom,
-                Height = 50
+                Height = 50,
+                Padding = new Padding(10)
             };
 
-            buttonAdd = new Button { Text = "Добавить", Location = new Point(10, 10), Size = new Size(80, 30) };
-            buttonEdit = new Button { Text = "Редактировать", Location = new Point(100, 10), Size = new Size(100, 30) };
-            buttonDelete = new Button { Text = "Удалить", Location = new Point(210, 10), Size = new Size(80, 30) };
-            buttonClose = new Button { Text = "Закрыть", Location = new Point(300, 10), Size = new Size(80, 30) };
+            // Используем существующие ключи из Locale (Add, Edit, Delete, Close)
+            buttonAdd = new Button { Text = Locale.Get("Add"), Location = new Point(10, 10), Size = new Size(100, 30) };
+            buttonEdit = new Button { Text = Locale.Get("Edit"), Location = new Point(120, 10), Size = new Size(120, 30) };
+            buttonDelete = new Button { Text = Locale.Get("Delete"), Location = new Point(250, 10), Size = new Size(100, 30) };
+            buttonClose = new Button { Text = Locale.Get("Close"), Location = new Point(360, 10), Size = new Size(100, 30) };
 
             buttonAdd.Click += (s, e) => AddReminder();
             buttonEdit.Click += (s, e) => EditReminder();
@@ -74,11 +78,12 @@ namespace DrugCatalog_ver2.Forms
             var reminders = _reminderService.GetReminders();
 
             dataGridViewReminders.Columns.Clear();
-            dataGridViewReminders.Columns.Add("DrugName", "Лекарство");
-            dataGridViewReminders.Columns.Add("Dosage", "Дозировка");
-            dataGridViewReminders.Columns.Add("Time", "Время");
-            dataGridViewReminders.Columns.Add("Days", "Дни недели");
-            dataGridViewReminders.Columns.Add("Notes", "Примечания");
+            // Локализация заголовков колонок
+            dataGridViewReminders.Columns.Add("DrugName", Locale.Get("ColDrug"));
+            dataGridViewReminders.Columns.Add("Dosage", Locale.Get("ColDosage"));
+            dataGridViewReminders.Columns.Add("Time", Locale.Get("ColTime"));
+            dataGridViewReminders.Columns.Add("Days", Locale.Get("ColDays"));
+            dataGridViewReminders.Columns.Add("Notes", Locale.Get("ColNotes"));
 
             dataGridViewReminders.Rows.Clear();
             foreach (var reminder in reminders)
@@ -97,8 +102,18 @@ namespace DrugCatalog_ver2.Forms
 
         private string GetDaysString(bool[] days)
         {
-            string[] dayNames = { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" };
-            return string.Join(" ", days.Select((d, i) => d ? dayNames[i] : "").Where(s => !string.IsNullOrEmpty(s)));
+            // Локализация дней недели (Пн/Mon, Вт/Tue...)
+            string[] dayKeys = { "DayMon", "DayTue", "DayWed", "DayThu", "DayFri", "DaySat", "DaySun" };
+
+            var activeDays = new List<string>();
+            for (int i = 0; i < 7; i++)
+            {
+                if (days[i])
+                {
+                    activeDays.Add(Locale.Get(dayKeys[i]));
+                }
+            }
+            return string.Join(" ", activeDays);
         }
 
         private void AddReminder()
@@ -114,7 +129,7 @@ namespace DrugCatalog_ver2.Forms
         {
             if (dataGridViewReminders.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Выберите напоминание для редактирования");
+                MessageBox.Show(Locale.Get("MsgSelEdit")); // Используем существующий ключ
                 return;
             }
 
@@ -135,13 +150,13 @@ namespace DrugCatalog_ver2.Forms
         {
             if (dataGridViewReminders.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Выберите напоминание для удаления");
+                MessageBox.Show(Locale.Get("MsgSelDel")); // Используем существующий ключ
                 return;
             }
 
             var reminderId = (int)dataGridViewReminders.SelectedRows[0].Tag;
 
-            if (MessageBox.Show("Удалить это напоминание?", "Подтверждение",
+            if (MessageBox.Show(Locale.Get("MsgConfirmDelete"), Locale.Get("Delete"),
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 _reminderService.DeleteReminder(reminderId);
