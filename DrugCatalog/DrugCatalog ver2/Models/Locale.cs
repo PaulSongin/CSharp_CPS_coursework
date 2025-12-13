@@ -229,6 +229,7 @@ namespace DrugCatalog_ver2.Models
             {"MsgLoadOptionBody", "Файл содержит {0} препаратов.\n\nНажмите 'Да', чтобы ЗАМЕНИТЬ текущий список (старые данные удалятся).\nНажмите 'Нет', чтобы ДОБАВИТЬ к текущему списку."},
             {"MsgLoadedReplace", "Список полностью заменен. Загружено {0} препаратов."},
             {"MsgLoadedAppend", "Успешно добавлено {0} препаратов."},
+            {"MsgMinimized", "Приложение свернуто в трей и работает в фоне."},
         };
 
         // ==========================================
@@ -441,6 +442,7 @@ namespace DrugCatalog_ver2.Models
             {"MsgLoadOptionBody", "File contains {0} drugs.\n\nClick 'Yes' to REPLACE current list (old data will be lost).\nClick 'No' to APPEND to current list."},
             {"MsgLoadedReplace", "List replaced. Loaded {0} drugs."},
             {"MsgLoadedAppend", "Successfully added {0} drugs."},
+            {"MsgMinimized", "Application minimized to tray and running in background."},
         };
     }
 }

@@ -7,9 +7,7 @@ namespace DrugCatalog_ver2.Models
     public class MedicationReminder
     {
         public int Id { get; set; }
-
         public int UserId { get; set; }
-
         public int DrugId { get; set; }
         public string DrugName { get; set; }
         public string Dosage { get; set; }

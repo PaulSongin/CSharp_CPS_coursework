@@ -1,5 +1,4 @@
-﻿// Drug.cs - добавляем свойство CategoryId
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -18,7 +17,6 @@ public class Drug
     public int Quantity { get; set; }
     public DateTime ExpiryDate { get; set; }
 
-    // ДОБАВЛЕНО: Ссылка на категорию
     public int CategoryId { get; set; }
 
     [XmlArray("Indications")]
@@ -33,6 +31,6 @@ public class Drug
     {
         Indications = new List<string>();
         Contraindications = new List<string>();
-        CategoryId = 1; // По умолчанию "Другое"
+        CategoryId = 1; 
     }
 }
