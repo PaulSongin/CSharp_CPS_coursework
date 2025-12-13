@@ -5,8 +5,8 @@
     <UserId>1</UserId>
     <DrugId>0</DrugId>
     <DrugName>Парацетамол</DrugName>
-    <Dosage>1 tablet</Dosage>
-    <ReminderTime>2025-12-13T21:43:00</ReminderTime>
+    <Dosage>1 таблетка</Dosage>
+    <ReminderTime>2025-12-13T22:37:00</ReminderTime>
     <DaysOfWeek>
       <boolean>true</boolean>
       <boolean>true</boolean>

@@ -1,5 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Drugs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- АНАЛЬГЕТИКИ (Категория 2) -->
   <Drug>
     <Id>1</Id>
     <Name>Парацетамол</Name>
@@ -22,6 +23,36 @@
     </Contraindications>
   </Drug>
   <Drug>
+    <Id>2</Id>
+    <Name>Ибупрофен</Name>
+    <ActiveSubstance>Ибупрофен</ActiveSubstance>
+    <Manufacturer>Борисовский ЗМП</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>200</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>50</Quantity>
+    <ExpiryDate>2025-05-15T00:00:00</ExpiryDate>
+    <CategoryId>2</CategoryId>
+    <Indications>
+      <Indication>Боли в суставах</Indication>
+      <Indication>Мышечная боль</Indication>
+    </Indications>
+  </Drug>
+  <Drug>
+    <Id>3</Id>
+    <Name>Анальгин</Name>
+    <ActiveSubstance>Метамизол натрия</ActiveSubstance>
+    <Manufacturer>Авексима</Manufacturer>
+    <Form>Ампулы</Form>
+    <Dosage>500</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Рецептурный</PrescriptionType>
+    <Quantity>10</Quantity>
+    <ExpiryDate>2024-02-01T00:00:00</ExpiryDate> <!-- ПРОСРОЧЕНО -->
+    <CategoryId>2</CategoryId>
+  </Drug>
+  <Drug>
     <Id>4</Id>
     <Name>Кеторол</Name>
     <ActiveSubstance>Кеторолак</ActiveSubstance>
@@ -33,9 +64,9 @@
     <Quantity>18</Quantity>
     <ExpiryDate>2026-08-20T00:00:00</ExpiryDate>
     <CategoryId>2</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
+
+  <!-- АНТИБИОТИКИ (Категория 3) -->
   <Drug>
     <Id>5</Id>
     <Name>Амоксициллин</Name>
@@ -52,8 +83,22 @@
       <Indication>Бронхит</Indication>
       <Indication>Пневмония</Indication>
     </Indications>
-    <Contraindications />
   </Drug>
+  <Drug>
+    <Id>6</Id>
+    <Name>Азитромицин</Name>
+    <ActiveSubstance>Азитромицин</ActiveSubstance>
+    <Manufacturer>Вертекс</Manufacturer>
+    <Form>Капсулы</Form>
+    <Dosage>250</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Рецептурный</PrescriptionType>
+    <Quantity>6</Quantity>
+    <ExpiryDate>2023-11-30T00:00:00</ExpiryDate> <!-- ПРОСРОЧЕНО -->
+    <CategoryId>3</CategoryId>
+  </Drug>
+  
+  <!-- СЕРДЕЧНО-СОСУДИСТЫЕ (Категория 4) -->
   <Drug>
     <Id>7</Id>
     <Name>Бисопролол</Name>
@@ -64,10 +109,8 @@
     <DosageUnit>мг</DosageUnit>
     <PrescriptionType>Рецептурный</PrescriptionType>
     <Quantity>60</Quantity>
-    <ExpiryDate>2025-12-25T00:00:00</ExpiryDate>
+    <ExpiryDate>2025-12-25T00:00:00</ExpiryDate> <!-- СКОРО ИСТЕКАЕТ -->
     <CategoryId>4</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>8</Id>
@@ -81,8 +124,6 @@
     <Quantity>28</Quantity>
     <ExpiryDate>2026-06-15T00:00:00</ExpiryDate>
     <CategoryId>4</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>9</Id>
@@ -96,9 +137,9 @@
     <Quantity>10</Quantity>
     <ExpiryDate>2028-01-01T00:00:00</ExpiryDate>
     <CategoryId>4</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
+
+  <!-- ЖЕЛУДОЧНО-КИШЕЧНЫЕ (Категория 5) -->
   <Drug>
     <Id>10</Id>
     <Name>Омепразол</Name>
@@ -111,8 +152,6 @@
     <Quantity>30</Quantity>
     <ExpiryDate>2026-09-01T00:00:00</ExpiryDate>
     <CategoryId>5</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>11</Id>
@@ -124,10 +163,8 @@
     <DosageUnit>ЕД</DosageUnit>
     <PrescriptionType>Безрецептурный</PrescriptionType>
     <Quantity>55</Quantity>
-    <ExpiryDate>2025-12-20T00:00:00</ExpiryDate>
+    <ExpiryDate>2025-12-20T00:00:00</ExpiryDate> <!-- СКОРО ИСТЕКАЕТ -->
     <CategoryId>5</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>12</Id>
@@ -141,8 +178,6 @@
     <Quantity>12</Quantity>
     <ExpiryDate>2027-03-10T00:00:00</ExpiryDate>
     <CategoryId>5</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>13</Id>
@@ -156,9 +191,9 @@
     <Quantity>45</Quantity>
     <ExpiryDate>2029-01-01T00:00:00</ExpiryDate>
     <CategoryId>5</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
+
+  <!-- ПРОТИВОВИРУСНЫЕ (Категория 6) -->
   <Drug>
     <Id>14</Id>
     <Name>Арбидол</Name>
@@ -171,9 +206,22 @@
     <Quantity>20</Quantity>
     <ExpiryDate>2026-05-05T00:00:00</ExpiryDate>
     <CategoryId>6</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
+  <Drug>
+    <Id>15</Id>
+    <Name>Ингавирин</Name>
+    <ActiveSubstance>Имидазолилэтанамид</ActiveSubstance>
+    <Manufacturer>Валента Фарм</Manufacturer>
+    <Form>Капсулы</Form>
+    <Dosage>90</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>7</Quantity>
+    <ExpiryDate>2025-11-15T00:00:00</ExpiryDate>
+    <CategoryId>6</CategoryId>
+  </Drug>
+
+  <!-- АНТИГИСТАМИННЫЕ (Категория 7) -->
   <Drug>
     <Id>16</Id>
     <Name>Лоратадин</Name>
@@ -186,8 +234,6 @@
     <Quantity>10</Quantity>
     <ExpiryDate>2026-06-30T00:00:00</ExpiryDate>
     <CategoryId>7</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>17</Id>
@@ -201,9 +247,22 @@
     <Quantity>18</Quantity>
     <ExpiryDate>2027-08-20T00:00:00</ExpiryDate>
     <CategoryId>7</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
+  <Drug>
+    <Id>18</Id>
+    <Name>Зодак</Name>
+    <ActiveSubstance>Цетиризин</ActiveSubstance>
+    <Manufacturer>Zentiva</Manufacturer>
+    <Form>Капли</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>мл</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2025-02-10T00:00:00</ExpiryDate> <!-- ПРОСРОЧЕНО -->
+    <CategoryId>7</CategoryId>
+  </Drug>
+
+  <!-- НЕВРОЛОГИЧЕСКИЕ (Категория 8) -->
   <Drug>
     <Id>19</Id>
     <Name>Глицин</Name>
@@ -216,8 +275,6 @@
     <Quantity>100</Quantity>
     <ExpiryDate>2027-12-12T00:00:00</ExpiryDate>
     <CategoryId>8</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>20</Id>
@@ -231,8 +288,6 @@
     <Quantity>40</Quantity>
     <ExpiryDate>2026-03-30T00:00:00</ExpiryDate>
     <CategoryId>8</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>21</Id>
@@ -244,11 +299,11 @@
     <DosageUnit>мг</DosageUnit>
     <PrescriptionType>Рецептурный</PrescriptionType>
     <Quantity>15</Quantity>
-    <ExpiryDate>2025-12-28T00:00:00</ExpiryDate>
+    <ExpiryDate>2025-12-28T00:00:00</ExpiryDate> <!-- СКОРО ИСТЕКАЕТ -->
     <CategoryId>8</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
+
+  <!-- ВИТАМИНЫ (Категория 9) -->
   <Drug>
     <Id>22</Id>
     <Name>Аскорбиновая кислота</Name>
@@ -261,8 +316,6 @@
     <Quantity>200</Quantity>
     <ExpiryDate>2026-01-31T00:00:00</ExpiryDate>
     <CategoryId>9</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>23</Id>
@@ -276,9 +329,22 @@
     <Quantity>50</Quantity>
     <ExpiryDate>2027-05-05T00:00:00</ExpiryDate>
     <CategoryId>9</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
+  <Drug>
+    <Id>24</Id>
+    <Name>Аквадетрим</Name>
+    <ActiveSubstance>Колекальциферол</ActiveSubstance>
+    <Manufacturer>Акрихин</Manufacturer>
+    <Form>Капли</Form>
+    <Dosage>15000</Dosage>
+    <DosageUnit>МЕ</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2025-10-10T00:00:00</ExpiryDate>
+    <CategoryId>9</CategoryId>
+  </Drug>
+
+  <!-- ДРУГОЕ (Категория 1) -->
   <Drug>
     <Id>25</Id>
     <Name>Хлоргексидин</Name>
@@ -291,8 +357,19 @@
     <Quantity>2</Quantity>
     <ExpiryDate>2026-07-07T00:00:00</ExpiryDate>
     <CategoryId>1</CategoryId>
-    <Indications />
-    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>26</Id>
+    <Name>Перекись водорода</Name>
+    <ActiveSubstance>Водорода пероксид</ActiveSubstance>
+    <Manufacturer>Флора Кавказа</Manufacturer>
+    <Form>Раствор</Form>
+    <Dosage>3</Dosage>
+    <DosageUnit>%</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2024-12-01T00:00:00</ExpiryDate> <!-- ПРОСРОЧЕНО -->
+    <CategoryId>1</CategoryId>
   </Drug>
   <Drug>
     <Id>27</Id>
@@ -306,8 +383,6 @@
     <Quantity>20</Quantity>
     <ExpiryDate>2030-01-01T00:00:00</ExpiryDate>
     <CategoryId>1</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>28</Id>
@@ -319,10 +394,8 @@
     <DosageUnit>%</DosageUnit>
     <PrescriptionType>Безрецептурный</PrescriptionType>
     <Quantity>1</Quantity>
-    <ExpiryDate>2025-12-22T00:00:00</ExpiryDate>
+    <ExpiryDate>2025-12-22T00:00:00</ExpiryDate> <!-- СКОРО ИСТЕКАЕТ -->
     <CategoryId>1</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>29</Id>
@@ -336,8 +409,6 @@
     <Quantity>1</Quantity>
     <ExpiryDate>2026-04-15T00:00:00</ExpiryDate>
     <CategoryId>1</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
   <Drug>
     <Id>30</Id>
@@ -351,7 +422,5 @@
     <Quantity>5</Quantity>
     <ExpiryDate>2029-05-05T00:00:00</ExpiryDate>
     <CategoryId>1</CategoryId>
-    <Indications />
-    <Contraindications />
   </Drug>
 </Drugs>

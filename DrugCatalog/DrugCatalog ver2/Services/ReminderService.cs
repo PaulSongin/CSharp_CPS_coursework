@@ -156,7 +156,6 @@ namespace DrugCatalog_ver2.Services
             _notifyIcon.ShowBalloonTip(3000);
         }
 
-        // --- Списание со склада ---
         private void DeductDrugStock(MedicationReminder reminder)
         {
             try
@@ -179,7 +178,6 @@ namespace DrugCatalog_ver2.Services
                             _dataService.SaveDrugs(allDrugs);
 
                             string msg = string.Format(Locale.Get("MsgDeducted"), amountToDeduct, drug.Quantity);
-                            // Показываем инфо-сообщение об успехе
                             ShowInfoNotification(Locale.Get("TitleSuccess"), msg);
                         }
                         else
@@ -189,7 +187,7 @@ namespace DrugCatalog_ver2.Services
                         }
                     }
                 }
-                _lastShownReminder = null; // Сбрасываем после обработки
+                _lastShownReminder = null; 
             }
             catch (Exception ex)
             {

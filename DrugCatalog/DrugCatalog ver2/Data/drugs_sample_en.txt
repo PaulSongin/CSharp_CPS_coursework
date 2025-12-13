@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drugs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- ANALGESICS (Category 2) -->
+  <Drug>
+    <Id>1</Id>
+    <Name>Paracetamol</Name>
+    <ActiveSubstance>Paracetamol</ActiveSubstance>
+    <Manufacturer>Pharmstandard</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>500</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>20</Quantity>
+    <ExpiryDate>2026-12-31T00:00:00</ExpiryDate>
+    <CategoryId>2</CategoryId>
+    <Indications>
+      <Indication>Headache</Indication>
+      <Indication>Toothache</Indication>
+      <Indication>Fever</Indication>
+    </Indications>
+    <Contraindications>
+      <Contraindication>Severe liver failure</Contraindication>
+    </Contraindications>
+  </Drug>
+  <Drug>
+    <Id>2</Id>
+    <Name>Ibuprofen</Name>
+    <ActiveSubstance>Ibuprofen</ActiveSubstance>
+    <Manufacturer>Borisov Plant</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>200</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>50</Quantity>
+    <ExpiryDate>2025-05-15T00:00:00</ExpiryDate>
+    <CategoryId>2</CategoryId>
+    <Indications>
+      <Indication>Joint pain</Indication>
+      <Indication>Muscle pain</Indication>
+    </Indications>
+  </Drug>
+  <Drug>
+    <Id>3</Id>
+    <Name>Analgin</Name>
+    <ActiveSubstance>Metamizole sodium</ActiveSubstance>
+    <Manufacturer>Avexima</Manufacturer>
+    <Form>Ampoules</Form>
+    <Dosage>500</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Prescription</PrescriptionType>
+    <Quantity>10</Quantity>
+    <ExpiryDate>2024-02-01T00:00:00</ExpiryDate> <!-- EXPIRED -->
+    <CategoryId>2</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>4</Id>
+    <Name>Ketorol</Name>
+    <ActiveSubstance>Ketorolac</ActiveSubstance>
+    <Manufacturer>Dr. Reddy's</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Prescription</PrescriptionType>
+    <Quantity>18</Quantity>
+    <ExpiryDate>2026-08-20T00:00:00</ExpiryDate>
+    <CategoryId>2</CategoryId>
+  </Drug>
+
+  <!-- ANTIBIOTICS (Category 3) -->
+  <Drug>
+    <Id>5</Id>
+    <Name>Amoxicillin</Name>
+    <ActiveSubstance>Amoxicillin</ActiveSubstance>
+    <Manufacturer>Sandoz</Manufacturer>
+    <Form>Capsules</Form>
+    <Dosage>500</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Prescription</PrescriptionType>
+    <Quantity>16</Quantity>
+    <ExpiryDate>2027-01-10T00:00:00</ExpiryDate>
+    <CategoryId>3</CategoryId>
+    <Indications>
+      <Indication>Bronchitis</Indication>
+      <Indication>Pneumonia</Indication>
+    </Indications>
+  </Drug>
+  <Drug>
+    <Id>6</Id>
+    <Name>Azithromycin</Name>
+    <ActiveSubstance>Azithromycin</ActiveSubstance>
+    <Manufacturer>Vertex</Manufacturer>
+    <Form>Capsules</Form>
+    <Dosage>250</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Prescription</PrescriptionType>
+    <Quantity>6</Quantity>
+    <ExpiryDate>2023-11-30T00:00:00</ExpiryDate> <!-- EXPIRED -->
+    <CategoryId>3</CategoryId>
+  </Drug>
+  
+  <!-- CARDIOVASCULAR (Category 4) -->
+  <Drug>
+    <Id>7</Id>
+    <Name>Bisoprolol</Name>
+    <ActiveSubstance>Bisoprolol</ActiveSubstance>
+    <Manufacturer>Teva</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>5</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Prescription</PrescriptionType>
+    <Quantity>60</Quantity>
+    <ExpiryDate>2025-12-25T00:00:00</ExpiryDate> <!-- EXPIRING SOON -->
+    <CategoryId>4</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>8</Id>
+    <Name>Amlodipine</Name>
+    <ActiveSubstance>Amlodipine</ActiveSubstance>
+    <Manufacturer>Ozon</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Prescription</PrescriptionType>
+    <Quantity>28</Quantity>
+    <ExpiryDate>2026-06-15T00:00:00</ExpiryDate>
+    <CategoryId>4</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>9</Id>
+    <Name>Validol</Name>
+    <ActiveSubstance>Menthol</ActiveSubstance>
+    <Manufacturer>Pharmstandard</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>60</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>10</Quantity>
+    <ExpiryDate>2028-01-01T00:00:00</ExpiryDate>
+    <CategoryId>4</CategoryId>
+  </Drug>
+
+  <!-- GASTROINTESTINAL (Category 5) -->
+  <Drug>
+    <Id>10</Id>
+    <Name>Omeprazole</Name>
+    <ActiveSubstance>Omeprazole</ActiveSubstance>
+    <Manufacturer>Akrikhin</Manufacturer>
+    <Form>Capsules</Form>
+    <Dosage>20</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>30</Quantity>
+    <ExpiryDate>2026-09-01T00:00:00</ExpiryDate>
+    <CategoryId>5</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>11</Id>
+    <Name>Pancreatin</Name>
+    <ActiveSubstance>Pancreatin</ActiveSubstance>
+    <Manufacturer>Biosintez</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>25</Dosage>
+    <DosageUnit>UI</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>55</Quantity>
+    <ExpiryDate>2025-12-20T00:00:00</ExpiryDate> <!-- EXPIRING SOON -->
+    <CategoryId>5</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>12</Id>
+    <Name>Smecta</Name>
+    <ActiveSubstance>Diosmectite</ActiveSubstance>
+    <Manufacturer>Ipsen</Manufacturer>
+    <Form>Powder</Form>
+    <Dosage>3</Dosage>
+    <DosageUnit>g</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>12</Quantity>
+    <ExpiryDate>2027-03-10T00:00:00</ExpiryDate>
+    <CategoryId>5</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>13</Id>
+    <Name>Activated Charcoal</Name>
+    <ActiveSubstance>Activated Carbon</ActiveSubstance>
+    <Manufacturer>Uralbiopharm</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>250</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>45</Quantity>
+    <ExpiryDate>2029-01-01T00:00:00</ExpiryDate>
+    <CategoryId>5</CategoryId>
+  </Drug>
+
+  <!-- ANTIVIRAL (Category 6) -->
+  <Drug>
+    <Id>14</Id>
+    <Name>Arbidol</Name>
+    <ActiveSubstance>Umifenovir</ActiveSubstance>
+    <Manufacturer>OTCPharm</Manufacturer>
+    <Form>Capsules</Form>
+    <Dosage>100</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>20</Quantity>
+    <ExpiryDate>2026-05-05T00:00:00</ExpiryDate>
+    <CategoryId>6</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>15</Id>
+    <Name>Ingavirin</Name>
+    <ActiveSubstance>Imidazolyl ethanamide</ActiveSubstance>
+    <Manufacturer>Valenta Pharm</Manufacturer>
+    <Form>Capsules</Form>
+    <Dosage>90</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>7</Quantity>
+    <ExpiryDate>2025-11-15T00:00:00</ExpiryDate>
+    <CategoryId>6</CategoryId>
+  </Drug>
+
+  <!-- ANTIHISTAMINES (Category 7) -->
+  <Drug>
+    <Id>16</Id>
+    <Name>Loratadine</Name>
+    <ActiveSubstance>Loratadine</ActiveSubstance>
+    <Manufacturer>Vertex</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>10</Quantity>
+    <ExpiryDate>2026-06-30T00:00:00</ExpiryDate>
+    <CategoryId>7</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>17</Id>
+    <Name>Suprastin</Name>
+    <ActiveSubstance>Chloropyramine</ActiveSubstance>
+    <Manufacturer>Egis</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>25</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>18</Quantity>
+    <ExpiryDate>2027-08-20T00:00:00</ExpiryDate>
+    <CategoryId>7</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>18</Id>
+    <Name>Zodac</Name>
+    <ActiveSubstance>Cetirizine</ActiveSubstance>
+    <Manufacturer>Zentiva</Manufacturer>
+    <Form>Drops</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>ml</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2025-02-10T00:00:00</ExpiryDate> <!-- EXPIRED -->
+    <CategoryId>7</CategoryId>
+  </Drug>
+
+  <!-- NEUROLOGICAL (Category 8) -->
+  <Drug>
+    <Id>19</Id>
+    <Name>Glycine</Name>
+    <ActiveSubstance>Glycine</ActiveSubstance>
+    <Manufacturer>Biotics</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>100</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>100</Quantity>
+    <ExpiryDate>2027-12-12T00:00:00</ExpiryDate>
+    <CategoryId>8</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>20</Id>
+    <Name>Afobazole</Name>
+    <ActiveSubstance>Fabomotizole</ActiveSubstance>
+    <Manufacturer>OTCPharm</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>40</Quantity>
+    <ExpiryDate>2026-03-30T00:00:00</ExpiryDate>
+    <CategoryId>8</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>21</Id>
+    <Name>Phenibut</Name>
+    <ActiveSubstance>Aminophenylbutyric acid</ActiveSubstance>
+    <Manufacturer>Ozon</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>250</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Prescription</PrescriptionType>
+    <Quantity>15</Quantity>
+    <ExpiryDate>2025-12-28T00:00:00</ExpiryDate> <!-- EXPIRING SOON -->
+    <CategoryId>8</CategoryId>
+  </Drug>
+
+  <!-- VITAMINS (Category 9) -->
+  <Drug>
+    <Id>22</Id>
+    <Name>Ascorbic Acid</Name>
+    <ActiveSubstance>Vitamin C</ActiveSubstance>
+    <Manufacturer>Marbiopharm</Manufacturer>
+    <Form>Dragee</Form>
+    <Dosage>50</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>200</Quantity>
+    <ExpiryDate>2026-01-31T00:00:00</ExpiryDate>
+    <CategoryId>9</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>23</Id>
+    <Name>Magnesium B6</Name>
+    <ActiveSubstance>Magnesium + Pyridoxine</ActiveSubstance>
+    <Manufacturer>Evalar</Manufacturer>
+    <Form>Tablets</Form>
+    <Dosage>500</Dosage>
+    <DosageUnit>mg</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>50</Quantity>
+    <ExpiryDate>2027-05-05T00:00:00</ExpiryDate>
+    <CategoryId>9</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>24</Id>
+    <Name>Aquadetrim</Name>
+    <ActiveSubstance>Colecalciferol</ActiveSubstance>
+    <Manufacturer>Akrikhin</Manufacturer>
+    <Form>Drops</Form>
+    <Dosage>15000</Dosage>
+    <DosageUnit>UI</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2025-10-10T00:00:00</ExpiryDate>
+    <CategoryId>9</CategoryId>
+  </Drug>
+
+  <!-- OTHER (Category 1) -->
+  <Drug>
+    <Id>25</Id>
+    <Name>Chlorhexidine</Name>
+    <ActiveSubstance>Chlorhexidine</ActiveSubstance>
+    <Manufacturer>Rosbio</Manufacturer>
+    <Form>Solution</Form>
+    <Dosage>0.05</Dosage>
+    <DosageUnit>%</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>2</Quantity>
+    <ExpiryDate>2026-07-07T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>26</Id>
+    <Name>Hydrogen Peroxide</Name>
+    <ActiveSubstance>Hydrogen peroxide</ActiveSubstance>
+    <Manufacturer>Flora Kavkaza</Manufacturer>
+    <Form>Solution</Form>
+    <Dosage>3</Dosage>
+    <DosageUnit>%</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2024-12-01T00:00:00</ExpiryDate> <!-- EXPIRED -->
+    <CategoryId>1</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>27</Id>
+    <Name>Band-aid</Name>
+    <ActiveSubstance>-</ActiveSubstance>
+    <Manufacturer>Veropharm</Manufacturer>
+    <Form>Patch</Form>
+    <Dosage>1</Dosage>
+    <DosageUnit>pc</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>20</Quantity>
+    <ExpiryDate>2030-01-01T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>28</Id>
+    <Name>Naphthyzinum</Name>
+    <ActiveSubstance>Naphazoline</ActiveSubstance>
+    <Manufacturer>Lekar</Manufacturer>
+    <Form>Drops</Form>
+    <Dosage>0.1</Dosage>
+    <DosageUnit>%</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2025-12-22T00:00:00</ExpiryDate> <!-- EXPIRING SOON -->
+    <CategoryId>1</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>29</Id>
+    <Name>Iodine</Name>
+    <ActiveSubstance>Iodine</ActiveSubstance>
+    <Manufacturer>Yaroslavl FF</Manufacturer>
+    <Form>Solution</Form>
+    <Dosage>5</Dosage>
+    <DosageUnit>%</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2026-04-15T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+  </Drug>
+  <Drug>
+    <Id>30</Id>
+    <Name>Sterile Bandage</Name>
+    <ActiveSubstance>-</ActiveSubstance>
+    <Manufacturer>Newfarm</Manufacturer>
+    <Form>Bandage</Form>
+    <Dosage>1</Dosage>
+    <DosageUnit>pc</DosageUnit>
+    <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>5</Quantity>
+    <ExpiryDate>2029-05-05T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+  </Drug>
+</Drugs>

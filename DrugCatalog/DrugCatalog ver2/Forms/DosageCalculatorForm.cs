@@ -11,7 +11,6 @@ namespace DrugCatalog_ver2.Forms
     {
         private readonly List<Drug> _drugs;
 
-        // Элементы управления
         private ComboBox comboBoxDrug;
         private Label labelStockValue;
         private NumericUpDown numericDose;
@@ -47,7 +46,6 @@ namespace DrugCatalog_ver2.Forms
             int inputW = 250;
             int x = 30;
 
-            // 1. Выбор лекарства
             var lblDrug = new Label { Text = Locale.Get("ColDrug") + ":", Location = new Point(x, y), Size = new Size(labelW, 25), Font = new Font(this.Font, FontStyle.Bold) };
             comboBoxDrug = new ComboBox { Location = new Point(x + labelW, y), Size = new Size(inputW, 25), DropDownStyle = ComboBoxStyle.DropDownList };
 
@@ -58,7 +56,6 @@ namespace DrugCatalog_ver2.Forms
             this.Controls.Add(comboBoxDrug);
             y += 50;
 
-            // Группировка параметров
             var grpParams = new GroupBox
             {
                 Text = Locale.Get("GrpParams"),
@@ -68,14 +65,12 @@ namespace DrugCatalog_ver2.Forms
 
             int gy = 30;
 
-            // Текущий остаток
             var lblStock = new Label { Text = Locale.Get("LblCurrentStock"), Location = new Point(20, gy), Size = new Size(180, 25) };
             labelStockValue = new Label { Text = "0", Location = new Point(220, gy), Size = new Size(200, 25), Font = new Font(this.Font, FontStyle.Bold), ForeColor = Color.SteelBlue };
             grpParams.Controls.Add(lblStock);
             grpParams.Controls.Add(labelStockValue);
             gy += 40;
 
-            // Разовая доза
             var lblDose = new Label { Text = Locale.Get("LblSingleDose"), Location = new Point(20, gy), Size = new Size(180, 25) };
             numericDose = new NumericUpDown { Location = new Point(220, gy), Size = new Size(80, 25), Minimum = 0, Maximum = 100, DecimalPlaces = 1, Value = 1 };
             numericDose.ValueChanged += (s, e) => Recalculate();
@@ -83,7 +78,6 @@ namespace DrugCatalog_ver2.Forms
             grpParams.Controls.Add(numericDose);
             gy += 40;
 
-            // Частота в день
             var lblFreq = new Label { Text = Locale.Get("LblDailyFreq"), Location = new Point(20, gy), Size = new Size(180, 25) };
             numericFreq = new NumericUpDown { Location = new Point(220, gy), Size = new Size(80, 25), Minimum = 1, Maximum = 24, Value = 3 };
             numericFreq.ValueChanged += (s, e) => Recalculate();
@@ -93,7 +87,6 @@ namespace DrugCatalog_ver2.Forms
             this.Controls.Add(grpParams);
             y += 170;
 
-            // Группировка результата
             var grpResult = new GroupBox
             {
                 Text = Locale.Get("GrpResult"),
@@ -141,9 +134,6 @@ namespace DrugCatalog_ver2.Forms
             var drug = _drugs.FirstOrDefault(d => d.Name == comboBoxDrug.Text);
             if (drug == null) return;
 
-            // --- ИСПРАВЛЕНИЕ ЗДЕСЬ ---
-            // Было: drug.DosageUnit (мг)
-            // Стало: drug.Form (Таблетки, Ампулы и т.д.)
             labelStockValue.Text = $"{drug.Quantity} {drug.Form}";
 
             decimal quantity = drug.Quantity;
