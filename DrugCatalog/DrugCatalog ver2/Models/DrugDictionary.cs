@@ -1,145 +1,109 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace DrugCatalog_ver2.Models
 {
     public static class DrugDictionary
     {
-        public static readonly Dictionary<string, string> CommonDrugs = new Dictionary<string, string>
+        // --- РУССКИЕ ДАННЫЕ ---
+        private static readonly Dictionary<string, string> _drugsRu = new Dictionary<string, string>
         {
             {"Парацетамол", "Жаропонижающее, обезболивающее"},
             {"Ибупрофен", "Противовоспалительное, обезболивающее"},
             {"Анальгин", "Обезболивающее, жаропонижающее"},
-            {"Кеторол", "Сильное обезболивающее"},
-            {"Диклофенак", "Противовоспалительное, обезболивающее"},
-            {"Нимесулид", "Противовоспалительное, обезболивающее"},
-
-            {"Амоксициллин", "Антибиотик широкого спектра"},
-            {"Азитромицин", "Антибиотик-макролид"},
-            {"Цефтриаксон", "Цефалоспориновый антибиотик"},
-            {"Левофлоксацин", "Фторхинолоновый антибиотик"},
-
-            {"Аспирин Кардио", "Антиагрегант, профилактика тромбов"},
+            {"Аспирин Кардио", "Антиагрегант"},
             {"Амлодипин", "Антигипертензивное"},
-            {"Бисопролол", "Бета-блокатор"},
-            {"Эналаприл", "Ингибитор АПФ"},
-            {"Валсартан", "Блокатор рецепторов ангиотензина"},
-
             {"Омепразол", "Ингибитор протонной помпы"},
-            {"Панкреатин", "Ферментное средство"},
-            {"Домперидон", "Противорвотное"},
-            {"Лоперамид", "Противодиарейное"},
-
-            {"Арбидол", "Противовирусное"},
-            {"Осельтамивир", "Противовирусное"},
-            {"Интерферон", "Иммуномодулятор"},
-
             {"Лоратадин", "Антигистаминное"},
-            {"Цетиризин", "Антигистаминное"},
-            {"Дезлоратадин", "Антигистаминное"},
-
             {"Глицин", "Ноотропное, успокоительное"},
-            {"Афобазол", "Противотревожное"},
-            {"Фенибут", "Ноотропное, анксиолитик"},
-
             {"Аскорбиновая кислота", "Витамин C"},
-            {"Колекальциферол", "Витамин D"},
-            {"Ретинол", "Витамин A"}
+            {"Азитромицин", "Антибиотик"},
+            {"Амоксициллин", "Антибиотик"},
+            {"Кеторол", "Обезболивающее"}
         };
 
-        public static readonly string[] CommonForms =
-        {
-            "Таблетки", "Капсулы", "Раствор", "Сироп", "Суспензия",
-            "Мазь", "Гель", "Крем", "Капли", "Спрей",
-            "Инъекции", "Порошок", "Свечи", "Ампулы", "Драже"
+        private static readonly string[] _manufacturersRu = {
+            "Фармстандарт", "Верофарм", "Озон", "Синтез", "Биохимик",
+            "Bayer", "Teva", "Sandoz", "Pfizer"
         };
 
-        public static readonly string[] CommonDosageUnits =
-        {
-            "мг", "г", "мл", "л", "МЕ", "%"
+        private static readonly string[] _formsRu = {
+            "Таблетки", "Капсулы", "Раствор", "Сироп", "Мазь", "Гель",
+            "Ампулы", "Спрей", "Драже", "Порошок"
         };
 
-        public static readonly string[] CommonManufacturers =
+        // --- АНГЛИЙСКИЕ ДАННЫЕ ---
+        private static readonly Dictionary<string, string> _drugsEn = new Dictionary<string, string>
         {
-            "Bayer", "Novartis", "Pfizer", "Roche", "Sanofi",
-            "GlaxoSmithKline", "Merck", "Johnson & Johnson",
-            "AstraZeneca", "Teva", "Servier", "Berlin-Chemie",
-            "Фармстандарт", "Верофарм", "Озон", "Синтез",
-            "Биохимик", "Красная звезда", "Дарница"
+            {"Paracetamol", "Antipyretic, analgesic"},
+            {"Ibuprofen", "Anti-inflammatory, analgesic"},
+            {"Analgin", "Analgesic"},
+            {"Aspirin Cardio", "Antiplatelet"},
+            {"Amlodipine", "Antihypertensive"},
+            {"Omeprazole", "Proton pump inhibitor"},
+            {"Loratadine", "Antihistamine"},
+            {"Glycine", "Nootropic, sedative"},
+            {"Ascorbic acid", "Vitamin C"},
+            {"Azithromycin", "Antibiotic"},
+            {"Amoxicillin", "Antibiotic"},
+            {"Ketorol", "Analgesic"}
         };
 
-        public static readonly string[] CommonPrescriptionTypes =
-        {
-            "Безрецептурный", "Рецептурный", "Ограниченного отпуска"
+        private static readonly string[] _manufacturersEn = {
+            "Pharmstandard", "Veropharm", "Ozon", "Sintez", "Biochemist",
+            "Bayer", "Teva", "Sandoz", "Pfizer"
         };
 
-        public static string[] GetCommonDosages()
+        private static readonly string[] _formsEn = {
+            "Tablets", "Capsules", "Solution", "Syrup", "Ointment", "Gel",
+            "Ampoules", "Spray", "Dragee", "Powder"
+        };
+
+        // --- МЕТОДЫ ПОЛУЧЕНИЯ ДАННЫХ ПО ЯЗЫКУ ---
+
+        public static Dictionary<string, string> GetCommonDrugs()
         {
-            return new string[]
-            {
-                "50", "100", "125", "200", "250", "500", "1000",
-                "0.5", "1", "2", "5", "10", "20", "25"
-            };
+            return Locale.CurrentLanguage == "Ru" ? _drugsRu : _drugsEn;
         }
 
-        public static string[] GetCommonQuantities()
+        public static string[] GetCommonManufacturers()
         {
-            return new string[]
-            {
-                "10", "20", "30", "50", "100", "250", "500", "1000"
-            };
+            return Locale.CurrentLanguage == "Ru" ? _manufacturersRu : _manufacturersEn;
         }
-        // ДОБАВЛЕНО: Метод для определения категории по названию
+
+        public static string[] GetCommonForms()
+        {
+            return Locale.CurrentLanguage == "Ru" ? _formsRu : _formsEn;
+        }
+
+        public static string[] GetCommonPrescriptionTypes()
+        {
+            if (Locale.CurrentLanguage == "Ru")
+                return new[] { "Безрецептурный", "Рецептурный" };
+            else
+                return new[] { "Over-the-counter", "Prescription" };
+        }
+
+        public static string[] CommonDosageUnits => new[] { "mg", "g", "ml", "UI", "%" };
+
+        public static string[] GetCommonDosages() => new[] { "50", "100", "200", "250", "500", "1000", "1", "2.5", "5", "10", "20" };
+
+        public static string[] GetCommonQuantities() => new[] { "10", "20", "30", "50", "60", "100" };
+
+        // Метод определения категории (работает для обоих языков)
         public static int DetermineCategory(string drugName)
         {
-            if (string.IsNullOrWhiteSpace(drugName))
-                return 1; // Другое
+            if (string.IsNullOrWhiteSpace(drugName)) return 1;
+            string n = drugName.ToLower();
 
-            var name = drugName.ToLower();
+            if (n.Contains("paracetamol") || n.Contains("ibuprofen") || n.Contains("analgin") || n.Contains("парацетамол") || n.Contains("ибупрофен")) return 2;
+            if (n.Contains("amoxicillin") || n.Contains("azithromycin") || n.Contains("амоксициллин") || n.Contains("азитромицин")) return 3;
+            if (n.Contains("aspirin") || n.Contains("amlodipine") || n.Contains("аспирин") || n.Contains("амлодипин")) return 4;
+            if (n.Contains("omeprazole") || n.Contains("омепразол")) return 5;
+            if (n.Contains("loratadine") || n.Contains("лоратадин")) return 7;
+            if (n.Contains("glycine") || n.Contains("глицин")) return 8;
+            if (n.Contains("vitamin") || n.Contains("ascorbic") || n.Contains("витамин") || n.Contains("аскорбиновая")) return 9;
 
-            // Анальгетики
-            if (name.Contains("парацетамол") || name.Contains("ибупрофен") ||
-                name.Contains("анальгин") || name.Contains("кеторол") ||
-                name.Contains("диклофенак") || name.Contains("нимесулид"))
-                return 2;
-
-            // Антибиотики
-            if (name.Contains("амоксициллин") || name.Contains("азитромицин") ||
-                name.Contains("цефтриаксон") || name.Contains("левофлоксацин"))
-                return 3;
-
-            // Сердечно-сосудистые
-            if (name.Contains("аспирин") || name.Contains("амлодипин") ||
-                name.Contains("бисопролол") || name.Contains("эналаприл") ||
-                name.Contains("валсартан"))
-                return 4;
-
-            // Желудочно-кишечные
-            if (name.Contains("омепразол") || name.Contains("панкреатин") ||
-                name.Contains("домперидон") || name.Contains("лоперамид"))
-                return 5;
-
-            // Противовирусные
-            if (name.Contains("арбидол") || name.Contains("осельтамивир") ||
-                name.Contains("интерферон"))
-                return 6;
-
-            // Антигистаминные
-            if (name.Contains("лоратадин") || name.Contains("цетиризин") ||
-                name.Contains("дезлоратадин"))
-                return 7;
-
-            // Неврологические
-            if (name.Contains("глицин") || name.Contains("афобазол") ||
-                name.Contains("фенибут"))
-                return 8;
-
-            // Витамины
-            if (name.Contains("аскорбиновая") || name.Contains("витамин") ||
-                name.Contains("колекальциферол") || name.Contains("ретинол"))
-                return 9;
-
-            return 1; // Другое
+            return 1;
         }
     }
 }

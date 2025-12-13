@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DrugCatalog_ver2.Models;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace DrugCatalog_ver2.Models
+namespace DrugCatalog_ver2.Services
 {
     public interface ICategoryService
     {
@@ -32,12 +33,42 @@ namespace DrugCatalog_ver2.Models
 
         public List<Category> GetCategories()
         {
-            return _categories;
+            var categories = new List<Category>();
+
+            categories.Add(new Category { Id = 1, Name = GetLocalizedCategoryName(1) });
+            categories.Add(new Category { Id = 2, Name = GetLocalizedCategoryName(2) });
+            categories.Add(new Category { Id = 3, Name = GetLocalizedCategoryName(3) });
+            categories.Add(new Category { Id = 4, Name = GetLocalizedCategoryName(4) });
+            categories.Add(new Category { Id = 5, Name = GetLocalizedCategoryName(5) });
+            categories.Add(new Category { Id = 6, Name = GetLocalizedCategoryName(6) });
+            categories.Add(new Category { Id = 7, Name = GetLocalizedCategoryName(7) });
+            categories.Add(new Category { Id = 8, Name = GetLocalizedCategoryName(8) });
+            categories.Add(new Category { Id = 9, Name = GetLocalizedCategoryName(9) });
+
+            return categories;
+        }
+
+        private string GetLocalizedCategoryName(int id)
+        {
+            bool isRu = Locale.CurrentLanguage == "Ru";
+            switch (id)
+            {
+                case 1: return isRu ? "Другое" : "Other";
+                case 2: return isRu ? "Анальгетики" : "Analgesics";
+                case 3: return isRu ? "Антибиотики" : "Antibiotics";
+                case 4: return isRu ? "Сердечно-сосудистые" : "Cardiovascular";
+                case 5: return isRu ? "Желудочно-кишечные" : "Gastrointestinal";
+                case 6: return isRu ? "Противовирусные" : "Antiviral";
+                case 7: return isRu ? "Антигистаминные" : "Antihistamines";
+                case 8: return isRu ? "Неврологические" : "Neurological";
+                case 9: return isRu ? "Витамины" : "Vitamins";
+                default: return isRu ? "Неизвестно" : "Unknown";
+            }
         }
 
         public Category GetCategory(int id)
         {
-            return _categories.FirstOrDefault(c => c.Id == id);
+            return new Category { Id = id, Name = GetLocalizedCategoryName(id) };
         }
 
         public Color GetCategoryColor(int categoryId)

@@ -224,6 +224,11 @@ namespace DrugCatalog_ver2.Models
             {"GrpParams", "Параметры приема"},
             {"GrpResult", "Прогноз"},
             {"MenuCalc", "Калькулятор запасов"},
+
+            {"MsgLoadOptionTitle", "Варианты загрузки"},
+            {"MsgLoadOptionBody", "Файл содержит {0} препаратов.\n\nНажмите 'Да', чтобы ЗАМЕНИТЬ текущий список (старые данные удалятся).\nНажмите 'Нет', чтобы ДОБАВИТЬ к текущему списку."},
+            {"MsgLoadedReplace", "Список полностью заменен. Загружено {0} препаратов."},
+            {"MsgLoadedAppend", "Успешно добавлено {0} препаратов."},
         };
 
         // ==========================================
@@ -431,6 +436,11 @@ namespace DrugCatalog_ver2.Models
             {"GrpParams", "Intake Parameters"},
             {"GrpResult", "Forecast"},
             {"MenuCalc", "Stock Calculator"},
+
+            {"MsgLoadOptionTitle", "Load Options"},
+            {"MsgLoadOptionBody", "File contains {0} drugs.\n\nClick 'Yes' to REPLACE current list (old data will be lost).\nClick 'No' to APPEND to current list."},
+            {"MsgLoadedReplace", "List replaced. Loaded {0} drugs."},
+            {"MsgLoadedAppend", "Successfully added {0} drugs."},
         };
     }
 }

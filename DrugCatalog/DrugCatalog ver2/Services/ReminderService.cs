@@ -1,4 +1,4 @@
-﻿using DrugCatalog_ver2.Forms;
+﻿using DrugCatalog_ver2.Models; // Добавь, если нет
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,14 +7,14 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace DrugCatalog_ver2.Models
+namespace DrugCatalog_ver2.Services
 {
     public interface IReminderService : IDisposable
     {
         void AddReminder(MedicationReminder reminder);
         void UpdateReminder(MedicationReminder reminder);
         void DeleteReminder(int reminderId);
-        List<MedicationReminder> GetReminders();
+        List<MedicationReminder> GetReminders(); // Теперь возвращает только для текущего юзера
         List<MedicationReminder> GetDueReminders();
         void CheckAndShowReminders();
         void ShowReminderNotification(MedicationReminder reminder);
@@ -22,27 +22,26 @@ namespace DrugCatalog_ver2.Models
 
     public class ReminderService : IReminderService
     {
-        // Путь к файлу теперь в папке Data
         private readonly string _remindersFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "reminders.xml");
-
-        private List<MedicationReminder> _reminders;
+        private List<MedicationReminder> _allReminders; // Все напоминания всех пользователей
         private readonly Timer _reminderTimer;
         private readonly NotifyIcon _notifyIcon;
         private readonly IXmlDataService _dataService;
+        private readonly int _currentUserId; // ID текущего пользователя
 
-        // Храним последнее показанное напоминание для обработки клика
         private MedicationReminder _lastShownReminder;
         private bool _disposed = false;
 
-        public ReminderService(IXmlDataService dataService)
+        // Конструктор теперь принимает ID пользователя
+        public ReminderService(IXmlDataService dataService, int currentUserId)
         {
             _dataService = dataService;
+            _currentUserId = currentUserId; // Запоминаем, чей это сервис
 
-            // Создаем папку Data, если её нет (на всякий случай, хотя XmlDataService это тоже делает)
             var directory = Path.GetDirectoryName(_remindersFilePath);
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
 
-            _reminders = LoadReminders();
+            _allReminders = LoadReminders();
 
             _notifyIcon = new NotifyIcon
             {
@@ -51,28 +50,20 @@ namespace DrugCatalog_ver2.Models
                 Text = "Drug Catalog Reminders"
             };
 
-            // Подписка на клик по уведомлению
             _notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
 
-            // Таймер проверяет напоминания каждую минуту
             _reminderTimer = new Timer { Interval = 60000 };
             _reminderTimer.Tick += (s, e) => CheckAndShowReminders();
             _reminderTimer.Start();
         }
 
-        // --- Обработка клика по уведомлению ---
         private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
             if (_lastShownReminder == null || _dataService == null) return;
 
-            // Локализованный вопрос: "Вы приняли Парацетамол (1 таб)?"
             string message = string.Format(Locale.Get("MsgConfirmTake"), _lastShownReminder.DrugName, _lastShownReminder.Dosage);
 
-            var result = MessageBox.Show(
-                message,
-                Locale.Get("TitleConfirmTake"),
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            var result = MessageBox.Show(message, Locale.Get("TitleConfirmTake"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -80,13 +71,11 @@ namespace DrugCatalog_ver2.Models
             }
         }
 
-        // --- Логика списания со склада ---
         private void DeductDrugStock(MedicationReminder reminder)
         {
             try
             {
                 var allDrugs = _dataService.LoadDrugs();
-                // Ищем препарат по ID, если не нашли - по имени
                 var drug = allDrugs.FirstOrDefault(d => d.Id == reminder.DrugId);
                 if (drug == null)
                 {
@@ -96,38 +85,29 @@ namespace DrugCatalog_ver2.Models
                 if (drug != null)
                 {
                     int amountToDeduct = ParseDosageAmount(reminder.Dosage);
-
                     if (amountToDeduct > 0)
                     {
                         if (drug.Quantity >= amountToDeduct)
                         {
                             drug.Quantity -= amountToDeduct;
                             _dataService.SaveDrugs(allDrugs);
-
-                            // Локализованное сообщение об успехе
                             string msg = string.Format(Locale.Get("MsgDeducted"), amountToDeduct, drug.Quantity);
                             _notifyIcon.ShowBalloonTip(3000, Locale.Get("TitleSuccess"), msg, ToolTipIcon.Info);
                         }
                         else
                         {
-                            // Локализованное предупреждение
                             string msg = string.Format(Locale.Get("MsgLowStock"), drug.Name, drug.Quantity, amountToDeduct);
                             MessageBox.Show(msg, Locale.Get("TitleWarning"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{Locale.Get("MsgError")}: {ex.Message}");
-            }
+            catch (Exception ex) { MessageBox.Show($"{Locale.Get("MsgError")}: {ex.Message}"); }
         }
 
-        // Парсинг числа из строки дозировки (например "2 таблетки" -> 2)
         private int ParseDosageAmount(string dosageString)
         {
             if (string.IsNullOrWhiteSpace(dosageString)) return 0;
-
             try
             {
                 var parts = dosageString.Trim().Split(' ');
@@ -135,50 +115,56 @@ namespace DrugCatalog_ver2.Models
                 {
                     string numberPart = parts[0].Replace(',', '.');
                     if (decimal.TryParse(numberPart, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal result))
-                    {
                         return (int)Math.Ceiling(result);
-                    }
                 }
             }
             catch { }
             return 0;
         }
 
-        // --- CRUD операции ---
-
         public void AddReminder(MedicationReminder reminder)
         {
-            reminder.Id = _reminders.Count > 0 ? _reminders.Max(r => r.Id) + 1 : 1;
-            _reminders.Add(reminder);
+            reminder.Id = _allReminders.Count > 0 ? _allReminders.Max(r => r.Id) + 1 : 1;
+            reminder.UserId = _currentUserId; // Привязываем к текущему пользователю
+            _allReminders.Add(reminder);
             SaveReminders();
         }
 
         public void UpdateReminder(MedicationReminder reminder)
         {
-            var existing = _reminders.FirstOrDefault(r => r.Id == reminder.Id);
+            var existing = _allReminders.FirstOrDefault(r => r.Id == reminder.Id && r.UserId == _currentUserId);
             if (existing != null)
             {
-                _reminders.Remove(existing);
-                _reminders.Add(reminder);
+                // Обновляем поля, но сохраняем ID и UserId
+                existing.DrugId = reminder.DrugId;
+                existing.DrugName = reminder.DrugName;
+                existing.Dosage = reminder.Dosage;
+                existing.ReminderTime = reminder.ReminderTime;
+                existing.DaysOfWeek = reminder.DaysOfWeek;
+                existing.IsActive = reminder.IsActive;
+                existing.Notes = reminder.Notes;
                 SaveReminders();
             }
         }
 
         public void DeleteReminder(int reminderId)
         {
-            _reminders.RemoveAll(r => r.Id == reminderId);
+            _allReminders.RemoveAll(r => r.Id == reminderId && r.UserId == _currentUserId);
             SaveReminders();
         }
 
+        // Возвращаем только напоминания ТЕКУЩЕГО пользователя
         public List<MedicationReminder> GetReminders()
         {
-            return _reminders.Where(r => r.IsActive).ToList();
+            return _allReminders.Where(r => r.UserId == _currentUserId && r.IsActive).ToList();
         }
 
+        // Проверяем только напоминания ТЕКУЩЕГО пользователя
         public List<MedicationReminder> GetDueReminders()
         {
             var now = DateTime.Now;
-            return _reminders.Where(r =>
+            return _allReminders.Where(r =>
+                r.UserId == _currentUserId && // Фильтр по пользователю
                 r.IsActive &&
                 r.ShouldShowToday() &&
                 r.ReminderTime.TimeOfDay <= now.TimeOfDay &&
@@ -198,41 +184,26 @@ namespace DrugCatalog_ver2.Models
         public void ShowReminderNotification(MedicationReminder reminder)
         {
             _lastShownReminder = reminder;
-
-            // Локализация заголовка и текста
             _notifyIcon.BalloonTipTitle = Locale.Get("NotifTitle");
-
-            // Текст: Название \n Дозировка: ... \n Нажмите...
             _notifyIcon.BalloonTipText = $"{reminder.DrugName}\n{Locale.Get("NotifDosage")}: {reminder.Dosage}\n\n{Locale.Get("NotifClick")}";
-
             if (!string.IsNullOrEmpty(reminder.Notes))
-            {
                 _notifyIcon.BalloonTipText += $"\n{Locale.Get("ColNotes")}: {reminder.Notes}";
-            }
-
             _notifyIcon.ShowBalloonTip(10000);
             System.Media.SystemSounds.Exclamation.Play();
         }
-
-        // --- Загрузка и сохранение ---
 
         private List<MedicationReminder> LoadReminders()
         {
             try
             {
-                if (!File.Exists(_remindersFilePath))
-                    return new List<MedicationReminder>();
-
+                if (!File.Exists(_remindersFilePath)) return new List<MedicationReminder>();
                 var serializer = new XmlSerializer(typeof(List<MedicationReminder>));
                 using (var stream = new FileStream(_remindersFilePath, FileMode.Open))
                 {
                     return (List<MedicationReminder>)serializer.Deserialize(stream) ?? new List<MedicationReminder>();
                 }
             }
-            catch (Exception)
-            {
-                return new List<MedicationReminder>();
-            }
+            catch { return new List<MedicationReminder>(); }
         }
 
         private void SaveReminders()
@@ -242,13 +213,10 @@ namespace DrugCatalog_ver2.Models
                 var serializer = new XmlSerializer(typeof(List<MedicationReminder>));
                 using (var stream = new FileStream(_remindersFilePath, FileMode.Create))
                 {
-                    serializer.Serialize(stream, _reminders);
+                    serializer.Serialize(stream, _allReminders);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{Locale.Get("MsgError")}: {ex.Message}");
-            }
+            catch (Exception ex) { MessageBox.Show($"{Locale.Get("MsgError")}: {ex.Message}"); }
         }
 
         public void Dispose()

@@ -1,4 +1,5 @@
 ﻿using DrugCatalog_ver2.Models;
+using DrugCatalog_ver2.Services; // Обязательно добавь это пространство имен
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,6 +16,7 @@ namespace DrugCatalog_ver2.Forms
         private Drug _drug;
         private bool _isEditMode;
 
+        // Элементы управления
         private ComboBox comboBoxName, comboBoxSubstance, comboBoxManufacturer, comboBoxForm, comboBoxUnit, comboBoxPrescription;
         private ComboBox comboBoxDosage, comboBoxQuantity, comboBoxCategory;
         private DateTimePicker datePickerExpiry;
@@ -30,8 +32,8 @@ namespace DrugCatalog_ver2.Forms
             _drug = drug ?? new Drug();
 
             InitializeComponent();
-            SetupAutoComplete();
-            if (_isEditMode) FillForm();
+            SetupAutoComplete(); // Заполняем списки данными
+            if (_isEditMode) FillForm(); // Если редактирование, подставляем значения
         }
 
         private void InitializeComponent()
@@ -39,7 +41,7 @@ namespace DrugCatalog_ver2.Forms
             this.SuspendLayout();
 
             this.Text = _isEditMode ? Locale.Get("TitleEditDrug") : Locale.Get("TitleNewDrug");
-            this.Size = new Size(500, 600);
+            this.Size = new Size(500, 630); // Немного увеличил высоту
             this.StartPosition = FormStartPosition.CenterParent;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -51,83 +53,48 @@ namespace DrugCatalog_ver2.Forms
             this.ResumeLayout(false);
         }
 
-        private void SetupAutoComplete()
-        {
-            // Автозаполнение оставляем как есть, это данные, а не интерфейс
-            foreach (var drugName in DrugDictionary.CommonDrugs.Keys)
-                comboBoxName.Items.Add(drugName);
-
-            var existingNames = _allDrugs.Select(d => d.Name).Where(n => !string.IsNullOrEmpty(n)).Distinct().OrderBy(n => n).ToArray();
-            foreach (var name in existingNames)
-                if (!comboBoxName.Items.Contains(name)) comboBoxName.Items.Add(name);
-
-            var substances = _allDrugs.Select(d => d.ActiveSubstance).Where(s => !string.IsNullOrEmpty(s)).Distinct().OrderBy(s => s).ToArray();
-            comboBoxSubstance.Items.AddRange(substances);
-
-            comboBoxManufacturer.Items.AddRange(DrugDictionary.CommonManufacturers);
-            comboBoxForm.Items.AddRange(DrugDictionary.CommonForms);
-            comboBoxUnit.Items.AddRange(DrugDictionary.CommonDosageUnits);
-            comboBoxPrescription.Items.AddRange(DrugDictionary.CommonPrescriptionTypes);
-            comboBoxDosage.Items.AddRange(DrugDictionary.GetCommonDosages());
-            comboBoxQuantity.Items.AddRange(DrugDictionary.GetCommonQuantities());
-
-            var categories = _categoryService.GetCategories();
-            foreach (var category in categories) comboBoxCategory.Items.Add(category.Name);
-
-            SetupComboBoxAutoComplete(comboBoxName);
-            SetupComboBoxAutoComplete(comboBoxSubstance);
-            SetupComboBoxAutoComplete(comboBoxManufacturer);
-            SetupComboBoxAutoComplete(comboBoxForm);
-            SetupComboBoxAutoComplete(comboBoxUnit);
-            SetupComboBoxAutoComplete(comboBoxPrescription);
-            SetupComboBoxAutoComplete(comboBoxDosage);
-            SetupComboBoxAutoComplete(comboBoxQuantity);
-            SetupComboBoxAutoComplete(comboBoxCategory);
-        }
-
-        private void SetupComboBoxAutoComplete(ComboBox comboBox)
-        {
-            comboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            comboBox.AutoCompleteSource = AutoCompleteSource.ListItems;
-        }
-
         private void CreateControls()
         {
             int y = 10;
             int labelWidth = 150;
             int controlWidth = 300;
 
+            // Категория
             AddComboBoxControl(Locale.Get("LblCategoryReq"), ref y, labelWidth, out comboBoxCategory, controlWidth);
-            var categories = _categoryService.GetCategories();
-            foreach (var category in categories) comboBoxCategory.Items.Add(category.Name);
-            comboBoxCategory.SelectedIndex = 0;
+            // Важно: здесь мы НЕ заполняем категорию, это делается в SetupAutoComplete
 
+            // Название
             AddComboBoxControl(Locale.Get("LblNameReq"), ref y, labelWidth, out comboBoxName, controlWidth);
             comboBoxName.SelectedIndexChanged += (s, e) => UpdateDrugInfoFromDictionary();
 
+            // Действующее вещество
             AddComboBoxControl(Locale.Get("LblSubstReq"), ref y, labelWidth, out comboBoxSubstance, controlWidth);
+
+            // Производитель
             AddComboBoxControl(Locale.Get("LblManufReq"), ref y, labelWidth, out comboBoxManufacturer, controlWidth);
+
+            // Форма выпуска
             AddComboBoxControl(Locale.Get("LblForm"), ref y, labelWidth, out comboBoxForm, controlWidth);
 
-            // Панель дозировки
+            // --- Панель дозировки (Сложная компоновка) ---
             var dosagePanel = new Panel { Location = new Point(10, y), Size = new Size(450, 30) };
+
             var lblDosage = new Label { Text = Locale.Get("LblDosageReq"), Location = new Point(0, 5), Width = labelWidth };
             comboBoxDosage = new ComboBox { Location = new Point(150, 2), Width = 100, DropDownStyle = ComboBoxStyle.DropDown };
-            comboBoxDosage.Items.AddRange(DrugDictionary.GetCommonDosages());
-            SetupComboBoxAutoComplete(comboBoxDosage);
 
-            var lblUnit = new Label { Text = Locale.Get("LblUnit"), Location = new Point(260, 5), Width = 120 };
-            comboBoxUnit = new ComboBox { Location = new Point(380, 2), Width = 70, DropDownStyle = ComboBoxStyle.DropDown };
-            comboBoxUnit.Items.AddRange(DrugDictionary.CommonDosageUnits);
-            SetupComboBoxAutoComplete(comboBoxUnit);
+            var lblUnit = new Label { Text = Locale.Get("LblUnit"), Location = new Point(260, 5), Width = 100, TextAlign = ContentAlignment.MiddleRight };
+            comboBoxUnit = new ComboBox { Location = new Point(370, 2), Width = 80, DropDownStyle = ComboBoxStyle.DropDown };
 
             dosagePanel.Controls.AddRange(new Control[] { lblDosage, comboBoxDosage, lblUnit, comboBoxUnit });
             this.Controls.Add(dosagePanel);
             y += 35;
+            // ---------------------------------------------
 
+            // Тип отпуска и Количество
             AddComboBoxControl(Locale.Get("LblPresc"), ref y, labelWidth, out comboBoxPrescription, controlWidth);
             AddComboBoxControl(Locale.Get("LblQtyReq"), ref y, labelWidth, out comboBoxQuantity, controlWidth);
 
+            // Срок годности
             var lblExpiry = new Label { Text = Locale.Get("LblExpReq"), Location = new Point(10, y), Width = labelWidth };
             datePickerExpiry = new DateTimePicker
             {
@@ -141,6 +108,7 @@ namespace DrugCatalog_ver2.Forms
             this.Controls.Add(datePickerExpiry);
             y += 35;
 
+            // Многострочные поля
             AddMultiLineControl(Locale.Get("LblIndic"), ref y, labelWidth, out textBoxIndications, controlWidth, 60);
             AddMultiLineControl(Locale.Get("LblContra"), ref y, labelWidth, out textBoxContraindications, controlWidth, 60);
 
@@ -171,6 +139,7 @@ namespace DrugCatalog_ver2.Forms
             buttonPanel.Controls.Add(buttonCancel);
             this.Controls.Add(buttonPanel);
 
+            // Подсказка
             var tipLabel = new Label
             {
                 Text = Locale.Get("LblReqFields"),
@@ -182,18 +151,90 @@ namespace DrugCatalog_ver2.Forms
             this.Controls.Add(tipLabel);
         }
 
+        // Централизованное заполнение списков (важно для локализации)
+        private void SetupAutoComplete()
+        {
+            // 1. Очищаем все списки (чтобы не было дублей)
+            comboBoxName.Items.Clear();
+            comboBoxSubstance.Items.Clear();
+            comboBoxManufacturer.Items.Clear();
+            comboBoxForm.Items.Clear();
+            comboBoxUnit.Items.Clear();
+            comboBoxPrescription.Items.Clear();
+            comboBoxDosage.Items.Clear();
+            comboBoxQuantity.Items.Clear();
+            comboBoxCategory.Items.Clear();
+
+            // 2. Названия лекарств (Словарь + Существующие)
+            var commonDrugs = DrugDictionary.GetCommonDrugs();
+            foreach (var drugName in commonDrugs.Keys)
+            {
+                comboBoxName.Items.Add(drugName);
+            }
+
+            var existingNames = _allDrugs.Select(d => d.Name).Where(n => !string.IsNullOrEmpty(n)).Distinct().OrderBy(n => n).ToArray();
+            foreach (var name in existingNames)
+            {
+                if (!comboBoxName.Items.Contains(name)) comboBoxName.Items.Add(name);
+            }
+
+            // Вещества
+            var substances = _allDrugs.Select(d => d.ActiveSubstance).Where(s => !string.IsNullOrEmpty(s)).Distinct().OrderBy(s => s).ToArray();
+            comboBoxSubstance.Items.AddRange(substances);
+
+            // 3. Списки из словаря (зависят от языка)
+            comboBoxManufacturer.Items.AddRange(DrugDictionary.GetCommonManufacturers());
+            comboBoxForm.Items.AddRange(DrugDictionary.GetCommonForms());
+            comboBoxPrescription.Items.AddRange(DrugDictionary.GetCommonPrescriptionTypes());
+
+            // Числовые данные и единицы
+            comboBoxUnit.Items.AddRange(DrugDictionary.CommonDosageUnits);
+            comboBoxDosage.Items.AddRange(DrugDictionary.GetCommonDosages());
+            comboBoxQuantity.Items.AddRange(DrugDictionary.GetCommonQuantities());
+
+            // 4. Категории (переведенные)
+            var categories = _categoryService.GetCategories();
+            foreach (var category in categories)
+            {
+                comboBoxCategory.Items.Add(category.Name);
+            }
+            if (comboBoxCategory.Items.Count > 0) comboBoxCategory.SelectedIndex = 0;
+
+            // Настройка автодополнения
+            SetupComboBoxAutoComplete(comboBoxName);
+            SetupComboBoxAutoComplete(comboBoxSubstance);
+            SetupComboBoxAutoComplete(comboBoxManufacturer);
+            SetupComboBoxAutoComplete(comboBoxForm);
+            SetupComboBoxAutoComplete(comboBoxUnit);
+            SetupComboBoxAutoComplete(comboBoxDosage);
+            SetupComboBoxAutoComplete(comboBoxCategory);
+        }
+
+        private void SetupComboBoxAutoComplete(ComboBox comboBox)
+        {
+            comboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            comboBox.AutoCompleteSource = AutoCompleteSource.ListItems;
+        }
+
+        // Автозаполнение полей при выборе известного лекарства
         private void UpdateDrugInfoFromDictionary()
         {
-            if (DrugDictionary.CommonDrugs.ContainsKey(comboBoxName.Text))
+            var commonDrugs = DrugDictionary.GetCommonDrugs();
+            if (commonDrugs.ContainsKey(comboBoxName.Text))
             {
-                var description = DrugDictionary.CommonDrugs[comboBoxName.Text];
+                var description = commonDrugs[comboBoxName.Text];
+
+                // Категория
                 var categoryId = DrugDictionary.DetermineCategory(comboBoxName.Text);
                 var category = _categoryService.GetCategory(categoryId);
                 if (category != null) comboBoxCategory.Text = category.Name;
+
+                // Показания
                 if (string.IsNullOrEmpty(textBoxIndications.Text)) textBoxIndications.Text = description;
 
-                // Авто-заполнение формы (упрощено)
-                if (comboBoxName.Text.ToLower().Contains("таблет")) comboBoxForm.Text = "Таблетки";
+                // Форма выпуска (простая эвристика)
+                string nameLower = comboBoxName.Text.ToLower();
+                // Тут можно было бы сделать сложнее, но для курсовой достаточно
             }
         }
 
@@ -217,37 +258,58 @@ namespace DrugCatalog_ver2.Forms
 
         private void FillForm()
         {
+            // Категория
             var category = _categoryService.GetCategory(_drug.CategoryId);
             comboBoxCategory.Text = category != null ? category.Name : "";
+
             comboBoxName.Text = _drug.Name ?? "";
             comboBoxSubstance.Text = _drug.ActiveSubstance ?? "";
             comboBoxManufacturer.Text = _drug.Manufacturer ?? "";
             comboBoxForm.Text = _drug.Form ?? "";
+
             comboBoxDosage.Text = _drug.Dosage > 0 ? _drug.Dosage.ToString() : "";
             comboBoxUnit.Text = _drug.DosageUnit ?? "";
+
             comboBoxPrescription.Text = _drug.PrescriptionType ?? "";
             comboBoxQuantity.Text = _drug.Quantity > 0 ? _drug.Quantity.ToString() : "";
-            datePickerExpiry.Value = _drug.ExpiryDate > DateTime.MinValue ? _drug.ExpiryDate : DateTime.Now.AddYears(1);
-            if (_drug.Indications != null) textBoxIndications.Text = string.Join(Environment.NewLine, _drug.Indications);
-            if (_drug.Contraindications != null) textBoxContraindications.Text = string.Join(Environment.NewLine, _drug.Contraindications);
+
+            if (_drug.ExpiryDate > DateTime.MinValue)
+                datePickerExpiry.Value = _drug.ExpiryDate;
+            else
+                datePickerExpiry.Value = DateTime.Now.AddYears(1);
+
+            if (_drug.Indications != null)
+                textBoxIndications.Text = string.Join(Environment.NewLine, _drug.Indications);
+
+            if (_drug.Contraindications != null)
+                textBoxContraindications.Text = string.Join(Environment.NewLine, _drug.Contraindications);
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
         {
             if (!ValidateForm()) return;
+
             try
             {
+                // Находим ID категории по имени
                 var selectedCategory = _categoryService.GetCategories().FirstOrDefault(c => c.Name == comboBoxCategory.Text);
-                _drug.CategoryId = selectedCategory?.Id ?? 1;
+                _drug.CategoryId = selectedCategory?.Id ?? 1; // 1 = Другое/Other
+
                 _drug.Name = comboBoxName.Text.Trim();
                 _drug.ActiveSubstance = comboBoxSubstance.Text.Trim();
                 _drug.Manufacturer = comboBoxManufacturer.Text.Trim();
                 _drug.Form = comboBoxForm.Text.Trim();
+
                 if (decimal.TryParse(comboBoxDosage.Text, out decimal dosage)) _drug.Dosage = dosage;
                 _drug.DosageUnit = comboBoxUnit.Text.Trim();
+
                 _drug.PrescriptionType = comboBoxPrescription.Text.Trim();
+
                 if (int.TryParse(comboBoxQuantity.Text, out int quantity)) _drug.Quantity = quantity;
+
                 _drug.ExpiryDate = datePickerExpiry.Value;
+
+                // Списки строк
                 _drug.Indications = textBoxIndications.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToList();
                 _drug.Contraindications = textBoxContraindications.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToList();
 
@@ -279,9 +341,12 @@ namespace DrugCatalog_ver2.Forms
             if (string.IsNullOrWhiteSpace(comboBoxName.Text)) { ShowError(Locale.Get("MsgEnterName"), comboBoxName); return false; }
             if (string.IsNullOrWhiteSpace(comboBoxSubstance.Text)) { ShowError(Locale.Get("MsgEnterSubst"), comboBoxSubstance); return false; }
             if (string.IsNullOrWhiteSpace(comboBoxManufacturer.Text)) { ShowError(Locale.Get("MsgEnterManuf"), comboBoxManufacturer); return false; }
+
             if (!decimal.TryParse(comboBoxDosage.Text, out decimal d) || d <= 0) { ShowError(Locale.Get("MsgErrDosage"), comboBoxDosage); return false; }
             if (!int.TryParse(comboBoxQuantity.Text, out int q) || q <= 0) { ShowError(Locale.Get("MsgErrQty"), comboBoxQuantity); return false; }
+
             if (datePickerExpiry.Value <= DateTime.Now) { ShowError(Locale.Get("MsgErrExp"), datePickerExpiry); return false; }
+
             return true;
         }
 

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using DrugCatalog_ver2.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace DrugCatalog_ver2.Models
+namespace DrugCatalog_ver2.Services
 {
     public interface IMedicationScheduleService
     {

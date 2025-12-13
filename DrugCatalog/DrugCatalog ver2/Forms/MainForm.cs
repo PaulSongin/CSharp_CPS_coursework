@@ -1,4 +1,5 @@
-﻿using DrugCatalog_ver2.Models;
+﻿using DrugCatalog_ver2.Services;
+using DrugCatalog_ver2.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,7 +16,7 @@ namespace DrugCatalog_ver2.Forms
         private readonly IXmlDataService _dataService;
         private readonly ICategoryService _categoryService;
         private readonly IUserService _userService;
-        private readonly IReminderService _reminderService;
+        private IReminderService _reminderService;
         private User _currentUser;
         private string _currentFilePath;
         private bool _autoDeleteEnabled = true;
@@ -49,8 +50,8 @@ namespace DrugCatalog_ver2.Forms
             _currentUser = currentUser;
             _categoryService = new CategoryService();
 
-            // Инициализируем сервис напоминаний с доступом к данным (для списания)
-            _reminderService = new ReminderService(_dataService);
+            // ПЕРЕДАЕМ ID ПОЛЬЗОВАТЕЛЯ
+            _reminderService = new ReminderService(_dataService, _currentUser.Id);
 
             _currentFilePath = null;
 
@@ -263,7 +264,7 @@ namespace DrugCatalog_ver2.Forms
             var autoCompleteCollection = new AutoCompleteStringCollection();
             textBoxSearch.AutoCompleteCustomSource = autoCompleteCollection;
 
-            foreach (var drug in DrugDictionary.CommonDrugs.Keys)
+            foreach (var drug in DrugDictionary.GetCommonDrugs().Keys)
                 autoCompleteCollection.Add(drug);
 
             textBoxSearch.Enter += (s, e) => {
@@ -532,6 +533,8 @@ namespace DrugCatalog_ver2.Forms
             {
                 var reminder = new MedicationReminder
                 {
+                    // ВАЖНО: ID пользователя ставится здесь, но дублируется и в сервисе для надежности
+                    UserId = _currentUser.Id,
                     DrugId = drug.Id,
                     DrugName = drug.Name,
                     Dosage = $"{drug.Dosage} {drug.DosageUnit}",
@@ -553,8 +556,22 @@ namespace DrugCatalog_ver2.Forms
         {
             try
             {
-                _drugs = _dataService.LoadDrugs();
-                if (_autoDeleteEnabled) AutoDeleteExpiredDrugs();
+                // Если файл не выбран (пустая сессия), мы ничего не грузим из общей папки по умолчанию
+                if (string.IsNullOrEmpty(_currentFilePath))
+                {
+                    // Если список пуст - инициализируем пустым
+                    if (_drugs == null) _drugs = new List<Drug>();
+                }
+                else
+                {
+                    // Если файл был открыт - перезагружаем его
+                    _drugs = LoadDrugsFromFile(_currentFilePath);
+                }
+
+                // Удаляем просроченные только если включено
+                if (_autoDeleteEnabled && _drugs.Count > 0)
+                    AutoDeleteExpiredDrugs();
+
                 RefreshAllTabs();
                 UpdateSearchAutoComplete();
                 UpdateWindowTitle();
@@ -666,19 +683,54 @@ namespace DrugCatalog_ver2.Forms
         {
             if (MessageBox.Show(Locale.Get("MsgConfirmSwitch"), Locale.Get("MenuSwitch"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (_drugs != null && _drugs.Count > 0) _dataService.SaveDrugs(_drugs);
+                // 1. Предлагаем сохранить работу ПРЕДЫДУЩЕМУ пользователю
+                if (_drugs != null && _drugs.Count > 0)
+                {
+                    var saveResult = MessageBox.Show(Locale.Get("MsgSaveSuccess") + "?", Locale.Get("MenuSave"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (saveResult == DialogResult.Yes)
+                    {
+                        // Если путь есть - сохраняем туда, если нет - через SaveAs
+                        if (_currentFilePath != null)
+                            SaveDrugsToFile(_drugs, _currentFilePath);
+                        else
+                            SaveAsToXmlFile();
+                    }
+                }
+
+                // 2. Освобождаем ресурсы старого пользователя
+                _reminderService?.Dispose();
+
                 using (var loginForm = new LoginForm(_userService))
                 {
                     if (loginForm.ShowDialog() == DialogResult.OK && loginForm.LoggedInUser != null)
                     {
+                        // 3. Логиним нового пользователя
                         _currentUser = loginForm.LoggedInUser;
+
+                        // 4. СБРАСЫВАЕМ ВСЕ ДАННЫЕ В НОЛЬ
+                        _currentFilePath = null;
+                        _drugs = new List<Drug>(); // <-- Создаем пустой список!
+
+                        // ВАЖНО: Мы НЕ вызываем LoadDrugs(), чтобы не грузить общую базу
+
+                        // 5. Пересоздаем сервис напоминаний
+                        // Обрати внимание: убрал readonly у поля _reminderService в начале класса!
+                        _reminderService = new ReminderService(_dataService, _currentUser.Id);
+
+                        // 6. Обновляем интерфейс (таблицы очистятся, так как _drugs пустой)
                         UpdateUserInterface();
-                        LoadDrugs();
+                        RefreshAllTabs();
+                        UpdateRemindersStatus();
+
                         MessageBox.Show($"{Locale.Get("MsgWelcome")}, {_currentUser.FullName}!", Locale.Get("MenuSwitch"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else if (MessageBox.Show(Locale.Get("MsgConfirmExit"), Locale.Get("MenuExit"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         this.Close();
+                    }
+                    else
+                    {
+                        _reminderService = new ReminderService(_dataService, _currentUser.Id);
                     }
                 }
             }
@@ -702,7 +754,7 @@ namespace DrugCatalog_ver2.Forms
         {
             if (_drugs == null) return;
             var autoCompleteCollection = new AutoCompleteStringCollection();
-            foreach (var drug in DrugDictionary.CommonDrugs.Keys) autoCompleteCollection.Add(drug);
+            foreach (var drug in DrugDictionary.GetCommonDrugs().Keys) autoCompleteCollection.Add(drug);
             foreach (var drug in _drugs)
             {
                 if (!string.IsNullOrWhiteSpace(drug.Name)) autoCompleteCollection.Add(drug.Name);
@@ -836,13 +888,65 @@ namespace DrugCatalog_ver2.Forms
 
                         if (loadedDrugs.Count > 0)
                         {
-                            int maxId = _drugs.Count > 0 ? _drugs.Max(d => d.Id) : 0;
-                            foreach (var drug in loadedDrugs) drug.Id = ++maxId;
+                            var result = MessageBox.Show(
+                                string.Format(Locale.Get("MsgLoadOptionBody"), loadedDrugs.Count),
+                                Locale.Get("MsgLoadOptionTitle"),
+                                MessageBoxButtons.YesNoCancel,
+                                MessageBoxIcon.Question
+                            );
 
-                            _drugs.AddRange(loadedDrugs);
-                            _dataService.SaveDrugs(_drugs);
-                            LoadDrugs();
-                            MessageBox.Show($"{Locale.Get("MsgSaved")} {loadedDrugs.Count} drugs", Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            if (result == DialogResult.Cancel)
+                            {
+                                return; 
+                            }
+
+                            if (result == DialogResult.Yes)
+                            {
+                                int newId = 1;
+                                foreach (var drug in loadedDrugs)
+                                {
+                                    drug.Id = newId++;
+                                }
+
+                                _drugs = loadedDrugs;
+                                _currentFilePath = filePath; 
+
+                                _dataService.SaveDrugs(_drugs);
+                                LoadDrugs(); 
+
+                                MessageBox.Show(
+                                    string.Format(Locale.Get("MsgLoadedReplace"), loadedDrugs.Count),
+                                    Locale.Get("MsgSaved"),
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                            }
+                            else if (result == DialogResult.No)
+                            {
+                                int maxId = _drugs.Count > 0 ? _drugs.Max(d => d.Id) : 0;
+                                foreach (var drug in loadedDrugs)
+                                {
+                                    drug.Id = ++maxId;
+                                }
+
+                                _drugs.AddRange(loadedDrugs);
+
+                                _dataService.SaveDrugs(_drugs);
+                                LoadDrugs(); 
+
+                                MessageBox.Show(
+                                    string.Format(Locale.Get("MsgLoadedAppend"), loadedDrugs.Count),
+                                    Locale.Get("MsgSaved"),
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                Locale.Get("MsgNoDataClean"),
+                                Locale.Get("MsgError"),
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                         }
                     }
                     catch (Exception ex)

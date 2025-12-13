@@ -9,7 +9,7 @@
     <Dosage>500</Dosage>
     <DosageUnit>мг</DosageUnit>
     <PrescriptionType>Безрецептурный</PrescriptionType>
-    <Quantity>18</Quantity>
+    <Quantity>19</Quantity>
     <ExpiryDate>2025-12-31T00:00:00</ExpiryDate>
     <CategoryId>2</CategoryId>
     <Indications>
@@ -87,7 +87,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>6</Id>
+    <Id>5</Id>
     <Name>Аскорбиновая кислота</Name>
     <ActiveSubstance>Аскорбиновая кислота</ActiveSubstance>
     <Manufacturer>Красная звезда</Manufacturer>
@@ -108,7 +108,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>7</Id>
+    <Id>6</Id>
     <Name>Глицин</Name>
     <ActiveSubstance>Глицин</ActiveSubstance>
     <Manufacturer>Озон</Manufacturer>
@@ -129,7 +129,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>8</Id>
+    <Id>7</Id>
     <Name>Азитромицин</Name>
     <ActiveSubstance>Азитромицин</ActiveSubstance>
     <Manufacturer>Верофарм</Manufacturer>
@@ -150,7 +150,7 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>9</Id>
+    <Id>8</Id>
     <Name>Амлодипин</Name>
     <ActiveSubstance>Амлодипин</ActiveSubstance>
     <Manufacturer>Berlin-Chemie</Manufacturer>

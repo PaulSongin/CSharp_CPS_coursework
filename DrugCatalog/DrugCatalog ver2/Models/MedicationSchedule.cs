@@ -17,7 +17,7 @@ namespace DrugCatalog_ver2.Models
         public decimal Dosage { get; set; }
         public string DosageUnit { get; set; }
         public ScheduleFrequency Frequency { get; set; }
-        public string DaysOfWeek { get; set; } // "1,3,5" для понедельник, среда, пятница
+        public string DaysOfWeek { get; set; } 
         public bool IsActive { get; set; }
         public string Notes { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -27,11 +27,11 @@ namespace DrugCatalog_ver2.Models
         {
             StartDate = DateTime.Today;
             EndDate = DateTime.Today.AddDays(30);
-            Time = new TimeSpan(8, 0, 0); // 08:00 по умолчанию
+            Time = new TimeSpan(8, 0, 0);
             IsActive = true;
             CreatedAt = DateTime.Now;
             Frequency = ScheduleFrequency.Daily;
-            DaysOfWeek = "1,2,3,4,5,6,7"; // Все дни
+            DaysOfWeek = "1,2,3,4,5,6,7";
         }
     }
 

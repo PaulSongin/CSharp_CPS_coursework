@@ -2,10 +2,30 @@
 <ArrayOfMedicationReminder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <MedicationReminder>
     <Id>1</Id>
+    <UserId>1</UserId>
     <DrugId>0</DrugId>
     <DrugName>Парацетамол</DrugName>
-    <Dosage>1 таблетка</Dosage>
-    <ReminderTime>2025-12-03T20:09:00</ReminderTime>
+    <Dosage>1 tablet</Dosage>
+    <ReminderTime>2025-12-13T09:00:00+03:00</ReminderTime>
+    <DaysOfWeek>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+      <boolean>true</boolean>
+    </DaysOfWeek>
+    <IsActive>true</IsActive>
+    <Notes />
+  </MedicationReminder>
+  <MedicationReminder>
+    <Id>2</Id>
+    <UserId>2</UserId>
+    <DrugId>0</DrugId>
+    <DrugName>Аскорбиновая кислота</DrugName>
+    <Dosage>1 tablet</Dosage>
+    <ReminderTime>2025-12-13T09:00:00+03:00</ReminderTime>
     <DaysOfWeek>
       <boolean>true</boolean>
       <boolean>true</boolean>
