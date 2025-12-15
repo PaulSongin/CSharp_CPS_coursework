@@ -18,10 +18,8 @@ namespace DrugCatalog_ver2.Services
         List<MedicationReminder> GetDueReminders();
         void CheckAndShowReminders();
 
-        // Для напоминаний о лекарствах (с вопросом "Приняли?")
         void ShowReminderNotification(MedicationReminder reminder);
 
-        // Для информационных сообщений (без действий)
         void ShowInfoNotification(string title, string text);
     }
 
@@ -35,10 +33,8 @@ namespace DrugCatalog_ver2.Services
         private readonly IXmlDataService _dataService;
         private readonly int _currentUserId;
 
-        // Храним объект последнего показанного лекарства для обработки клика
         private MedicationReminder _lastShownReminder;
 
-        // Храним последнюю обработанную минуту, чтобы не спамить уведомлениями
         private int _lastCheckedMinute = -1;
 
         private bool _disposed = false;
@@ -48,13 +44,11 @@ namespace DrugCatalog_ver2.Services
             _dataService = dataService;
             _currentUserId = currentUserId;
 
-            // Создаем папку Data, если нет
             var directory = Path.GetDirectoryName(_remindersFilePath);
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
 
             _allReminders = LoadReminders();
 
-            // --- Настройка меню трея ---
             var contextMenu = new ContextMenuStrip();
             if (onOpen != null)
                 contextMenu.Items.Add(Locale.Get("MenuOpen"), null, (s, e) => onOpen());
@@ -64,37 +58,28 @@ namespace DrugCatalog_ver2.Services
             if (onExit != null)
                 contextMenu.Items.Add(Locale.Get("MenuExit"), null, (s, e) => onExit());
 
-            // --- Настройка иконки ---
             _notifyIcon = new NotifyIcon
             {
-                // Используем системную иконку - это самый надежный вариант
                 Icon = SystemIcons.Application,
                 Visible = true,
                 Text = Locale.Get("AppTitle"),
                 ContextMenuStrip = contextMenu
             };
 
-            // Попытка загрузить кастомную иконку, если есть (необязательно)
             try { if (File.Exists("medicine_icon-icons.com_66070.ico")) _notifyIcon.Icon = Properties.Resources.medicine_icon_icons_com_66070; } catch { }
 
-            // Двойной клик открывает приложение
             if (onOpen != null)
                 _notifyIcon.DoubleClick += (s, e) => onOpen();
 
-            // Клик по "пузырю" уведомления
             _notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
 
-            // --- Настройка таймера ---
-            // Проверяем чаще (каждые 2 сек), чтобы не пропустить начало минуты
             _reminderTimer = new Timer { Interval = 2000 };
             _reminderTimer.Tick += (s, e) => CheckAndShowReminders();
             _reminderTimer.Start();
         }
 
-        // --- Обработка клика по уведомлению ---
         private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            // Если _lastShownReminder == null, значит это было инфо-сообщение
             if (_lastShownReminder == null || _dataService == null) return;
 
             string message = string.Format(Locale.Get("MsgConfirmTake"), _lastShownReminder.DrugName, _lastShownReminder.Dosage);
@@ -111,15 +96,12 @@ namespace DrugCatalog_ver2.Services
             }
         }
 
-        // --- Метод проверки (вызывается таймером) ---
         public void CheckAndShowReminders()
         {
             var now = DateTime.Now;
 
-            // Если мы уже проверяли в эту минуту - выходим
             if (_lastCheckedMinute == now.Minute) return;
 
-            // Запоминаем текущую минуту
             _lastCheckedMinute = now.Minute;
 
             var dueReminders = GetDueReminders();
@@ -129,10 +111,9 @@ namespace DrugCatalog_ver2.Services
             }
         }
 
-        // --- Показ уведомления о лекарстве ---
         public void ShowReminderNotification(MedicationReminder reminder)
         {
-            _lastShownReminder = reminder; // Запоминаем для обработки клика
+            _lastShownReminder = reminder; 
 
             _notifyIcon.BalloonTipTitle = Locale.Get("NotifTitle");
             _notifyIcon.BalloonTipText = $"{reminder.DrugName}\n{Locale.Get("NotifDosage")}: {reminder.Dosage}\n\n{Locale.Get("NotifClick")}";
@@ -142,14 +123,13 @@ namespace DrugCatalog_ver2.Services
                 _notifyIcon.BalloonTipText += $"\n{Locale.Get("ColNotes")}: {reminder.Notes}";
             }
 
-            _notifyIcon.ShowBalloonTip(10000); // 10 секунд
+            _notifyIcon.ShowBalloonTip(10000); 
             System.Media.SystemSounds.Exclamation.Play();
         }
 
-        // --- Показ информационного уведомления ---
         public void ShowInfoNotification(string title, string text)
         {
-            _lastShownReminder = null; // Сбрасываем, чтобы клик не вызывал списание
+            _lastShownReminder = null; 
 
             _notifyIcon.BalloonTipTitle = title;
             _notifyIcon.BalloonTipText = text;
@@ -212,7 +192,6 @@ namespace DrugCatalog_ver2.Services
             return 0;
         }
 
-        // --- CRUD (с UserId) ---
         public void AddReminder(MedicationReminder reminder)
         {
             reminder.Id = _allReminders.Count > 0 ? _allReminders.Max(r => r.Id) + 1 : 1;
@@ -255,12 +234,11 @@ namespace DrugCatalog_ver2.Services
                 r.UserId == _currentUserId &&
                 r.IsActive &&
                 r.ShouldShowToday() &&
-                r.ReminderTime.Hour == now.Hour &&   // Точное совпадение часа
-                r.ReminderTime.Minute == now.Minute  // Точное совпадение минуты
+                r.ReminderTime.Hour == now.Hour &&  
+                r.ReminderTime.Minute == now.Minute  
             ).ToList();
         }
 
-        // --- Загрузка/Сохранение ---
         private List<MedicationReminder> LoadReminders()
         {
             try

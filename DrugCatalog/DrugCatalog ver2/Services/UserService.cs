@@ -33,7 +33,6 @@ namespace DrugCatalog_ver2.Services
             _xmlDataService = xmlDataService;
             _users = LoadUsers();
 
-            // Создаем администратора по умолчанию, если нет пользователей
             if (_users.Count == 0)
             {
                 CreateDefaultAdmin();
@@ -110,7 +109,6 @@ namespace DrugCatalog_ver2.Services
             var user = _users.FirstOrDefault(u => u.Id == userId);
             if (user != null)
             {
-                // Не удаляем администратора по умолчанию
                 if (user.Username == "admin")
                     throw new InvalidOperationException("Нельзя удалить администратора по умолчанию");
 

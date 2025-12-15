@@ -4,7 +4,7 @@ namespace DrugCatalog_ver2.Models
 {
     public static class Locale
     {
-        public static string CurrentLanguage { get; private set; } = "En"; // По умолчанию английский
+        public static string CurrentLanguage { get; private set; } = "En"; 
 
         public static string Get(string key)
         {
@@ -19,12 +19,8 @@ namespace DrugCatalog_ver2.Models
             CurrentLanguage = lang;
         }
 
-        // ==========================================
-        // РУССКИЙ СЛОВАРЬ (_ru)
-        // ==========================================
         private static readonly Dictionary<string, string> _ru = new Dictionary<string, string>
         {
-            // --- Заголовки и общее ---
             {"AppTitle", "Каталог лекарственных препаратов"},
             {"NewFile", "Новый файл"},
             {"Save", "Сохранить"},
@@ -37,7 +33,6 @@ namespace DrugCatalog_ver2.Models
             {"AutoDelOff", " [АВТОУДАЛЕНИЕ ВЫКЛ]"},
             {"DrugsCount", "препаратов"},
             
-            // --- Меню (были дубликаты, исправлено) ---
             {"MenuFile", "Файл"},
             {"MenuNew", "Новый"},
             {"MenuOpen", "Открыть..."},
@@ -68,7 +63,6 @@ namespace DrugCatalog_ver2.Models
             {"MenuUserMan", "Управление пользователями"},
             {"MenuLogout", "Выход"},
 
-            // --- Форма Напоминания ---
             {"TitleNewReminder", "Новое напоминание"},
             {"TitleEditReminder", "Редактирование напоминания"},
             {"LblDrug", "Лекарство:"},
@@ -80,7 +74,6 @@ namespace DrugCatalog_ver2.Models
             {"UnitMg", "мг"}, {"UnitG", "г"}, {"UnitMl", "мл"},
             {"UnitTab", "таблетка"}, {"UnitCaps", "капсула"}, {"UnitDrops", "капли"},
 
-            // --- Форма Лекарства ---
             {"TitleNewDrug", "Добавление препарата"},
             {"TitleEditDrug", "Редактирование препарата"},
             {"LblCategoryReq", "Категория*:"},
@@ -104,7 +97,6 @@ namespace DrugCatalog_ver2.Models
             {"MsgErrExp", "Срок годности должен быть в будущем"},
             {"MsgErrCat", "Выберите категорию"},
 
-            // --- Форма Регистрации ---
             {"TitleReg", "Регистрация нового пользователя"},
             {"HeaderReg", "Регистрация"},
             {"LblFullName", "Полное имя:"},
@@ -119,7 +111,6 @@ namespace DrugCatalog_ver2.Models
             {"MsgFillAll", "Заполните все поля"},
             {"LblRegTip", "* - обязательные поля. Пароль минимум 6 символов."},
 
-            // --- Форма Входа ---
             {"TitleLogin", "Вход в систему - Каталог препаратов"},
             {"HeaderLogin", "Вход в систему"},
             {"LblLogin", "Логин:"},
@@ -128,14 +119,12 @@ namespace DrugCatalog_ver2.Models
             {"BtnLogin", "Войти"},
             {"BtnToReg", "Регистрация"},
 
-            // --- Форма Смены Пароля ---
             {"TitleChangePass", "Смена пароля"},
             {"LblCurrPass", "Текущий пароль:"},
             {"LblNewPass", "Новый пароль:"},
             {"LblConfPass", "Подтвердите пароль:"},
             {"MsgPassChanged", "Пароль успешно изменен"},
 
-            // --- Управление напоминаниями ---
             {"TitleRemindersMgmt", "Управление напоминаниями"},
             {"ColDrug", "Лекарство"},
             {"ColTime", "Время"},
@@ -143,7 +132,6 @@ namespace DrugCatalog_ver2.Models
             {"ColNotes", "Примечания"},
             {"ColDosageFull", "Дозировка"},
 
-            // --- Уведомления ---
             {"NotifTitle", "Пора принять лекарство"},
             {"NotifDosage", "Дозировка"},
             {"NotifClick", "Нажмите сюда, чтобы подтвердить прием."},
@@ -154,7 +142,6 @@ namespace DrugCatalog_ver2.Models
             {"MsgLowStock", "Внимание! Лекарство '{0}' заканчивается.\nОстаток: {1}, а нужно принять: {2}."},
             {"TitleWarning", "Недостаточно на складе"},
 
-            // --- Контекст, Поиск, Вкладки, Таблица ---
             {"CtxAdd", "➕ Добавить препарат"},
             {"CtxEdit", "✏️ Редактировать препарат"},
             {"CtxDel", "❌ Удалить препарат"},
@@ -183,11 +170,9 @@ namespace DrugCatalog_ver2.Models
             {"ColQty", "Кол-во"},
             {"ColExp", "Срок годности"},
 
-            // --- Дни недели ---
             {"DayMon", "Пн"}, {"DayTue", "Вт"}, {"DayWed", "Ср"}, {"DayThu", "Чт"},
             {"DayFri", "Пт"}, {"DaySat", "Сб"}, {"DaySun", "Вс"},
 
-            // --- Сообщения ---
             {"MsgWelcome", "Добро пожаловать"},
             {"MsgConfirmSwitch", "Сменить пользователя?"},
             {"MsgConfirmExit", "Выйти из приложения?"},
@@ -211,7 +196,6 @@ namespace DrugCatalog_ver2.Models
             {"StRemActive", "💊 Активных напоминаний"},
             {"StRemNone", "💊 Нет активных напоминаний"},
 
-                        // Калькулятор
             {"TitleCalc", "Калькулятор запасов"},
             {"LblCurrentStock", "Текущий остаток:"},
             {"LblSingleDose", "Разовая доза:"},
@@ -232,12 +216,8 @@ namespace DrugCatalog_ver2.Models
             {"MsgMinimized", "Приложение свернуто в трей и работает в фоне."},
         };
 
-        // ==========================================
-        // АНГЛИЙСКИЙ СЛОВАРЬ (_en)
-        // ==========================================
         private static readonly Dictionary<string, string> _en = new Dictionary<string, string>
         {
-            // --- Titles & General ---
             {"AppTitle", "Drug Catalog System"},
             {"NewFile", "New File"},
             {"Save", "Save"},
@@ -250,7 +230,6 @@ namespace DrugCatalog_ver2.Models
             {"AutoDelOff", " [AUTO-DELETE OFF]"},
             {"DrugsCount", "drugs"},
 
-            // --- Menu ---
             {"MenuFile", "File"},
             {"MenuNew", "New"},
             {"MenuOpen", "Open..."},
@@ -281,7 +260,6 @@ namespace DrugCatalog_ver2.Models
             {"MenuUserMan", "User Management"},
             {"MenuLogout", "Logout"},
 
-            // --- Reminder Form ---
             {"TitleNewReminder", "New Reminder"},
             {"TitleEditReminder", "Edit Reminder"},
             {"LblDrug", "Drug:"},
@@ -293,7 +271,6 @@ namespace DrugCatalog_ver2.Models
             {"UnitMg", "mg"}, {"UnitG", "g"}, {"UnitMl", "ml"},
             {"UnitTab", "tablet"}, {"UnitCaps", "capsule"}, {"UnitDrops", "drops"},
 
-            // --- Drug Form ---
             {"TitleNewDrug", "New Drug"},
             {"TitleEditDrug", "Edit Drug"},
             {"LblCategoryReq", "Category*:"},
@@ -317,7 +294,6 @@ namespace DrugCatalog_ver2.Models
             {"MsgErrExp", "Expiry date must be in future"},
             {"MsgErrCat", "Select category"},
 
-            // --- Register Form ---
             {"TitleReg", "Register New User"},
             {"HeaderReg", "Register"},
             {"LblFullName", "Full Name:"},
@@ -332,7 +308,6 @@ namespace DrugCatalog_ver2.Models
             {"MsgFillAll", "Fill all fields"},
             {"LblRegTip", "* - required. Password min 6 chars."},
 
-            // --- Login Form ---
             {"TitleLogin", "Login - Drug Catalog"},
             {"HeaderLogin", "System Login"},
             {"LblLogin", "Username:"},
@@ -341,14 +316,12 @@ namespace DrugCatalog_ver2.Models
             {"BtnLogin", "Login"},
             {"BtnToReg", "Register"},
 
-            // --- Change Password Form ---
             {"TitleChangePass", "Change Password"},
             {"LblCurrPass", "Current Password:"},
             {"LblNewPass", "New Password:"},
             {"LblConfPass", "Confirm Password:"},
             {"MsgPassChanged", "Password changed successfully"},
 
-            // --- Reminders Mgmt ---
             {"TitleRemindersMgmt", "Reminders Management"},
             {"ColDrug", "Drug"},
             {"ColTime", "Time"},
@@ -356,7 +329,6 @@ namespace DrugCatalog_ver2.Models
             {"ColNotes", "Notes"},
             {"ColDosageFull", "Dosage"},
 
-            // --- Notifications ---
             {"NotifTitle", "Time to take medicine"},
             {"NotifDosage", "Dosage"},
             {"NotifClick", "Click here to confirm intake."},
@@ -367,7 +339,6 @@ namespace DrugCatalog_ver2.Models
             {"MsgLowStock", "Warning! Drug '{0}' is running low.\nRemaining: {1}, required: {2}."},
             {"TitleWarning", "Low Stock"},
 
-            // --- Context, Search, Tabs, Grid ---
             {"CtxAdd", "➕ Add Drug"},
             {"CtxEdit", "✏️ Edit Drug"},
             {"CtxDel", "❌ Delete Drug"},
@@ -396,11 +367,9 @@ namespace DrugCatalog_ver2.Models
             {"ColQty", "Qty"},
             {"ColExp", "Expiry Date"},
 
-            // --- Days ---
             {"DayMon", "Mon"}, {"DayTue", "Tue"}, {"DayWed", "Wed"}, {"DayThu", "Thu"},
             {"DayFri", "Fri"}, {"DaySat", "Sat"}, {"DaySun", "Sun"},
 
-            // --- Messages ---
             {"MsgWelcome", "Welcome"},
             {"MsgConfirmSwitch", "Switch user?"},
             {"MsgConfirmExit", "Exit application?"},
@@ -424,7 +393,6 @@ namespace DrugCatalog_ver2.Models
             {"StRemActive", "💊 Active reminders"},
             {"StRemNone", "💊 No active reminders"},
 
-            // Calculator
             {"TitleCalc", "Stock Calculator"},
             {"LblCurrentStock", "Current Stock:"},
             {"LblSingleDose", "Single Dose:"},

@@ -4,9 +4,9 @@
     <Id>1</Id>
     <UserId>1</UserId>
     <DrugId>0</DrugId>
-    <DrugName>Парацетамол</DrugName>
+    <DrugName>Paracetamol</DrugName>
     <Dosage>1 таблетка</Dosage>
-    <ReminderTime>2025-12-13T22:37:00</ReminderTime>
+    <ReminderTime>2025-12-13T15:28:00</ReminderTime>
     <DaysOfWeek>
       <boolean>true</boolean>
       <boolean>true</boolean>

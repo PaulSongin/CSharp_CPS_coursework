@@ -4,7 +4,6 @@ namespace DrugCatalog_ver2.Models
 {
     public static class DrugDictionary
     {
-        // --- РУССКИЕ ДАННЫЕ ---
         private static readonly Dictionary<string, string> _drugsRu = new Dictionary<string, string>
         {
             {"Парацетамол", "Жаропонижающее, обезболивающее"},
@@ -31,7 +30,6 @@ namespace DrugCatalog_ver2.Models
             "Ампулы", "Спрей", "Драже", "Порошок"
         };
 
-        // --- АНГЛИЙСКИЕ ДАННЫЕ ---
         private static readonly Dictionary<string, string> _drugsEn = new Dictionary<string, string>
         {
             {"Paracetamol", "Antipyretic, analgesic"},
@@ -58,7 +56,6 @@ namespace DrugCatalog_ver2.Models
             "Ampoules", "Spray", "Dragee", "Powder"
         };
 
-        // --- МЕТОДЫ ПОЛУЧЕНИЯ ДАННЫХ ПО ЯЗЫКУ ---
 
         public static Dictionary<string, string> GetCommonDrugs()
         {
@@ -89,7 +86,6 @@ namespace DrugCatalog_ver2.Models
 
         public static string[] GetCommonQuantities() => new[] { "10", "20", "30", "50", "60", "100" };
 
-        // Метод определения категории (работает для обоих языков)
         public static int DetermineCategory(string drugName)
         {
             if (string.IsNullOrWhiteSpace(drugName)) return 1;

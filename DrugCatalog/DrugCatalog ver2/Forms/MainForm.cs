@@ -242,11 +242,9 @@ namespace DrugCatalog_ver2.Forms
             tabControl = new TabControl { Dock = DockStyle.Fill, Appearance = TabAppearance.Normal, SizeMode = TabSizeMode.Fixed, Font = new Font("Microsoft Sans Serif", 9f) };
             tabControl.ItemSize = new Size(180, 25);
 
-            // Tabs
             AddTab(Locale.Get("TabAll"), out dataGridViewAllDrugs, out buttonAutoDeleteAll, out buttonCleanupAll, null, out var p1);
             AddTab(Locale.Get("TabExp"), out dataGridViewExpiring, out buttonAutoDeleteExpiring, out buttonCleanupExpiring, null, out var p2);
 
-            // Tab Manufacturer
             var panelMan = new Panel { Dock = DockStyle.Top, Height = 50, BackColor = Color.LightSteelBlue, Padding = new Padding(10) };
             var lblMan = new Label { Text = Locale.Get("LblManFilter"), Location = new Point(10, 15), Size = new Size(150, 20), Font = new Font("Microsoft Sans Serif", 9f, FontStyle.Bold) };
             comboBoxManufacturers = new ComboBox { Location = new Point(170, 12), Width = 250, DropDownStyle = ComboBoxStyle.DropDownList };
@@ -254,7 +252,6 @@ namespace DrugCatalog_ver2.Forms
             panelMan.Controls.AddRange(new Control[] { lblMan, comboBoxManufacturers });
             AddTab(Locale.Get("TabMan"), out dataGridViewByManufacturer, out buttonAutoDeleteManufacturer, out buttonCleanupManufacturer, panelMan, out var manPanelContainer);
 
-            // Tab Category
             var panelCat = new Panel { Dock = DockStyle.Top, Height = 50, BackColor = Color.LightSteelBlue, Padding = new Padding(10) };
             var lblCat = new Label { Text = Locale.Get("LblCatFilter"), Location = new Point(10, 15), Size = new Size(120, 20), Font = new Font("Microsoft Sans Serif", 9f, FontStyle.Bold) };
             comboBoxCategories = new ComboBox { Location = new Point(140, 12), Width = 250, DropDownStyle = ComboBoxStyle.DropDownList };
@@ -584,28 +581,79 @@ namespace DrugCatalog_ver2.Forms
 
         private void LoadFromXmlFile()
         {
-            using (var ofd = new OpenFileDialog { Filter = "XML|*.xml" })
+            using (var openFileDialog = new OpenFileDialog())
             {
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    var loaded = LoadDrugsFromFile(ofd.FileName);
-                    if (loaded.Count > 0)
-                    {
-                        var res = MessageBox.Show(string.Format(Locale.Get("MsgLoadOptionBody"), loaded.Count), Locale.Get("MsgLoadOptionTitle"), MessageBoxButtons.YesNoCancel);
-                        if (res == DialogResult.Yes)
-                        {
-                            int id = 1; foreach (var d in loaded) d.Id = id++;
-                            _drugs = loaded; _currentFilePath = ofd.FileName;
-                        }
-                        else if (res == DialogResult.No)
-                        {
-                            int max = _drugs.Count > 0 ? _drugs.Max(d => d.Id) : 0;
-                            foreach (var d in loaded) d.Id = ++max;
-                            _drugs.AddRange(loaded);
-                        }
-                        else return;
+                openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+                openFileDialog.Title = Locale.Get("MenuOpen");
+                openFileDialog.Multiselect = false;
 
-                        _dataService.SaveDrugs(_drugs); LoadDrugs();
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var filePath = openFileDialog.FileName;
+                        var loadedDrugs = LoadDrugsFromFile(filePath);
+
+                        if (loadedDrugs.Count > 0)
+                        {
+                            var result = MessageBox.Show(
+                                string.Format(Locale.Get("MsgLoadOptionBody"), loadedDrugs.Count),
+                                Locale.Get("MsgLoadOptionTitle"),
+                                MessageBoxButtons.YesNoCancel,
+                                MessageBoxIcon.Question
+                            );
+
+                            if (result == DialogResult.Cancel) return;
+
+                            if (result == DialogResult.Yes) 
+                            {
+                                int newId = 1;
+                                foreach (var drug in loadedDrugs)
+                                {
+                                    drug.Id = newId++;
+                                }
+
+                                _drugs = loadedDrugs;
+                                _currentFilePath = filePath; 
+
+                                SaveDrugsToFile(_drugs, _currentFilePath);
+
+                                LoadDrugs(); 
+
+                                MessageBox.Show(string.Format(Locale.Get("MsgLoadedReplace"), loadedDrugs.Count), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else if (result == DialogResult.No) 
+                            {
+                                int maxId = _drugs.Count > 0 ? _drugs.Max(d => d.Id) : 0;
+                                foreach (var drug in loadedDrugs)
+                                {
+                                    drug.Id = ++maxId;
+                                }
+
+                                _drugs.AddRange(loadedDrugs);
+
+                                if (!string.IsNullOrEmpty(_currentFilePath))
+                                {
+                                    SaveDrugsToFile(_drugs, _currentFilePath);
+                                }
+                                else
+                                {
+                                    _dataService.SaveDrugs(_drugs);
+                                }
+
+                                LoadDrugs();
+
+                                MessageBox.Show(string.Format(Locale.Get("MsgLoadedAppend"), loadedDrugs.Count), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show(Locale.Get("MsgNoDataClean"), Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
