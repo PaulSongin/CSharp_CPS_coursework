@@ -22,39 +22,6 @@
     </Contraindications>
   </Drug>
   <Drug>
-    <Id>2</Id>
-    <Name>Ibuprofen</Name>
-    <ActiveSubstance>Ibuprofen</ActiveSubstance>
-    <Manufacturer>Borisov Plant</Manufacturer>
-    <Form>Tablets</Form>
-    <Dosage>200</Dosage>
-    <DosageUnit>mg</DosageUnit>
-    <PrescriptionType>Over-the-counter</PrescriptionType>
-    <Quantity>50</Quantity>
-    <ExpiryDate>2025-05-15T00:00:00</ExpiryDate>
-    <CategoryId>2</CategoryId>
-    <Indications>
-      <Indication>Joint pain</Indication>
-      <Indication>Muscle pain</Indication>
-    </Indications>
-    <Contraindications />
-  </Drug>
-  <Drug>
-    <Id>3</Id>
-    <Name>Analgin</Name>
-    <ActiveSubstance>Metamizole sodium</ActiveSubstance>
-    <Manufacturer>Avexima</Manufacturer>
-    <Form>Ampoules</Form>
-    <Dosage>500</Dosage>
-    <DosageUnit>mg</DosageUnit>
-    <PrescriptionType>Prescription</PrescriptionType>
-    <Quantity>10</Quantity>
-    <ExpiryDate>2024-02-01T00:00:00</ExpiryDate>
-    <CategoryId>2</CategoryId>
-    <Indications />
-    <Contraindications />
-  </Drug>
-  <Drug>
     <Id>4</Id>
     <Name>Ketorol</Name>
     <ActiveSubstance>Ketorolac</ActiveSubstance>
@@ -85,21 +52,6 @@
       <Indication>Bronchitis</Indication>
       <Indication>Pneumonia</Indication>
     </Indications>
-    <Contraindications />
-  </Drug>
-  <Drug>
-    <Id>6</Id>
-    <Name>Azithromycin</Name>
-    <ActiveSubstance>Azithromycin</ActiveSubstance>
-    <Manufacturer>Vertex</Manufacturer>
-    <Form>Capsules</Form>
-    <Dosage>250</Dosage>
-    <DosageUnit>mg</DosageUnit>
-    <PrescriptionType>Prescription</PrescriptionType>
-    <Quantity>6</Quantity>
-    <ExpiryDate>2023-11-30T00:00:00</ExpiryDate>
-    <CategoryId>3</CategoryId>
-    <Indications />
     <Contraindications />
   </Drug>
   <Drug>
@@ -223,21 +175,6 @@
     <Contraindications />
   </Drug>
   <Drug>
-    <Id>15</Id>
-    <Name>Ingavirin</Name>
-    <ActiveSubstance>Imidazolyl ethanamide</ActiveSubstance>
-    <Manufacturer>Valenta Pharm</Manufacturer>
-    <Form>Capsules</Form>
-    <Dosage>90</Dosage>
-    <DosageUnit>mg</DosageUnit>
-    <PrescriptionType>Over-the-counter</PrescriptionType>
-    <Quantity>7</Quantity>
-    <ExpiryDate>2025-11-15T00:00:00</ExpiryDate>
-    <CategoryId>6</CategoryId>
-    <Indications />
-    <Contraindications />
-  </Drug>
-  <Drug>
     <Id>16</Id>
     <Name>Loratadine</Name>
     <ActiveSubstance>Loratadine</ActiveSubstance>
@@ -263,21 +200,6 @@
     <PrescriptionType>Over-the-counter</PrescriptionType>
     <Quantity>18</Quantity>
     <ExpiryDate>2027-08-20T00:00:00</ExpiryDate>
-    <CategoryId>7</CategoryId>
-    <Indications />
-    <Contraindications />
-  </Drug>
-  <Drug>
-    <Id>18</Id>
-    <Name>Zodac</Name>
-    <ActiveSubstance>Cetirizine</ActiveSubstance>
-    <Manufacturer>Zentiva</Manufacturer>
-    <Form>Drops</Form>
-    <Dosage>10</Dosage>
-    <DosageUnit>ml</DosageUnit>
-    <PrescriptionType>Over-the-counter</PrescriptionType>
-    <Quantity>1</Quantity>
-    <ExpiryDate>2025-02-10T00:00:00</ExpiryDate>
     <CategoryId>7</CategoryId>
     <Indications />
     <Contraindications />
@@ -358,21 +280,6 @@
     <Contraindications />
   </Drug>
   <Drug>
-    <Id>24</Id>
-    <Name>Aquadetrim</Name>
-    <ActiveSubstance>Colecalciferol</ActiveSubstance>
-    <Manufacturer>Akrikhin</Manufacturer>
-    <Form>Drops</Form>
-    <Dosage>15000</Dosage>
-    <DosageUnit>UI</DosageUnit>
-    <PrescriptionType>Over-the-counter</PrescriptionType>
-    <Quantity>1</Quantity>
-    <ExpiryDate>2025-10-10T00:00:00</ExpiryDate>
-    <CategoryId>9</CategoryId>
-    <Indications />
-    <Contraindications />
-  </Drug>
-  <Drug>
     <Id>25</Id>
     <Name>Chlorhexidine</Name>
     <ActiveSubstance>Chlorhexidine</ActiveSubstance>
@@ -383,21 +290,6 @@
     <PrescriptionType>Over-the-counter</PrescriptionType>
     <Quantity>2</Quantity>
     <ExpiryDate>2026-07-07T00:00:00</ExpiryDate>
-    <CategoryId>1</CategoryId>
-    <Indications />
-    <Contraindications />
-  </Drug>
-  <Drug>
-    <Id>26</Id>
-    <Name>Hydrogen Peroxide</Name>
-    <ActiveSubstance>Hydrogen peroxide</ActiveSubstance>
-    <Manufacturer>Flora Kavkaza</Manufacturer>
-    <Form>Solution</Form>
-    <Dosage>3</Dosage>
-    <DosageUnit>%</DosageUnit>
-    <PrescriptionType>Over-the-counter</PrescriptionType>
-    <Quantity>1</Quantity>
-    <ExpiryDate>2024-12-01T00:00:00</ExpiryDate>
     <CategoryId>1</CategoryId>
     <Indications />
     <Contraindications />
@@ -456,6 +348,360 @@
     <Dosage>1</Dosage>
     <DosageUnit>pc</DosageUnit>
     <PrescriptionType>Over-the-counter</PrescriptionType>
+    <Quantity>5</Quantity>
+    <ExpiryDate>2029-05-05T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>31</Id>
+    <Name>Парацетамол</Name>
+    <ActiveSubstance>Парацетамол</ActiveSubstance>
+    <Manufacturer>Фармстандарт</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>500</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>20</Quantity>
+    <ExpiryDate>2026-12-31T00:00:00</ExpiryDate>
+    <CategoryId>2</CategoryId>
+    <Indications>
+      <Indication>Головная боль</Indication>
+      <Indication>Зубная боль</Indication>
+      <Indication>Лихорадка при простуде</Indication>
+    </Indications>
+    <Contraindications>
+      <Contraindication>Тяжелые нарушения функции печени</Contraindication>
+    </Contraindications>
+  </Drug>
+  <Drug>
+    <Id>34</Id>
+    <Name>Кеторол</Name>
+    <ActiveSubstance>Кеторолак</ActiveSubstance>
+    <Manufacturer>Dr. Reddy's</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Рецептурный</PrescriptionType>
+    <Quantity>18</Quantity>
+    <ExpiryDate>2026-08-20T00:00:00</ExpiryDate>
+    <CategoryId>2</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>35</Id>
+    <Name>Амоксициллин</Name>
+    <ActiveSubstance>Амоксициллин</ActiveSubstance>
+    <Manufacturer>Сандоз</Manufacturer>
+    <Form>Капсулы</Form>
+    <Dosage>500</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Рецептурный</PrescriptionType>
+    <Quantity>16</Quantity>
+    <ExpiryDate>2027-01-10T00:00:00</ExpiryDate>
+    <CategoryId>3</CategoryId>
+    <Indications>
+      <Indication>Бронхит</Indication>
+      <Indication>Пневмония</Indication>
+    </Indications>
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>37</Id>
+    <Name>Бисопролол</Name>
+    <ActiveSubstance>Бисопролол</ActiveSubstance>
+    <Manufacturer>Teva</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>5</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Рецептурный</PrescriptionType>
+    <Quantity>60</Quantity>
+    <ExpiryDate>2025-12-25T00:00:00</ExpiryDate>
+    <CategoryId>4</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>38</Id>
+    <Name>Амлодипин</Name>
+    <ActiveSubstance>Амлодипин</ActiveSubstance>
+    <Manufacturer>Ozon</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Рецептурный</PrescriptionType>
+    <Quantity>28</Quantity>
+    <ExpiryDate>2026-06-15T00:00:00</ExpiryDate>
+    <CategoryId>4</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>39</Id>
+    <Name>Валидол</Name>
+    <ActiveSubstance>Ментол</ActiveSubstance>
+    <Manufacturer>Фармстандарт</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>60</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>10</Quantity>
+    <ExpiryDate>2028-01-01T00:00:00</ExpiryDate>
+    <CategoryId>4</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>40</Id>
+    <Name>Омепразол</Name>
+    <ActiveSubstance>Омепразол</ActiveSubstance>
+    <Manufacturer>Акрихин</Manufacturer>
+    <Form>Капсулы</Form>
+    <Dosage>20</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>30</Quantity>
+    <ExpiryDate>2026-09-01T00:00:00</ExpiryDate>
+    <CategoryId>5</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>41</Id>
+    <Name>Панкреатин</Name>
+    <ActiveSubstance>Панкреатин</ActiveSubstance>
+    <Manufacturer>Биосинтез</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>25</Dosage>
+    <DosageUnit>ЕД</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>55</Quantity>
+    <ExpiryDate>2025-12-20T00:00:00</ExpiryDate>
+    <CategoryId>5</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>42</Id>
+    <Name>Смекта</Name>
+    <ActiveSubstance>Диосмектит</ActiveSubstance>
+    <Manufacturer>Ipsen</Manufacturer>
+    <Form>Порошок</Form>
+    <Dosage>3</Dosage>
+    <DosageUnit>г</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>12</Quantity>
+    <ExpiryDate>2027-03-10T00:00:00</ExpiryDate>
+    <CategoryId>5</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>43</Id>
+    <Name>Активированный уголь</Name>
+    <ActiveSubstance>Уголь активированный</ActiveSubstance>
+    <Manufacturer>Уралбиофарм</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>250</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>45</Quantity>
+    <ExpiryDate>2029-01-01T00:00:00</ExpiryDate>
+    <CategoryId>5</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>44</Id>
+    <Name>Арбидол</Name>
+    <ActiveSubstance>Умифеновир</ActiveSubstance>
+    <Manufacturer>Отисифарм</Manufacturer>
+    <Form>Капсулы</Form>
+    <Dosage>100</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>20</Quantity>
+    <ExpiryDate>2026-05-05T00:00:00</ExpiryDate>
+    <CategoryId>6</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>46</Id>
+    <Name>Лоратадин</Name>
+    <ActiveSubstance>Лоратадин</ActiveSubstance>
+    <Manufacturer>Вертекс</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>10</Quantity>
+    <ExpiryDate>2026-06-30T00:00:00</ExpiryDate>
+    <CategoryId>7</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>47</Id>
+    <Name>Супрастин</Name>
+    <ActiveSubstance>Хлоропирамин</ActiveSubstance>
+    <Manufacturer>Egis</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>25</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>18</Quantity>
+    <ExpiryDate>2027-08-20T00:00:00</ExpiryDate>
+    <CategoryId>7</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>49</Id>
+    <Name>Глицин</Name>
+    <ActiveSubstance>Глицин</ActiveSubstance>
+    <Manufacturer>Биотики</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>100</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>100</Quantity>
+    <ExpiryDate>2027-12-12T00:00:00</ExpiryDate>
+    <CategoryId>8</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>50</Id>
+    <Name>Афобазол</Name>
+    <ActiveSubstance>Фабомотизол</ActiveSubstance>
+    <Manufacturer>Отисифарм</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>10</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>40</Quantity>
+    <ExpiryDate>2026-03-30T00:00:00</ExpiryDate>
+    <CategoryId>8</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>51</Id>
+    <Name>Фенибут</Name>
+    <ActiveSubstance>Аминофенилмасляная кислота</ActiveSubstance>
+    <Manufacturer>Озон</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>250</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Рецептурный</PrescriptionType>
+    <Quantity>15</Quantity>
+    <ExpiryDate>2025-12-28T00:00:00</ExpiryDate>
+    <CategoryId>8</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>52</Id>
+    <Name>Аскорбиновая кислота</Name>
+    <ActiveSubstance>Витамин C</ActiveSubstance>
+    <Manufacturer>Марбиофарм</Manufacturer>
+    <Form>Драже</Form>
+    <Dosage>50</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>200</Quantity>
+    <ExpiryDate>2026-01-31T00:00:00</ExpiryDate>
+    <CategoryId>9</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>53</Id>
+    <Name>Магний B6</Name>
+    <ActiveSubstance>Магний + Пиридоксин</ActiveSubstance>
+    <Manufacturer>Эвалар</Manufacturer>
+    <Form>Таблетки</Form>
+    <Dosage>500</Dosage>
+    <DosageUnit>мг</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>50</Quantity>
+    <ExpiryDate>2027-05-05T00:00:00</ExpiryDate>
+    <CategoryId>9</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>55</Id>
+    <Name>Хлоргексидин</Name>
+    <ActiveSubstance>Хлоргексидин</ActiveSubstance>
+    <Manufacturer>Росбио</Manufacturer>
+    <Form>Раствор</Form>
+    <Dosage>0.05</Dosage>
+    <DosageUnit>%</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>2</Quantity>
+    <ExpiryDate>2026-07-07T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>57</Id>
+    <Name>Лейкопластырь</Name>
+    <ActiveSubstance>-</ActiveSubstance>
+    <Manufacturer>Veropharm</Manufacturer>
+    <Form>Пластырь</Form>
+    <Dosage>1</Dosage>
+    <DosageUnit>шт</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>20</Quantity>
+    <ExpiryDate>2030-01-01T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>58</Id>
+    <Name>Нафтизин</Name>
+    <ActiveSubstance>Нафазолин</ActiveSubstance>
+    <Manufacturer>Лекарь</Manufacturer>
+    <Form>Капли</Form>
+    <Dosage>0.1</Dosage>
+    <DosageUnit>%</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2025-12-22T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>59</Id>
+    <Name>Йод</Name>
+    <ActiveSubstance>Йод</ActiveSubstance>
+    <Manufacturer>Ярославская ФФ</Manufacturer>
+    <Form>Раствор</Form>
+    <Dosage>5</Dosage>
+    <DosageUnit>%</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
+    <Quantity>1</Quantity>
+    <ExpiryDate>2026-04-15T00:00:00</ExpiryDate>
+    <CategoryId>1</CategoryId>
+    <Indications />
+    <Contraindications />
+  </Drug>
+  <Drug>
+    <Id>60</Id>
+    <Name>Бинт стерильный</Name>
+    <ActiveSubstance>-</ActiveSubstance>
+    <Manufacturer>Newfarm</Manufacturer>
+    <Form>Бинт</Form>
+    <Dosage>1</Dosage>
+    <DosageUnit>шт</DosageUnit>
+    <PrescriptionType>Безрецептурный</PrescriptionType>
     <Quantity>5</Quantity>
     <ExpiryDate>2029-05-05T00:00:00</ExpiryDate>
     <CategoryId>1</CategoryId>

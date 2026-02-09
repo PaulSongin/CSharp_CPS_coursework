@@ -42,7 +42,6 @@ namespace DrugCatalog_ver2.Forms
 
         private void CreateControls()
         {
-            // Заголовок
             var labelTitle = new Label
             {
                 Text = "Вход в систему",
@@ -53,7 +52,6 @@ namespace DrugCatalog_ver2.Forms
                 TextAlign = ContentAlignment.MiddleCenter
             };
 
-            // Поле логина
             var labelUsername = new Label
             {
                 Text = "Логин:",
@@ -67,9 +65,8 @@ namespace DrugCatalog_ver2.Forms
                 Size = new Size(300, 30),
                 Font = new Font("Microsoft Sans Serif", 10f)
             };
-            textBoxUsername.Text = "admin"; // для тестирования
 
-            // Поле пароля
+
             var labelPassword = new Label
             {
                 Text = "Пароль:",
@@ -84,23 +81,13 @@ namespace DrugCatalog_ver2.Forms
                 Font = new Font("Microsoft Sans Serif", 10f),
                 UseSystemPasswordChar = true
             };
-            textBoxPassword.Text = "admin123"; // для тестирования
+
             textBoxPassword.KeyPress += (s, e) =>
             {
                 if (e.KeyChar == (char)Keys.Enter)
                     AttemptLogin();
             };
 
-            // Запомнить меня
-            checkBoxRemember = new CheckBox
-            {
-                Text = "Запомнить меня",
-                Location = new Point(50, 210),
-                Size = new Size(150, 20),
-                Checked = true
-            };
-
-            // Кнопка входа
             buttonLogin = new Button
             {
                 Text = "Войти",
@@ -113,7 +100,6 @@ namespace DrugCatalog_ver2.Forms
             };
             buttonLogin.Click += (s, e) => AttemptLogin();
 
-            // Кнопка регистрации
             buttonRegister = new Button
             {
                 Text = "Регистрация",
@@ -126,7 +112,6 @@ namespace DrugCatalog_ver2.Forms
             };
             buttonRegister.Click += (s, e) => ShowRegistrationForm();
 
-            // Статус
             labelStatus = new Label
             {
                 Location = new Point(50, 300),

@@ -22,7 +22,6 @@ namespace DrugCatalog_ver2.Forms
         private bool _autoDeleteEnabled = true;
         private bool _isExiting = false;
 
-        // UI Элементы
         private TabControl tabControl;
         private DataGridView dataGridViewAllDrugs;
         private DataGridView dataGridViewExpiring;
@@ -207,9 +206,9 @@ namespace DrugCatalog_ver2.Forms
             {
                 var dgv = GetCurrentDataGridView();
                 bool hasSel = dgv != null && dgv.SelectedRows.Count > 0;
-                contextMenuGrid.Items[2].Enabled = hasSel; // Edit
-                contextMenuGrid.Items[3].Enabled = hasSel; // Delete
-                contextMenuGrid.Items[5].Enabled = hasSel; // Reminder
+                contextMenuGrid.Items[2].Enabled = hasSel; 
+                contextMenuGrid.Items[3].Enabled = hasSel; 
+                contextMenuGrid.Items[5].Enabled = hasSel; 
             };
         }
 
@@ -486,34 +485,71 @@ namespace DrugCatalog_ver2.Forms
         {
             if (MessageBox.Show(Locale.Get("MsgConfirmSwitch"), Locale.Get("MenuSwitch"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                
                 if (_drugs != null && _drugs.Count > 0)
                 {
-                    if (MessageBox.Show(Locale.Get("MsgSaveSuccess") + "?", Locale.Get("MenuSave"), MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        if (_currentFilePath != null) SaveDrugsToFile(_drugs, _currentFilePath); else SaveAsToXmlFile();
-                }
-                _reminderService?.Dispose();
-                using (var login = new LoginForm(_userService))
-                {
-                    if (login.ShowDialog() == DialogResult.OK && login.LoggedInUser != null)
+                    var saveResult = MessageBox.Show(Locale.Get("MsgSaveSuccess") + "?", Locale.Get("MenuSave"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (saveResult == DialogResult.Yes)
                     {
-                        _currentUser = login.LoggedInUser;
+                        if (_currentFilePath != null) SaveDrugsToFile(_drugs, _currentFilePath);
+                        else SaveAsToXmlFile();
+                    }
+                }
+
+                
+                _reminderService?.Dispose();
+
+                using (var loginForm = new LoginForm(_userService))
+                {
+                    if (loginForm.ShowDialog() == DialogResult.OK && loginForm.LoggedInUser != null)
+                    {
+                        
+                        _currentUser = loginForm.LoggedInUser;
+
+                       
                         _currentFilePath = null;
                         _drugs = new List<Drug>();
+
+                       
+                        this.Controls.Clear();
+                        this.MainMenuStrip = null;
+
+                        InitializeComponent(); 
+
+                       
+                        try { this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } catch { }
+
+                       
+
+                       
+                        CreateStatusBar(); 
                         InitializeReminderService();
-                        UpdateUserInterface();
-                        RefreshAllTabs();
+
+                        LoadDrugs();
+
+                        UpdateWindowTitle();
                         UpdateRemindersStatus();
+
+                        MessageBox.Show($"{Locale.Get("MsgWelcome")}, {_currentUser.FullName}!", Locale.Get("MenuSwitch"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    else if (MessageBox.Show(Locale.Get("MsgConfirmExit"), Locale.Get("MenuExit"), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    else if (MessageBox.Show(Locale.Get("MsgConfirmExit"), Locale.Get("MenuExit"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        _isExiting = true; this.Close();
+                        _isExiting = true;
+                        this.Close();
                     }
-                    else InitializeReminderService();
+                    else
+                    {
+                        InitializeReminderService();
+                    }
                 }
             }
         }
 
-        private void ShowUserManagement() => new UserManagementForm(_userService).ShowDialog();
+        private void ShowUserManagement()
+        {
+            var form = new UserManagementForm(_userService, _currentUser.Id);
+            form.ShowDialog();
+        }
 
         private void Logout()
         {

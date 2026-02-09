@@ -7,7 +7,7 @@
     <FullName>Администратор системы</FullName>
     <Email>admin@drugcatalog.com</Email>
     <CreatedAt>2025-11-15T19:50:27.3547439+03:00</CreatedAt>
-    <LastLogin>2025-12-15T15:55:16.8975381+03:00</LastLogin>
+    <LastLogin>2026-02-09T16:02:48.1205307+03:00</LastLogin>
     <Role>Admin</Role>
     <IsActive>true</IsActive>
   </User>
@@ -18,7 +18,7 @@
     <FullName>Павел</FullName>
     <Email>songinpavel2006@gmail.com</Email>
     <CreatedAt>2025-11-15T19:58:06.9296337+03:00</CreatedAt>
-    <LastLogin>2025-12-15T15:29:11.3977716+03:00</LastLogin>
+    <LastLogin>2025-12-16T18:56:13.5750791+03:00</LastLogin>
     <Role>User</Role>
     <IsActive>true</IsActive>
   </User>

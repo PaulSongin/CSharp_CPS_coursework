@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|d:\\\u0443\u043D\u0438\u043A\\c#coursework\\drugcatalog\\drugcatalog ver2\\models\\locale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|d:\\\u0443\u043D\u0438\u043A\\c#coursework\\drugcatalog\\drugcatalog ver2\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|solutionrelative:drugcatalog ver2\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\models\\locale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|solutionrelative:drugcatalog ver2\\models\\locale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -49,10 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\services\\medicationscheduleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|solutionrelative:drugcatalog ver2\\services\\medicationscheduleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\drugcatalog ver2\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|solutionrelative:drugcatalog ver2\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3DCA2DBE-C627-4BB6-81D7-46A786C80630}|DrugCatalog ver2\\DrugCatalog ver.csproj|D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\XmlDataService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -114,7 +114,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -127,18 +127,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "MedicationSchedule.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\MedicationSchedule.cs",
-              "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\MedicationSchedule.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\MedicationSchedule.cs",
-              "RelativeToolTip": "DrugCatalog ver2\\Models\\MedicationSchedule.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T13:28:33.391Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "MedicationReminder.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\MedicationReminder.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\MedicationReminder.cs",
@@ -150,20 +138,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Locale.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\Locale.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\Locale.cs",
               "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\Locale.cs",
               "RelativeToolTip": "DrugCatalog ver2\\Models\\Locale.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABIAAAAAAAAAA==",
+              "ViewState": "AgIAAJcBAAAAAAAAAAAgwAYAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-11T12:49:24.217Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-11T12:49:24.217Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "DrugDictionary.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\DrugDictionary.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\DrugDictionary.cs",
@@ -175,7 +162,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Drug.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\Drug.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\Drug.cs",
@@ -187,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Category.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\Category.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\Category.cs",
@@ -199,7 +186,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ReminderService.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\ReminderService.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Services\\ReminderService.cs",
@@ -211,7 +198,32 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "DrugCatalog ver2\\Services\\UserService.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\UserService.cs",
+              "RelativeToolTip": "DrugCatalog ver2\\Services\\UserService.cs",
+              "ViewState": "AgIAAIkAAAAAAAAAAAA3wG4AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T13:45:40.417Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "MedicationSchedule.cs",
+              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\MedicationSchedule.cs",
+              "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\MedicationSchedule.cs",
+              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\MedicationSchedule.cs",
+              "RelativeToolTip": "DrugCatalog ver2\\Models\\MedicationSchedule.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T13:28:33.391Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "MainForm.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Forms\\MainForm.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Forms\\MainForm.cs",
@@ -223,7 +235,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Models\\User.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Models\\User.cs",
@@ -235,7 +247,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "CategoryService.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\CategoryService.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Services\\CategoryService.cs",
@@ -247,7 +259,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "IXmlDataService.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\IXmlDataService.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Services\\IXmlDataService.cs",
@@ -259,7 +271,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "MedicationScheduleService.cs",
               "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\MedicationScheduleService.cs",
               "RelativeDocumentMoniker": "DrugCatalog ver2\\Services\\MedicationScheduleService.cs",
@@ -268,18 +280,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-13T13:43:54.776Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\UserService.cs",
-              "RelativeDocumentMoniker": "DrugCatalog ver2\\Services\\UserService.cs",
-              "ToolTip": "D:\\\u0423\u043D\u0438\u043A\\C#coursework\\DrugCatalog\\DrugCatalog ver2\\Services\\UserService.cs",
-              "RelativeToolTip": "DrugCatalog ver2\\Services\\UserService.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAcwG4AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T13:45:40.417Z"
             },
             {
               "$type": "Document",

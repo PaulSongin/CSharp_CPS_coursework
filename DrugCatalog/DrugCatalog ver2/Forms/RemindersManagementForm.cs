@@ -27,7 +27,7 @@ namespace DrugCatalog_ver2.Forms
         {
             this.SuspendLayout();
 
-            this.Text = Locale.Get("TitleRemindersMgmt"); // Локализация
+            this.Text = Locale.Get("TitleRemindersMgmt"); 
             this.Size = new Size(700, 400);
             this.StartPosition = FormStartPosition.CenterParent;
 
@@ -46,7 +46,7 @@ namespace DrugCatalog_ver2.Forms
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 Location = new Point(10, 10),
                 Size = new Size(560, 300),
-                BackgroundColor = Color.White, // Добавил белый фон для красоты
+                BackgroundColor = Color.White, 
                 RowHeadersVisible = false
             };
 
@@ -57,7 +57,6 @@ namespace DrugCatalog_ver2.Forms
                 Padding = new Padding(10)
             };
 
-            // Используем существующие ключи из Locale (Add, Edit, Delete, Close)
             buttonAdd = new Button { Text = Locale.Get("Add"), Location = new Point(10, 10), Size = new Size(100, 30) };
             buttonEdit = new Button { Text = Locale.Get("Edit"), Location = new Point(120, 10), Size = new Size(120, 30) };
             buttonDelete = new Button { Text = Locale.Get("Delete"), Location = new Point(250, 10), Size = new Size(100, 30) };
@@ -79,7 +78,6 @@ namespace DrugCatalog_ver2.Forms
             var reminders = _reminderService.GetReminders();
 
             dataGridViewReminders.Columns.Clear();
-            // Локализация заголовков колонок
             dataGridViewReminders.Columns.Add("DrugName", Locale.Get("ColDrug"));
             dataGridViewReminders.Columns.Add("Dosage", Locale.Get("ColDosage"));
             dataGridViewReminders.Columns.Add("Time", Locale.Get("ColTime"));
@@ -103,7 +101,6 @@ namespace DrugCatalog_ver2.Forms
 
         private string GetDaysString(bool[] days)
         {
-            // Локализация дней недели (Пн/Mon, Вт/Tue...)
             string[] dayKeys = { "DayMon", "DayTue", "DayWed", "DayThu", "DayFri", "DaySat", "DaySun" };
 
             var activeDays = new List<string>();
@@ -130,7 +127,7 @@ namespace DrugCatalog_ver2.Forms
         {
             if (dataGridViewReminders.SelectedRows.Count == 0)
             {
-                MessageBox.Show(Locale.Get("MsgSelEdit")); // Используем существующий ключ
+                MessageBox.Show(Locale.Get("MsgSelEdit"));
                 return;
             }
 
@@ -151,7 +148,7 @@ namespace DrugCatalog_ver2.Forms
         {
             if (dataGridViewReminders.SelectedRows.Count == 0)
             {
-                MessageBox.Show(Locale.Get("MsgSelDel")); // Используем существующий ключ
+                MessageBox.Show(Locale.Get("MsgSelDel")); 
                 return;
             }
 

@@ -4,7 +4,7 @@ namespace DrugCatalog_ver2.Models
 {
     public static class Locale
     {
-        public static string CurrentLanguage { get; private set; } = "En"; 
+        public static string CurrentLanguage { get; private set; } = "Ru"; 
 
         public static string Get(string key)
         {
@@ -214,6 +214,12 @@ namespace DrugCatalog_ver2.Models
             {"MsgLoadedReplace", "Список полностью заменен. Загружено {0} препаратов."},
             {"MsgLoadedAppend", "Успешно добавлено {0} препаратов."},
             {"MsgMinimized", "Приложение свернуто в трей и работает в фоне."},
+
+            {"TitleAddUser", "Добавление пользователя"},
+            {"TitleEditUser", "Редактирование пользователя"},
+            {"LblRole", "Роль:"},
+            {"MsgPassEmptyInfo", "Оставьте пустым, если не хотите менять пароль"},
+            {"MsgUserExists", "Пользователь с таким логином уже существует"},
         };
 
         private static readonly Dictionary<string, string> _en = new Dictionary<string, string>
@@ -411,6 +417,12 @@ namespace DrugCatalog_ver2.Models
             {"MsgLoadedReplace", "List replaced. Loaded {0} drugs."},
             {"MsgLoadedAppend", "Successfully added {0} drugs."},
             {"MsgMinimized", "Application minimized to tray and running in background."},
+
+            {"TitleAddUser", "Add User"},
+            {"TitleEditUser", "Edit User"},
+            {"LblRole", "Role:"},
+            {"MsgPassEmptyInfo", "Leave empty to keep current password"},
+            {"MsgUserExists", "Username already exists"},
         };
     }
 }

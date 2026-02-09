@@ -7,4 +7,3 @@ D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\bin\Debug\Drug Catalog.exe
 D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\bin\Debug\Drug Catalog.pdb
 D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\Drug Catalog.exe
 D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\Drug Catalog.pdb
-D:\Уник\C#coursework\DrugCatalog\DrugCatalog ver2\obj\Debug\Drug Catalog.exe.config

@@ -13,10 +13,12 @@ namespace DrugCatalog_ver2.Forms
         private readonly IUserService _userService;
         private DataGridView dataGridViewUsers;
         private Button buttonAdd, buttonEdit, buttonDelete, buttonClose;
+        private readonly int _currentUserId;
 
-        public UserManagementForm(IUserService userService)
+        public UserManagementForm(IUserService userService, int currentUserId)
         {
             _userService = userService;
+            _currentUserId = currentUserId; 
             InitializeComponent();
             LoadUsers();
         }
@@ -101,37 +103,73 @@ namespace DrugCatalog_ver2.Forms
 
         private void AddUser()
         {
-            // Реализуй форму добавления пользователя
+            var form = new AddEditUserForm(_userService);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                LoadUsers();
+                MessageBox.Show(Locale.Get("MsgSaveSuccess"));
+            }
         }
 
         private void EditUser()
         {
-            // Реализуй форму редактирования пользователя
+            if (dataGridViewUsers.SelectedRows.Count == 0)
+            {
+                MessageBox.Show(Locale.Get("MsgSelEdit"));
+                return;
+            }
+
+            var userId = (int)dataGridViewUsers.SelectedRows[0].Cells["Id"].Value;
+            var user = _userService.GetUserById(userId);
+
+            if (user != null)
+            {
+                var form = new AddEditUserForm(_userService, user);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    LoadUsers(); 
+                    MessageBox.Show(Locale.Get("MsgSaveSuccess"));
+                }
+            }
         }
 
         private void DeleteUser()
         {
             if (dataGridViewUsers.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Выберите пользователя для удаления");
+                MessageBox.Show(Locale.Get("MsgSelDel"));
                 return;
             }
 
             var userId = (int)dataGridViewUsers.SelectedRows[0].Cells["Id"].Value;
             var username = dataGridViewUsers.SelectedRows[0].Cells["Username"].Value.ToString();
 
-            if (MessageBox.Show($"Удалить пользователя '{username}'?", "Подтверждение",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
+
+            if (userId == _currentUserId)
+            {
+                MessageBox.Show("Вы не можете удалить сами себя!", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (username.ToLower() == "admin")
+            {
+                MessageBox.Show("Нельзя удалить главного администратора!", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
+            if (MessageBox.Show($"{Locale.Get("MsgConfirmDelDrug")} user '{username}'?", Locale.Get("Delete"),
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 try
                 {
                     _userService.DeleteUser(userId);
                     LoadUsers();
-                    MessageBox.Show("Пользователь удален");
+                    MessageBox.Show(Locale.Get("MsgDeleted")); 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка: {ex.Message}");
+                    MessageBox.Show(ex.Message, Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
