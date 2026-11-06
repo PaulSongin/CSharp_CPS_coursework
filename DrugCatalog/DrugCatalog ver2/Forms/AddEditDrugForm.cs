@@ -15,6 +15,7 @@ namespace DrugCatalog_ver2.Forms
         private readonly List<Drug> _allDrugs;
         private Drug _drug;
         private bool _isEditMode;
+        private bool _isFillingForm;
 
         private ComboBox comboBoxName, comboBoxSubstance, comboBoxManufacturer, comboBoxForm, comboBoxUnit, comboBoxPrescription;
         private ComboBox comboBoxDosage, comboBoxQuantity, comboBoxCategory;
@@ -196,6 +197,9 @@ namespace DrugCatalog_ver2.Forms
 
         private void UpdateDrugInfoFromDictionary()
         {
+            // Подсказки из словаря нужны только при выборе названия пользователем: сохранённые значения они не заменяют.
+            if (_isFillingForm) return;
+
             var commonDrugs = DrugDictionary.GetCommonDrugs();
             if (commonDrugs.ContainsKey(comboBoxName.Text))
             {
@@ -233,7 +237,10 @@ namespace DrugCatalog_ver2.Forms
             var category = _categoryService.GetCategory(_drug.CategoryId);
             comboBoxCategory.Text = category != null ? category.Name : "";
 
+            _isFillingForm = true;
             comboBoxName.Text = _drug.Name ?? "";
+            _isFillingForm = false;
+
             comboBoxSubstance.Text = _drug.ActiveSubstance ?? "";
             comboBoxManufacturer.Text = _drug.Manufacturer ?? "";
             comboBoxForm.Text = _drug.Form ?? "";
@@ -244,6 +251,8 @@ namespace DrugCatalog_ver2.Forms
             comboBoxPrescription.Text = _drug.PrescriptionType ?? "";
             comboBoxQuantity.Text = _drug.Quantity > 0 ? _drug.Quantity.ToString() : "";
 
+            // У просроченного препарата дата раньше сегодняшней, а её всё равно нужно показать.
+            datePickerExpiry.MinDate = DateTimePicker.MinimumDateTime;
             if (_drug.ExpiryDate > DateTime.MinValue)
                 datePickerExpiry.Value = _drug.ExpiryDate;
             else
@@ -314,7 +323,9 @@ namespace DrugCatalog_ver2.Forms
             if (!decimal.TryParse(comboBoxDosage.Text, out decimal d) || d <= 0) { ShowError(Locale.Get("MsgErrDosage"), comboBoxDosage); return false; }
             if (!int.TryParse(comboBoxQuantity.Text, out int q) || q <= 0) { ShowError(Locale.Get("MsgErrQty"), comboBoxQuantity); return false; }
 
-            if (datePickerExpiry.Value <= DateTime.Now) { ShowError(Locale.Get("MsgErrExp"), datePickerExpiry); return false; }
+            // У просроченного препарата можно поправить другие поля, не меняя дату.
+            bool expiryChanged = !_isEditMode || datePickerExpiry.Value.Date != _drug.ExpiryDate.Date;
+            if (expiryChanged && datePickerExpiry.Value <= DateTime.Now) { ShowError(Locale.Get("MsgErrExp"), datePickerExpiry); return false; }
 
             return true;
         }

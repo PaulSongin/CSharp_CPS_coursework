@@ -26,5 +26,20 @@ namespace DrugCatalog_ver2.Properties
                 return defaultInstance;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoDeleteExpired
+        {
+            get
+            {
+                return ((bool)(this["AutoDeleteExpired"]));
+            }
+            set
+            {
+                this["AutoDeleteExpired"] = value;
+            }
+        }
     }
 }

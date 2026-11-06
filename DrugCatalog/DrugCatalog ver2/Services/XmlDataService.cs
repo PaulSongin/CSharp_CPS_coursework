@@ -1,51 +1,44 @@
-﻿using System;
+﻿using DrugCatalog_ver2.Services;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
 using System.Linq;
+using System.Xml.Serialization;
 
 public class XmlDataService : IXmlDataService
 {
-    private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "drugs.xml");
+    private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(List<Drug>), new XmlRootAttribute("Drugs"));
+
+    public string CurrentFilePath { get; private set; } = AppPaths.DrugsFile;
 
     public List<Drug> LoadDrugs()
     {
-        try
-        {
-            if (!File.Exists(_filePath))
-                return new List<Drug>();
+        return File.Exists(CurrentFilePath) ? ReadDrugs(CurrentFilePath) : new List<Drug>();
+    }
 
-            var serializer = new XmlSerializer(typeof(List<Drug>), new XmlRootAttribute("Drugs"));
-            using (var stream = new FileStream(_filePath, FileMode.Open))
-            {
-                return (List<Drug>)serializer.Deserialize(stream);
-            }
-        }
-        catch (Exception ex)
-        {
-            System.Windows.Forms.MessageBox.Show($"Ошибка загрузки данных: {ex.Message}");
-            return new List<Drug>();
-        }
+    public List<Drug> ReadDrugs(string filePath)
+    {
+        return SafeXmlFile.Read<List<Drug>>(filePath, Serializer) ?? new List<Drug>();
     }
 
     public void SaveDrugs(List<Drug> drugs)
     {
-        try
-        {
-            var directory = Path.GetDirectoryName(_filePath);
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
+        SafeXmlFile.Write(CurrentFilePath, Serializer, drugs);
+    }
 
-            var serializer = new XmlSerializer(typeof(List<Drug>), new XmlRootAttribute("Drugs"));
-            using (var stream = new FileStream(_filePath, FileMode.Create))
-            {
-                serializer.Serialize(stream, drugs);
-            }
-        }
-        catch (Exception ex)
-        {
-            System.Windows.Forms.MessageBox.Show($"Ошибка сохранения данных: {ex.Message}");
-        }
+    public void SaveDrugsAs(List<Drug> drugs, string filePath)
+    {
+        SafeXmlFile.Write(filePath, Serializer, drugs);
+        CurrentFilePath = filePath;
+    }
+
+    public void OpenFile(string filePath)
+    {
+        CurrentFilePath = filePath;
+    }
+
+    public void OpenMainCatalog()
+    {
+        CurrentFilePath = AppPaths.DrugsFile;
     }
 
     public int GetNextId()

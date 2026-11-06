@@ -25,7 +25,10 @@ namespace DrugCatalog_ver2.Services
 
     public class ReminderService : IReminderService
     {
-        private readonly string _remindersFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "reminders.xml");
+        private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(List<MedicationReminder>));
+
+        private readonly string _remindersFilePath = AppPaths.RemindersFile;
+        private readonly Action _onStockChanged;
         private List<MedicationReminder> _allReminders;
 
         private readonly Timer _reminderTimer;
@@ -39,13 +42,11 @@ namespace DrugCatalog_ver2.Services
 
         private bool _disposed = false;
 
-        public ReminderService(IXmlDataService dataService, int currentUserId, Action onOpen = null, Action onExit = null)
+        public ReminderService(IXmlDataService dataService, int currentUserId, Action onOpen = null, Action onExit = null, Action onStockChanged = null)
         {
             _dataService = dataService;
             _currentUserId = currentUserId;
-
-            var directory = Path.GetDirectoryName(_remindersFilePath);
-            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+            _onStockChanged = onStockChanged;
 
             _allReminders = LoadReminders();
 
@@ -156,6 +157,7 @@ namespace DrugCatalog_ver2.Services
                         {
                             drug.Quantity -= amountToDeduct;
                             _dataService.SaveDrugs(allDrugs);
+                            _onStockChanged?.Invoke();
 
                             string msg = string.Format(Locale.Get("MsgDeducted"), amountToDeduct, drug.Quantity);
                             ShowInfoNotification(Locale.Get("TitleSuccess"), msg);
@@ -244,26 +246,25 @@ namespace DrugCatalog_ver2.Services
             try
             {
                 if (!File.Exists(_remindersFilePath)) return new List<MedicationReminder>();
-                var serializer = new XmlSerializer(typeof(List<MedicationReminder>));
-                using (var stream = new FileStream(_remindersFilePath, FileMode.Open))
-                {
-                    return (List<MedicationReminder>)serializer.Deserialize(stream) ?? new List<MedicationReminder>();
-                }
+                return SafeXmlFile.Read<List<MedicationReminder>>(_remindersFilePath, Serializer) ?? new List<MedicationReminder>();
             }
-            catch { return new List<MedicationReminder>(); }
+            catch (DataFileException ex)
+            {
+                MessageBox.Show(ex.Message, Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<MedicationReminder>();
+            }
         }
 
         private void SaveReminders()
         {
             try
             {
-                var serializer = new XmlSerializer(typeof(List<MedicationReminder>));
-                using (var stream = new FileStream(_remindersFilePath, FileMode.Create))
-                {
-                    serializer.Serialize(stream, _allReminders);
-                }
+                SafeXmlFile.Write(_remindersFilePath, Serializer, _allReminders);
             }
-            catch (Exception ex) { MessageBox.Show($"{Locale.Get("MsgError")}: {ex.Message}"); }
+            catch (DataFileException ex)
+            {
+                MessageBox.Show(ex.Message, Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void Dispose()

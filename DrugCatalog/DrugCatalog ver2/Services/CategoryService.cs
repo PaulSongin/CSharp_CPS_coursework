@@ -19,7 +19,7 @@ namespace DrugCatalog_ver2.Services
 
     public class CategoryService : ICategoryService
     {
-        private readonly string _categoriesFilePath = "categories.xml";
+        private readonly string _categoriesFilePath = AppPaths.CategoriesFile;
         private List<Category> _categories;
 
         public CategoryService()
