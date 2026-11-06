@@ -6,7 +6,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace DrugCatalog_ver2.Forms
 {
@@ -18,8 +17,7 @@ namespace DrugCatalog_ver2.Forms
         private readonly IUserService _userService;
         private IReminderService _reminderService;
         private User _currentUser;
-        private string _currentFilePath;
-        private bool _autoDeleteEnabled = true;
+        private bool _autoDeleteEnabled = Properties.Settings.Default.AutoDeleteExpired;
         private bool _isExiting = false;
 
         private TabControl tabControl;
@@ -49,7 +47,6 @@ namespace DrugCatalog_ver2.Forms
             _userService = userService;
             _currentUser = currentUser;
             _categoryService = new CategoryService();
-            _currentFilePath = null;
 
             InitializeComponent();
 
@@ -95,7 +92,8 @@ namespace DrugCatalog_ver2.Forms
                 this.Close();
             };
 
-            _reminderService = new ReminderService(_dataService, _currentUser.Id, openAction, exitAction);
+            // Напоминания относятся к основному каталогу, даже если сейчас открыт другой файл.
+            _reminderService = new ReminderService(new XmlDataService(), _currentUser.Id, openAction, exitAction, LoadDrugs);
             if (statusLabelReminders != null) UpdateRemindersStatus();
         }
 
@@ -135,6 +133,7 @@ namespace DrugCatalog_ver2.Forms
             var fileMenu = new ToolStripMenuItem(Locale.Get("MenuFile"));
             fileMenu.DropDownItems.Add(new ToolStripMenuItem(Locale.Get("MenuNew"), null, (s, e) => CreateNewFile()) { ShortcutKeys = Keys.Control | Keys.N });
             fileMenu.DropDownItems.Add(new ToolStripMenuItem(Locale.Get("MenuOpen"), null, (s, e) => LoadFromXmlFile()) { ShortcutKeys = Keys.Control | Keys.O });
+            fileMenu.DropDownItems.Add(new ToolStripMenuItem(Locale.Get("MenuMainCatalog"), null, (s, e) => OpenMainCatalog()));
             fileMenu.DropDownItems.Add(new ToolStripSeparator());
             fileMenu.DropDownItems.Add(new ToolStripMenuItem(Locale.Get("MenuSave"), null, (s, e) => SaveToXmlFile()) { ShortcutKeys = Keys.Control | Keys.S });
             fileMenu.DropDownItems.Add(new ToolStripMenuItem(Locale.Get("MenuSaveAs"), null, (s, e) => SaveAsToXmlFile()));
@@ -391,53 +390,73 @@ namespace DrugCatalog_ver2.Forms
         {
             try
             {
-                if (string.IsNullOrEmpty(_currentFilePath))
-                {
-                   
-                    _drugs = _dataService.LoadDrugs();
-                }
-                else
-                {
-                    _drugs = LoadDrugsFromFile(_currentFilePath);
-                }
-
-                if (_autoDeleteEnabled && _drugs.Count > 0)
-                    AutoDeleteExpiredDrugs();
-
-                RefreshAllTabs();
-                UpdateSearchAutoComplete();
-                UpdateWindowTitle();
+                _drugs = _dataService.LoadDrugs();
             }
-            catch (Exception ex)
+            catch (DataFileException ex)
             {
-                MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowDataError(ex);
                 _drugs = new List<Drug>();
             }
+
+            RefreshAllTabs();
+            UpdateSearchAutoComplete();
+            UpdateWindowTitle();
+        }
+
+        /// <summary>
+        /// Записывает текущий список. После этого список всегда перечитывается с диска,
+        /// поэтому при ошибке записи несохранённые изменения не остаются в памяти.
+        /// </summary>
+        private bool SaveDrugsAndReload()
+        {
+            bool saved = true;
+            try
+            {
+                _dataService.SaveDrugs(_drugs);
+            }
+            catch (DataFileException ex)
+            {
+                ShowDataError(ex);
+                saved = false;
+            }
+
+            LoadDrugs();
+            return saved;
+        }
+
+        private void ShowDataError(DataFileException ex)
+        {
+            MessageBox.Show(ex.Message, Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void CheckExpiredDrugsOnStartup()
         {
-            if (_drugs != null && _drugs.Any(d => d.ExpiryDate < DateTime.Now) && _autoDeleteEnabled)
-                PerformAutoDelete(_drugs.Where(d => d.ExpiryDate < DateTime.Now).ToList());
-        }
+            if (!_autoDeleteEnabled || _drugs == null) return;
 
-        private void AutoDeleteExpiredDrugs()
-        {
-            var exp = _drugs.Where(d => d.ExpiryDate < DateTime.Now).ToList();
-            if (exp.Count > 0) PerformAutoDelete(exp);
-        }
+            var expired = _drugs.Where(d => d.ExpiryDate < DateTime.Now).ToList();
+            if (expired.Count == 0) return;
 
-        private void PerformAutoDelete(List<Drug> expired)
-        {
-            foreach (var d in expired) _drugs.Remove(d);
-            _dataService.SaveDrugs(_drugs);
-            RefreshAllTabs();
+            var answer = MessageBox.Show(
+                string.Format(Locale.Get("MsgExpiredOnStart"), expired.Count),
+                Locale.Get("BtnCleanExp"),
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+
+            if (answer == DialogResult.Yes)
+            {
+                foreach (var d in expired) _drugs.Remove(d);
+                SaveDrugsAndReload();
+            }
         }
 
         private void ToggleAutoDelete()
         {
             _autoDeleteEnabled = !_autoDeleteEnabled;
+            Properties.Settings.Default.AutoDeleteExpired = _autoDeleteEnabled;
+            Properties.Settings.Default.Save();
             UpdateAutoDeleteButtons();
+            UpdateWindowTitle();
             MessageBox.Show(_autoDeleteEnabled ? Locale.Get("MsgAutoDelInfo") : Locale.Get("MsgAutoDelOffInfo"));
         }
 
@@ -459,15 +478,13 @@ namespace DrugCatalog_ver2.Forms
             if (MessageBox.Show(Locale.Get("MsgCleanConfirm"), Locale.Get("BtnCleanExp"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 foreach (var d in exp) _drugs.Remove(d);
-                _dataService.SaveDrugs(_drugs);
-                LoadDrugs();
-                MessageBox.Show($"{Locale.Get("MsgCleanDone")}: {exp.Count}");
+                if (SaveDrugsAndReload()) MessageBox.Show($"{Locale.Get("MsgCleanDone")}: {exp.Count}");
             }
         }
 
         private void UpdateWindowTitle()
         {
-            string file = _currentFilePath != null ? Path.GetFileName(_currentFilePath) : Locale.Get("NewFile");
+            string file = Path.GetFileName(_dataService.CurrentFilePath);
             string del = _autoDeleteEnabled ? Locale.Get("AutoDelOn") : Locale.Get("AutoDelOff");
             this.Text = $"{Locale.Get("AppTitle")} - {_currentUser.FullName} - {file} ({_drugs?.Count ?? 0} {Locale.Get("DrugsCount")}){del}";
         }
@@ -485,18 +502,6 @@ namespace DrugCatalog_ver2.Forms
         {
             if (MessageBox.Show(Locale.Get("MsgConfirmSwitch"), Locale.Get("MenuSwitch"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                
-                if (_drugs != null && _drugs.Count > 0)
-                {
-                    var saveResult = MessageBox.Show(Locale.Get("MsgSaveSuccess") + "?", Locale.Get("MenuSave"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (saveResult == DialogResult.Yes)
-                    {
-                        if (_currentFilePath != null) SaveDrugsToFile(_drugs, _currentFilePath);
-                        else SaveAsToXmlFile();
-                    }
-                }
-
-                
                 _reminderService?.Dispose();
 
                 using (var loginForm = new LoginForm(_userService))
@@ -506,8 +511,8 @@ namespace DrugCatalog_ver2.Forms
                         
                         _currentUser = loginForm.LoggedInUser;
 
-                       
-                        _currentFilePath = null;
+
+                        _dataService.OpenMainCatalog();
                         _drugs = new List<Drug>();
 
                        
@@ -574,11 +579,19 @@ namespace DrugCatalog_ver2.Forms
             RefreshDataGrid(dataGridViewAllDrugs, list);
             RefreshDataGrid(dataGridViewExpiring, list.Where(d => d.ExpiryDate <= DateTime.Now.AddDays(30)).ToList());
 
+            // Выбранный фильтр сохраняется и применяется заново: в таблице не должны оставаться строки,
+            // которых уже нет в каталоге, иначе команды над ними подействуют на другой препарат.
+            var selectedManufacturer = comboBoxManufacturers.SelectedItem;
             comboBoxManufacturers.Items.Clear();
-            comboBoxManufacturers.Items.AddRange(list.Select(d => d.Manufacturer).Distinct().ToArray());
+            comboBoxManufacturers.Items.AddRange(list.Select(d => d.Manufacturer).Where(m => !string.IsNullOrEmpty(m)).Distinct().ToArray());
+            comboBoxManufacturers.SelectedItem = selectedManufacturer;
+            if (comboBoxManufacturers.SelectedItem == null) dataGridViewByManufacturer.Rows.Clear();
 
+            var selectedCategoryIndex = comboBoxCategories.SelectedIndex;
             comboBoxCategories.Items.Clear();
             foreach (var c in _categoryService.GetCategories()) comboBoxCategories.Items.Add(c.Name);
+            comboBoxCategories.SelectedIndex = selectedCategoryIndex;
+            if (selectedCategoryIndex < 0) dataGridViewByCategory.Rows.Clear();
 
             tabControl.TabPages[0].Text = $"{Locale.Get("TabAll")} ({list.Count})";
         }
@@ -622,92 +635,114 @@ namespace DrugCatalog_ver2.Forms
                 openFileDialog.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
                 openFileDialog.Title = Locale.Get("MenuOpen");
                 openFileDialog.Multiselect = false;
+                openFileDialog.InitialDirectory = Path.GetDirectoryName(_dataService.CurrentFilePath);
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    try
-                    {
-                        var filePath = openFileDialog.FileName;
-                        var loadedDrugs = LoadDrugsFromFile(filePath);
-
-                        if (loadedDrugs.Count > 0)
-                        {
-                            var result = MessageBox.Show(
-                                string.Format(Locale.Get("MsgLoadOptionBody"), loadedDrugs.Count),
-                                Locale.Get("MsgLoadOptionTitle"),
-                                MessageBoxButtons.YesNoCancel,
-                                MessageBoxIcon.Question
-                            );
-
-                            if (result == DialogResult.Cancel) return;
-
-                            if (result == DialogResult.Yes) 
-                            {
-                                int newId = 1;
-                                foreach (var drug in loadedDrugs)
-                                {
-                                    drug.Id = newId++;
-                                }
-
-                                _drugs = loadedDrugs;
-                                _currentFilePath = filePath; 
-
-                                SaveDrugsToFile(_drugs, _currentFilePath);
-
-                                LoadDrugs(); 
-
-                                MessageBox.Show(string.Format(Locale.Get("MsgLoadedReplace"), loadedDrugs.Count), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                            else if (result == DialogResult.No) 
-                            {
-                                int maxId = _drugs.Count > 0 ? _drugs.Max(d => d.Id) : 0;
-                                foreach (var drug in loadedDrugs)
-                                {
-                                    drug.Id = ++maxId;
-                                }
-
-                                _drugs.AddRange(loadedDrugs);
-
-                                if (!string.IsNullOrEmpty(_currentFilePath))
-                                {
-                                    SaveDrugsToFile(_drugs, _currentFilePath);
-                                }
-                                else
-                                {
-                                    _dataService.SaveDrugs(_drugs);
-                                }
-
-                                LoadDrugs();
-
-                                MessageBox.Show(string.Format(Locale.Get("MsgLoadedAppend"), loadedDrugs.Count), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show(Locale.Get("MsgNoDataClean"), Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"{Locale.Get("MsgLoadError")}: {ex.Message}", Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    OpenOrAppendFile(openFileDialog.FileName);
                 }
             }
         }
 
-        private void SaveToXmlFile() => SaveDrugsToFile(_drugs, _currentFilePath ?? "drugs.xml");
+        private void OpenOrAppendFile(string filePath)
+        {
+            List<Drug> loadedDrugs;
+            try
+            {
+                loadedDrugs = _dataService.ReadDrugs(filePath);
+            }
+            catch (DataFileException ex)
+            {
+                ShowDataError(ex);
+                return;
+            }
+
+            var result = MessageBox.Show(
+                string.Format(Locale.Get("MsgLoadOptionBody"), loadedDrugs.Count),
+                Locale.Get("MsgLoadOptionTitle"),
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                _dataService.OpenFile(filePath);
+                LoadDrugs();
+
+                // Команды над строками находят препарат по Id, поэтому повторяющиеся Id нужно исправить.
+                if (_drugs.Select(d => d.Id).Distinct().Count() != _drugs.Count)
+                {
+                    int newId = 1;
+                    foreach (var drug in _drugs) drug.Id = newId++;
+                    SaveDrugsAndReload();
+                }
+
+                MessageBox.Show(string.Format(Locale.Get("MsgLoadedReplace"), _drugs.Count), Locale.Get("MsgLoadOptionTitle"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (result == DialogResult.No)
+            {
+                int maxId = _drugs.Count > 0 ? _drugs.Max(d => d.Id) : 0;
+                foreach (var drug in loadedDrugs)
+                {
+                    drug.Id = ++maxId;
+                }
+
+                _drugs.AddRange(loadedDrugs);
+
+                if (SaveDrugsAndReload())
+                {
+                    MessageBox.Show(string.Format(Locale.Get("MsgLoadedAppend"), loadedDrugs.Count), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void OpenMainCatalog()
+        {
+            _dataService.OpenMainCatalog();
+            LoadDrugs();
+        }
+
+        private void SaveToXmlFile()
+        {
+            if (SaveDrugsAndReload())
+            {
+                MessageBox.Show(Locale.Get("MsgSaveSuccess"), Locale.Get("MsgSaved"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private void SaveAsToXmlFile()
         {
             using (var sfd = new SaveFileDialog { Filter = "XML|*.xml", FileName = "drugs_export.xml" })
-                if (sfd.ShowDialog() == DialogResult.OK) { SaveDrugsToFile(_drugs, sfd.FileName); _currentFilePath = sfd.FileName; UpdateWindowTitle(); }
+            {
+                if (sfd.ShowDialog() == DialogResult.OK) SaveCatalogAs(_drugs, sfd.FileName);
+            }
         }
 
         private void CreateNewFile()
         {
-            if (MessageBox.Show(Locale.Get("MsgNewFile"), Locale.Get("NewFile"), MessageBoxButtons.YesNo) == DialogResult.Yes)
+            using (var sfd = new SaveFileDialog { Filter = "XML|*.xml", FileName = "new_catalog.xml", Title = Locale.Get("NewFile") })
             {
-                _drugs = new List<Drug>(); _currentFilePath = null; _dataService.SaveDrugs(_drugs); RefreshAllTabs(); UpdateWindowTitle();
+                if (sfd.ShowDialog() == DialogResult.OK && SaveCatalogAs(new List<Drug>(), sfd.FileName))
+                {
+                    MessageBox.Show(string.Format(Locale.Get("MsgNewFileDone"), sfd.FileName), Locale.Get("NewFile"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
+        }
+
+        private bool SaveCatalogAs(List<Drug> drugs, string filePath)
+        {
+            try
+            {
+                _dataService.SaveDrugsAs(drugs, filePath);
+            }
+            catch (DataFileException ex)
+            {
+                ShowDataError(ex);
+                return false;
+            }
+
+            LoadDrugs();
+            return true;
         }
 
         private void AddDrug() { if (new AddEditDrugForm(_dataService, _categoryService, _drugs).ShowDialog() == DialogResult.OK) LoadDrugs(); }
@@ -719,7 +754,13 @@ namespace DrugCatalog_ver2.Forms
             {
                 var id = (int)dgv.SelectedRows[0].Cells["Id"].Value;
                 var d = _drugs.FirstOrDefault(x => x.Id == id);
-                if (d != null && new AddEditDrugForm(_dataService, _categoryService, _drugs, d).ShowDialog() == DialogResult.OK) LoadDrugs();
+                if (d != null)
+                {
+                    new AddEditDrugForm(_dataService, _categoryService, _drugs, d).ShowDialog();
+
+                    // Диалог меняет объект препарата ещё до записи, поэтому список всегда перечитывается с диска.
+                    LoadDrugs();
+                }
             }
         }
 
@@ -730,9 +771,10 @@ namespace DrugCatalog_ver2.Forms
             {
                 var id = (int)dgv.SelectedRows[0].Cells["Id"].Value;
                 var d = _drugs.FirstOrDefault(x => x.Id == id);
-                if (d != null && MessageBox.Show(Locale.Get("MsgConfirmDelDrug"), "Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (d != null && MessageBox.Show($"{Locale.Get("MsgConfirmDelDrug")} '{d.Name}'?", Locale.Get("Delete"), MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    _drugs.Remove(d); _dataService.SaveDrugs(_drugs); LoadDrugs();
+                    _drugs.Remove(d);
+                    SaveDrugsAndReload();
                 }
             }
         }
@@ -768,20 +810,11 @@ namespace DrugCatalog_ver2.Forms
             return null;
         }
 
-        private List<Drug> LoadDrugsFromFile(string path)
-        {
-            try { var s = new XmlSerializer(typeof(List<Drug>), new XmlRootAttribute("Drugs")); using (var fs = new FileStream(path, FileMode.Open)) return (List<Drug>)s.Deserialize(fs); }
-            catch { return new List<Drug>(); }
-        }
-
-        private void SaveDrugsToFile(List<Drug> list, string path)
-        {
-            try { var s = new XmlSerializer(typeof(List<Drug>), new XmlRootAttribute("Drugs")); using (var fs = new FileStream(path, FileMode.Create)) s.Serialize(fs, list); }
-            catch { }
-        }
-
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            // В строке поиска Delete удаляет символ, а не препарат: иначе сработает сочетание клавиш из меню.
+            if (keyData == Keys.Delete && textBoxSearch.Focused) return false;
+
             if (keyData == Keys.F5) { LoadDrugs(); return true; }
             if (keyData == (Keys.Control | Keys.N)) { AddDrug(); return true; }
             if (keyData == (Keys.Control | Keys.F)) { textBoxSearch.Focus(); return true; }

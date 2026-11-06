@@ -14,8 +14,19 @@ namespace DrugCatalog_ver2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var xmlDataService = new XmlDataService();
-            var userService = new UserService(xmlDataService);
+            XmlDataService xmlDataService;
+            UserService userService;
+            try
+            {
+                AppPaths.PrepareDataDirectory();
+                xmlDataService = new XmlDataService();
+                userService = new UserService(xmlDataService);
+            }
+            catch (DataFileException ex)
+            {
+                MessageBox.Show(ex.Message, Locale.Get("MsgError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             using (var loginForm = new LoginForm(userService))
             {

@@ -24,7 +24,9 @@ namespace DrugCatalog_ver2.Services
 
     public class UserService : IUserService
     {
-        private readonly string _usersFilePath = "users.xml";
+        private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(List<User>), new XmlRootAttribute("Users"));
+
+        private readonly string _usersFilePath = AppPaths.UsersFile;
         private List<User> _users;
         private readonly IXmlDataService _xmlDataService;
 
@@ -177,43 +179,19 @@ namespace DrugCatalog_ver2.Services
             SaveUsers();
         }
 
+        // Ошибка чтения передаётся наверх: иначе конструктор решит, что пользователей нет,
+        // и заменит файл учётной записью администратора по умолчанию.
         private List<User> LoadUsers()
         {
-            try
-            {
-                if (!File.Exists(_usersFilePath))
-                    return new List<User>();
-
-                var serializer = new XmlSerializer(typeof(List<User>),
-                    new XmlRootAttribute("Users"));
-
-                using (var stream = new FileStream(_usersFilePath, FileMode.Open))
-                {
-                    return (List<User>)serializer.Deserialize(stream) ?? new List<User>();
-                }
-            }
-            catch (Exception)
-            {
+            if (!File.Exists(_usersFilePath))
                 return new List<User>();
-            }
+
+            return SafeXmlFile.Read<List<User>>(_usersFilePath, Serializer) ?? new List<User>();
         }
 
         private void SaveUsers()
         {
-            try
-            {
-                var serializer = new XmlSerializer(typeof(List<User>),
-                    new XmlRootAttribute("Users"));
-
-                using (var stream = new FileStream(_usersFilePath, FileMode.Create))
-                {
-                    serializer.Serialize(stream, _users);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Ошибка сохранения пользователей: {ex.Message}");
-            }
+            SafeXmlFile.Write(_usersFilePath, Serializer, _users);
         }
     }
 }

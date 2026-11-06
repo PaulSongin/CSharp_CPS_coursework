@@ -11,7 +11,7 @@ The application is built using **C#** and **Windows Forms**, implements a multi-
 ### 📦 Inventory Management
 *   **Database Management:** Add, edit, and delete medications easily.
 *   **Smart Search:** Quick filtering by name, active substance, or manufacturer.
-*   **Expiration Control:** Visual color coding for expired drugs (Red) and those expiring soon (within 30 days).
+*   **Expiration Control:** Visual color coding for expired drugs (Red) and those expiring soon (within 30 days). Expired drugs are never deleted without confirmation.
 *   **Categorization:** Automatic row highlighting based on the drug category (Analgesics, Antibiotics, etc.).
 
 ### ⏰ Smart Reminders
@@ -34,7 +34,7 @@ The application is built using **C#** and **Windows Forms**, implements a multi-
 
 *   **Language:** C#
 *   **Platform:** .NET Framework (Windows Forms)
-*   **Data Storage:** XML Serialization (No external SQL server required)
+*   **Data Storage:** XML Serialization in `%AppData%\DrugCatalog` (No external SQL server required). Each save keeps the previous version in the `Backups` subfolder.
 *   **Architecture:** Layered Architecture (Models, Services, Forms)
 
 ---
@@ -45,7 +45,7 @@ The project follows Clean Code principles and Separation of Concerns:
 
 ```text
 DrugCatalog_ver2/
-├── 📁 Data/             # XML data files (generated automatically)
+├── 📁 Data/             # Sample catalogs (open them with File -> Open)
 ├── 📁 Forms/            # User Interface (UI) layers
 │   ├── MainForm.cs      # Main Dashboard
 │   ├── LoginForm.cs     # Authentication
