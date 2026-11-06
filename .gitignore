@@ -1,0 +1,8 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output, which also held the app's working data
+[Bb]in/
+[Oo]bj/
